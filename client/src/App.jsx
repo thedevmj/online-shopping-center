@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "./component/Navbar";
 import LoginForm from "./component/LoginForm";
 import Home from "./component/Home";
-import { Route, Routes } from "react-router-dom";
+
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -22,7 +22,7 @@ const App = () => {
         </div>
       )}
 
-      <Home />
+    <Home/>
     </div>
   );
 };
