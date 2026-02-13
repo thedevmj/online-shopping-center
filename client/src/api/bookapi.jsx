@@ -11,5 +11,8 @@ export const getallbooks=()=>{
    return axios.get(`${Api_url}getall`);
 }
 export const Updatebooks=(id,updatedData)=>{
-   return axios.put(`${Api_url}update/${id}`,updatedData)
+   return axios.put(`${Api_url}update/${id}`,updatedData);
+}
+export const Deletebook=(id)=>{
+   return axios.delete(`${Api_url}delete/${id}`);
 }

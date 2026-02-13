@@ -134,7 +134,7 @@ export default function Navbar({ onLoginClick }) {
 
             <ul className="flex items-center gap-6">
               <li>
-                <a href="#" className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded">Best Sellers</a>
+                <a href="/updateBook" className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded">Update Books</a>
               </li>
               <li>
                 <a href="#" className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded">Deals</a>

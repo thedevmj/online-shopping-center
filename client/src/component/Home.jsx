@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createbook, getallbooks } from "../api/bookapi";
+import Update_books from "./Update_books";
 
 const INITIAL_FORM_STATE = {
   bookname: "",
@@ -10,8 +11,8 @@ const INITIAL_FORM_STATE = {
 };
 
 export default function Home() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingId, setEditingId] = useState("");
+  
+
   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const [books, setBooks] = useState([]);
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -46,8 +47,8 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-     const book= await createbook(formData);
-      setFormData(book);
+      await createbook(formData);
+      setFormData(INITIAL_FORM_STATE);
       showMessage("success", "Book added successfully!");
       fetchBooks();
     } catch (err) {
@@ -157,121 +158,7 @@ export default function Home() {
           </button>
         </form>
       </div>
-
-     
-      <div className="w-full max-w-4xl my-10 overflow-x-auto">
-        <table className="w-full border border-gray-300 text-left bg-white">
-          <thead className="bg-amber-200">
-            <tr>
-              <th className="px-4 py-3">Book Name</th>
-              <th className="px-4 py-3">Book Title</th>
-              <th className="px-4 py-3">Book Author</th>
-              <th className="px-4 py-3">Publish Date</th>
-              <th className="px-4 py-3">Book Price</th>
-              <th className="px-4 py-3">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody className="divide-y">
-            {books.length > 0 ? (
-              books.map((book) => (
-                <tr key={book._id} className="hover:bg-gray-100">
-                  <td className="px-4 py-3">{book.bookname}</td>
-                  <td className="px-4 py-3">{book.bookTitle}</td>
-                  <td className="px-4 py-3">{book.bookAuthor}</td>
-                  <td className="px-4 py-3">
-                    {new Date(book.publishDate).toLocaleDateString()}
-                  </td>
-                  <td className="px-4 py-3">${parseFloat(book.bookPrice).toFixed(2)}</td>
-                  <td className="px-4 py-3 flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsEditing(true);
-                        setEditingId(book._id);
-                        setFormData(book);
-                      }}
-                      className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6" className="px-4 py-3 text-center text-gray-500">
-                  No books found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
       
-      {isEditing && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white p-6 rounded-xl shadow-lg max-w-md w-full">
-            <h3 className="text-lg font-semibold mb-4">Edit Book</h3>
-            <form className="space-y-4">
-              <input
-                type="text"
-                placeholder="Book Name"
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="bookname"
-                value={formData.bookname}
-                onChange={handleInputChange}
-              />
-              <input
-                type="text"
-                placeholder="Book Title"
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="bookTitle"
-                value={formData.bookTitle}
-                onChange={handleInputChange}
-              />
-              <input
-                type="text"
-                placeholder="Book Author"
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="bookAuthor"
-                value={formData.bookAuthor}
-                onChange={handleInputChange}
-              />
-              <input
-                type="number"
-                placeholder="Book Price"
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="bookPrice"
-                value={formData.bookPrice}
-                onChange={handleInputChange}
-              />
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(false)}
-                  className="flex-1 bg-gray-400 text-white py-2 rounded hover:bg-gray-500 transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  className="flex-1 bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

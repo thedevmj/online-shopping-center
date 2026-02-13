@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import Navbar from "./component/Navbar";
 import LoginForm from "./component/LoginForm";
 import Home from "./component/Home";
+import { Route, Routes } from "react-router-dom";
+import Update_books from "./component/Update_books";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
     <div>
+
       <Navbar onLoginClick={() => setShowLogin(true)} />
       {showLogin ? (
         <LoginForm onClose={() => setShowLogin(false)} />
@@ -22,7 +25,11 @@ const App = () => {
         </div>
       )}
 
-    <Home/>
+    <Routes>
+      <Route path="/" element={<Home/>}></Route>
+      <Route path="/updateBook" element={<Update_books/>} ></Route>
+    </Routes>
+
     </div>
   );
 };
