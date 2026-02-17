@@ -19,6 +19,18 @@ const bookSchema = new mongoose.Schema({
     publishDate: {
         type: String,
         
+    },
+    category:{
+     type:mongoose.Schema.Types.ObjectId,
+     ref:"categories"
+    }
+    ,
+    stock: {
+     type:Number,
+     default:1
+    },
+     image:{
+    type:String 
     }
 },
     {

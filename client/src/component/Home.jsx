@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { createbook, getallbooks } from "../api/bookapi";
-import Update_books from "./Update_books";
 
 const INITIAL_FORM_STATE = {
   bookname: "",
@@ -8,11 +7,39 @@ const INITIAL_FORM_STATE = {
   bookAuthor: "",
   bookPrice: "",
   publishDate: "",
+  stock: 1,
+  bookImage: null,
 };
+const [category,setcategory]=useState("");
+
+const default_category = [
+  {
+    type:"fiction",
+    category:[
+      {
+        id:"fantasy",
+        value:"fantasy"
+      },
+      {
+        id:"scifi",
+        value:"scifi"
+      },
+      {
+        id:"romantic",
+        value:"romantic"
+      },
+      {
+        id:"thriller",
+        value:"thriller"
+      },{
+        id:"historical",
+        value:"historical"
+      }
+    ]
+  },
+];
 
 export default function Home() {
-  
-
   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const [books, setBooks] = useState([]);
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -47,7 +74,17 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createbook(formData);
+      const data = new FormData();
+
+      data.append("bookname", formData.bookname);
+      data.append("bookTitle", formData.bookTitle);
+      data.append("bookAuthor", formData.bookAuthor);
+      data.append("bookPrice", formData.bookPrice);
+      data.append("publishDate", formData.publishDate);
+      data.append("stock", formData.stock);
+      data.append("image", formData.bookImage);
+
+      await createbook(data);
       setFormData(INITIAL_FORM_STATE);
       showMessage("success", "Book added successfully!");
       fetchBooks();
@@ -58,7 +95,6 @@ export default function Home() {
   };
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
-      
       {message.text && (
         <div
           className={`mb-4 p-3 rounded-md text-white ${
@@ -69,7 +105,6 @@ export default function Home() {
         </div>
       )}
 
-    
       <div className="bg-white w-full max-w-md p-6 rounded-xl shadow-md">
         <h2 className="text-xl font-semibold mb-4 text-gray-800">Add Book</h2>
 
@@ -85,7 +120,6 @@ export default function Home() {
               name="bookname"
               value={formData.bookname}
               onChange={handleInputChange}
-              required
             />
           </div>
 
@@ -100,7 +134,6 @@ export default function Home() {
               name="bookTitle"
               value={formData.bookTitle}
               onChange={handleInputChange}
-              required
             />
           </div>
 
@@ -115,7 +148,6 @@ export default function Home() {
               name="bookAuthor"
               value={formData.bookAuthor}
               onChange={handleInputChange}
-              required
             />
           </div>
 
@@ -146,10 +178,38 @@ export default function Home() {
               name="publishDate"
               value={formData.publishDate}
               onChange={handleInputChange}
-              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Stock
+            </label>
+            <input
+              type="Number"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="stock"
+              value={formData.stock}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  bookImage: e.target.files[0],
+                }))
+              }
             />
           </div>
 
+          <div>
+            <select name="" id="">
+              <option value=""></option>
+            </select>
+          </div>
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
@@ -158,7 +218,6 @@ export default function Home() {
           </button>
         </form>
       </div>
-      
     </div>
   );
 }

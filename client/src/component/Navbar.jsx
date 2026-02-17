@@ -49,12 +49,12 @@ export default function Navbar({ onLoginClick }) {
 
   return (
     <>
-      {/* Glass Morphism Navbar */}
+      
       <header className="sticky top-0 z-50 w-full">
         <div className="absolute inset-0 z-0 bg-white/70 backdrop-blur-md border-b border-white/20" />
 
         <nav role="navigation" aria-label="Main" className="relative z-10 mx-auto flex max-w-7xl items-center justify-between p-4 sm:p-6 lg:px-8">
-          {/* Logo */}
+          
           <div className="flex flex-1 md:flex-initial items-center">
             <a href="#" className="-m-1.5 p-1.5 hover:scale-105 transition-transform flex items-center gap-2">
               <ShoppingBagIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
@@ -64,7 +64,7 @@ export default function Navbar({ onLoginClick }) {
             </a>
           </div>
 
-          {/* Search (desktop) */}
+        
           <div className="hidden md:flex flex-1 items-center justify-center px-4">
             <div className="w-full max-w-xl">
               <label className="relative block group">
@@ -78,7 +78,7 @@ export default function Navbar({ onLoginClick }) {
             </div>
           </div>
 
-          {/* Mobile buttons */}
+       
           <div className="flex md:hidden items-center gap-3">
             <button onClick={() => setMobileMenuOpen(true)} aria-label="Open menu" aria-expanded={mobileMenuOpen} aria-controls="mobile-menu" className="p-2 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
               <Bars3Icon className="h-6 w-6 text-gray-700" />
@@ -96,7 +96,7 @@ export default function Navbar({ onLoginClick }) {
             </button>
           </div>
 
-          {/* Desktop navigation */}
+          
           <PopoverGroup className="hidden md:flex gap-x-8 items-center">
             <Popover className="relative">
               <PopoverButton className="flex items-center gap-1 font-semibold text-gray-900 hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 rounded">
@@ -137,7 +137,7 @@ export default function Navbar({ onLoginClick }) {
                 <a href="/updateBook" className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded">Update Books</a>
               </li>
               <li>
-                <a href="#" className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded">Deals</a>
+                <a href="/shopping" className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded">shop</a>
               </li>
               <li>
                 <a href="#" className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded">About</a>
@@ -145,7 +145,7 @@ export default function Navbar({ onLoginClick }) {
             </ul>
           </PopoverGroup>
 
-          {/* Right icons */}
+          
           <div className="hidden lg:flex items-center gap-6">
             <button className="relative p-1 hover:text-red-500">
               <HeartIcon className="h-6 w-6" />
@@ -164,7 +164,7 @@ export default function Navbar({ onLoginClick }) {
           </div>
         </nav>
 
-        {/* Features bar (desktop) */}
+        
         <div className="hidden lg:block w-full bg-emerald-50/80 backdrop-blur-md border-t">
           <div className="max-w-7xl mx-auto px-8 py-3 flex justify-around">
             {features.map((feature) => (
@@ -177,7 +177,7 @@ export default function Navbar({ onLoginClick }) {
         </div>
       </header>
 
-      {/* Mobile menu */}
+     
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="md:hidden">
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <DialogPanel id="mobile-menu" className="fixed right-0 top-0 h-full w-80 sm:w-96 bg-white p-6 shadow-xl transform transition-transform duration-300">
