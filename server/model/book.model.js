@@ -20,7 +20,7 @@ const bookSchema = new mongoose.Schema({
         type: String,
         
     },
-    category:{
+    bookCategory:{
      type:mongoose.Schema.Types.ObjectId,
      ref:"categories"
     }

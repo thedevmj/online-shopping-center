@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createbook, getallbooks } from "../api/bookapi";
+import { createbook, getallbooks, getallCategories } from "../api/bookapi";
 
 const INITIAL_FORM_STATE = {
   bookname: "",
@@ -7,43 +7,20 @@ const INITIAL_FORM_STATE = {
   bookAuthor: "",
   bookPrice: "",
   publishDate: "",
+  bookCategory:"",
   stock: 1,
   bookImage: null,
 };
-const [category,setcategory]=useState("");
 
-const default_category = [
-  {
-    type:"fiction",
-    category:[
-      {
-        id:"fantasy",
-        value:"fantasy"
-      },
-      {
-        id:"scifi",
-        value:"scifi"
-      },
-      {
-        id:"romantic",
-        value:"romantic"
-      },
-      {
-        id:"thriller",
-        value:"thriller"
-      },{
-        id:"historical",
-        value:"historical"
-      }
-    ]
-  },
-];
 
 export default function Home() {
   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const [books, setBooks] = useState([]);
   const [message, setMessage] = useState({ type: "", text: "" });
-
+  const [category,setcategory]=useState([]);
+  
+  const [iseditable,setisEditable]=useState(false);
+ 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -67,10 +44,31 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
+
+  const fetch_category=async()=>{
+    try{
+
+      const ctg=await getallCategories();
+      setcategory(ctg.data.data);
+ 
+      
+    }
+    catch(err){
+      console.log("error occurred in fetching category" ,err);
+      
+    }
+  }
+  function emptyall(){
+    setBooks("");
+    setFormData([]);
+    setcategory([]);
+  }
+  useEffect(() => { 
     fetchBooks();
+    fetch_category();
   }, []);
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -81,6 +79,7 @@ export default function Home() {
       data.append("bookAuthor", formData.bookAuthor);
       data.append("bookPrice", formData.bookPrice);
       data.append("publishDate", formData.publishDate);
+      data.append("bookCategory",formData.bookCategory);
       data.append("stock", formData.stock);
       data.append("image", formData.bookImage);
 
@@ -93,6 +92,8 @@ export default function Home() {
       showMessage("error", "Failed to create book");
     }
   };
+ 
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
       {message.text && (
@@ -206,9 +207,16 @@ export default function Home() {
           </div>
 
           <div>
-            <select name="" id="">
-              <option value=""></option>
-            </select>
+            <select name="bookCategory" 
+              value={formData.bookCategory}
+              onChange={handleInputChange} >
+              <option value="">Select category</option>
+           {Array.isArray( category) && category.map((cat)=>{
+            
+              return <option key={cat._id} value={cat._id} >{cat.name}</option>
+             
+              })}
+               </select>
           </div>
           <button
             type="submit"

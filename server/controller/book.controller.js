@@ -12,7 +12,7 @@ const handleBookStore = async (req, res) => {
         console.log("File :", req.files);
 
         const file = req.files.image;
-        const { bookname, bookTitle, bookAuthor, bookPrice, publishDate, stock } = req.body;
+        const { bookname, bookTitle, bookAuthor, bookPrice, publishDate,bookCategory, stock } = req.body;
         if (!bookname || !bookTitle || !bookAuthor || !bookPrice || !publishDate)
             return res.status(400).json('All fields required')
 
@@ -28,6 +28,7 @@ const handleBookStore = async (req, res) => {
             bookAuthor,
             bookPrice,
             publishDate,
+            bookCategory,
             stock,
             image: result.secure_url,
 
@@ -143,9 +144,11 @@ const save_category = async (req, res) => {
                 message: "Category name is required"
             });
         }
-        const newcategory = req.params.categories;
+        const newcategory = await categories.create({
+            
+        }) ;
         res.status(201).json({
-            message: "Book added sucessfully ",
+            message: "category added sucessfully ",
             data: newcategory
         })
     } catch (err) {

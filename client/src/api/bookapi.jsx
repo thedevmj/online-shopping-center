@@ -5,7 +5,9 @@ const Api_url = "http://localhost:3000/api/book/";
 export const createbook = (data) => {
   return axios.post(`${Api_url}addbook`, data);
 };
-
+export const getallCategories = () => {
+  return axios.get(`${Api_url}getcategories`);
+};
 export const getallbooks = () => {
   return axios.get(`${Api_url}getall`);
 };
@@ -15,6 +17,4 @@ export const Updatebooks = (id, updatedData) => {
 export const Deletebook = (id) => {
   return axios.delete(`${Api_url}delete/${id}`);
 };
-export const getallCategories = () => {
-  return axios.get(`/categories`);
-};
+

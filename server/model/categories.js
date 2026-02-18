@@ -6,6 +6,10 @@ const category_list= new mongoose.Schema({
         type:String,
         required:true,
         unique:true,
+    },
+    isDefault:{
+        type:Boolean,
+        default:false
     }
 })
 const categories=mongoose.model("categories",category_list);

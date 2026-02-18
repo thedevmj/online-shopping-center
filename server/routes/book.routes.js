@@ -5,7 +5,7 @@ const {getAllbooks} = require("../controller/book.controller");
 const router=express.Router()
 
 router.get("/getall",getAllbooks);
-router.get("/getcategory",getallCategory);
+router.get("/getcategories",getallCategory);
 router.post("/addbook",handleBookStore);
 router.get("/:id",getbyid);
 router.delete("/delete/:id",deleteBookbyId);
