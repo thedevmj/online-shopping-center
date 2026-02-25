@@ -1,9 +1,10 @@
 const { cloudinary } = require("../config/cloudinary");
 const Book = require("../model/book.model")
-const categories=require("../model/categories")
+const categories = require("../model/categories");
+const User = require("../model/user");
 
 const handleBookStore = async (req, res) => {
-    
+
     try {
         if (!req.files || !req.files.image) {
             return res.status(400).json({ message: "Image required" });
@@ -12,7 +13,7 @@ const handleBookStore = async (req, res) => {
         console.log("File :", req.files);
 
         const file = req.files.image;
-        const { bookname, bookTitle, bookAuthor, bookPrice, publishDate,bookCategory, stock } = req.body;
+        const { bookname, bookTitle, bookAuthor, bookPrice, publishDate, bookCategory, stock } = req.body;
         if (!bookname || !bookTitle || !bookAuthor || !bookPrice || !publishDate)
             return res.status(400).json('All fields required')
 
@@ -145,8 +146,8 @@ const save_category = async (req, res) => {
             });
         }
         const newcategory = await categories.create({
-            
-        }) ;
+
+        });
         res.status(201).json({
             message: "category added sucessfully ",
             data: newcategory
@@ -164,14 +165,14 @@ const getallCategory = async (req, res) => {
 
     try {
         const allcategory = await categories.find();
-       
-        
+
+
         if (!allcategory)
             return res.status(404).json("Categories not found")
         res.status(201).json(
             {
                 message: "fetched success",
-                data:allcategory
+                data: allcategory
             })
     }
     catch (err) {
@@ -181,5 +182,7 @@ const getallCategory = async (req, res) => {
         })
     }
 }
-module.exports = { handleBookStore, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category };
+
+
+module.exports = { handleBookStore, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category};
 

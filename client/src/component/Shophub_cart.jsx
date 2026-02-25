@@ -5,7 +5,12 @@ import { useEffect } from "react";
 
 export default function Shophub_cart() {
   const [books, setBooks] = useState([]);
+  
 
+
+  const handleCart=async()=>{
+   
+  }
   const fetchBooks = async () => {
     try {
       const res = await getallbooks();
@@ -27,7 +32,7 @@ export default function Shophub_cart() {
           books.map((book) => (
             <div
               key={book._id}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition duration-300 p-6"
+              className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-6"
             >
               <img
                 src={book.image}
