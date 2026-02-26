@@ -7,8 +7,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import axios from "axios";
-import {  useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { LoginUser } from "../api/bookapi";
 
 export default function LoginForm({ onClose }) {
   const [email, setEmail] = useState("");
@@ -16,32 +16,26 @@ export default function LoginForm({ onClose }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-const navigate=useNavigate();
- 
-  
-  const handleSubmit =async (e) => {
-   e.preventDefault();
-  setIsLoading(true)
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     try {
-      
-      const { data } = await axios.post("http://localhost:3000/auth/user/login", {
-        email,
-        password,
-      });
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      const response = await LoginUser({ email, password });
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
       alert("Login successful!");
-      navigate("/shopping")
+      navigate("/shopping");
       if (onClose) onClose();
     } catch (err) {
-     console.log(err);
-     
+      console.log(err);
     }
 
     setIsLoading(false);
-   
   };
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 via-white to-slate-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -73,8 +67,6 @@ const navigate=useNavigate();
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-           
-           
             <div className="group">
               <label
                 htmlFor="email"
@@ -195,7 +187,6 @@ const navigate=useNavigate();
             )}
           </form>
 
-       
           <div className="my-6 flex items-center">
             <div className="flex-1 border-t border-gray-300"></div>
             <span className="px-3 text-sm text-gray-500">or</span>

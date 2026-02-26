@@ -7,37 +7,50 @@ import Update_books from "./component/Update_books";
 import Shophub_cart from "./component/Shophub_cart";
 import Signup from "./component/Signup";
 import ProtectedRoute from "./routes/ProtectedRoutes";
+import AdminRoute from "./routes/AdminRoute";
 
 const App = () => {
- 
- const [showlogin,setShowLogin]=useState(false);
+  const [showlogin, setShowLogin] = useState(false);
   return (
     <div>
-      <Navbar />   
-     
+      <Navbar />
+
       <Routes>
-        <Route path="/" element={
-         <><ProtectedRoute>
-         <Home />
-         </ProtectedRoute>
-          </>
-          }></Route>
-         <Route
+        <Route
+          path="/"
+          element={
+            <>
+              <AdminRoute>
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              </AdminRoute>
+            </>
+          }
+        ></Route>
+        <Route
           path="/Login"
           element={<LoginForm onClose={() => setShowLogin(false)} />}
         ></Route>
-        <Route path="/updateBook" element={<> 
-        <ProtectedRoute>
-        <Update_books />
-        </ProtectedRoute>
-        </>}></Route>
-        <Route path="/signup" element={<Signup/>}></Route>
+        <Route
+          path="/updateBook"
+          element={
+            <>
+            <AdminRoute>
+              <ProtectedRoute>
+                <Update_books />
+              </ProtectedRoute>
+              </AdminRoute>
+            </>
+          }
+        ></Route>
+        <Route path="/signup" element={<Signup />}></Route>
         <Route
           path="/shopping"
           element={
             <>
-            <ProtectedRoute>
-              <Shophub_cart />
+              <ProtectedRoute>
+                <Shophub_cart />
               </ProtectedRoute>
             </>
           }

@@ -69,11 +69,17 @@ export default function Navbar({ onLoginClick }) {
 
   const logOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    alert("Logged out successfully ")
     navigate("/Login");
   };
+ const user = JSON.parse(localStorage.getItem("user") || "null");
 
+ 
   const token = localStorage.getItem("token");
   const isLoggedIn = !!token;
+
+  
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = mobileMenuOpen ? "hidden" : prev;
@@ -94,7 +100,7 @@ export default function Navbar({ onLoginClick }) {
         >
           <div className="flex flex-1 md:flex-initial items-center">
             <a
-              href="/"
+              href="#"
               className="-m-1.5 p-1.5 hover:scale-105 transition-transform flex items-center gap-2"
             >
               <ShoppingBagIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
@@ -178,8 +184,8 @@ export default function Navbar({ onLoginClick }) {
                 </div>
               </PopoverPanel>
             </Popover>
-
-            <ul className="flex items-center gap-6">
+ {user && user?.role === "Admin" ?
+            (<ul className="flex items-center gap-6">
               <li>
                 <a
                   href="/updateBook"
@@ -188,6 +194,16 @@ export default function Navbar({ onLoginClick }) {
                   Update Books
                 </a>
               </li>
+              <li>
+                <a
+                  href="/updateBook"
+                  className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded"
+                >
+                  Add Book
+                </a>
+              </li>
+              </ul>):(
+                <ul>
               <li>
                 <a
                   href="/shopping"
@@ -205,6 +221,8 @@ export default function Navbar({ onLoginClick }) {
                 </a>
               </li>
             </ul>
+            )
+            }
           </PopoverGroup>
 
           <div className="hidden lg:flex items-center gap-6">

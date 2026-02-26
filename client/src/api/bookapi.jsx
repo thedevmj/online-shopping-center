@@ -8,6 +8,9 @@ export const createbook = (data) => {
 export const createUser=(data)=>{
   return axios.post(`${AUTH_URL}register`,data);
 }
+export const LoginUser=(data)=>{
+  return axios.post(`${AUTH_URL}login`,data);
+}
 export const getallCategories = () => {
   return axios.get(`${Api_url}getcategories`);
 };

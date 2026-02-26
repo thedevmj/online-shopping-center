@@ -7,7 +7,8 @@ export default function Logout() {
 
   const handlelogout=()=>{
     localStorage.removeItem("token");
-  console.log("token removed successfully ");
+    localStorage.removeItem("user");
+
   navigate("/Login")
    
 }

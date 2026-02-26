@@ -1,15 +1,19 @@
-import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const AdminRoute = ({ children }) => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = localStorage.getItem("user");
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (!user) {
+      return navigate("/Login");
+    }
 
-  if (!user) {
-    return <Navigate to="/Login" replace />;
-  }
-
-  if (user.role !== "Admin") {
-    return <Navigate to="/" replace />;
-  }
+    if (user.role !== "Admin") {
+      return navigate("/");
+    }
+  },[]);
 
   return children;
 };
