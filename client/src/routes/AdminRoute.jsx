@@ -10,7 +10,7 @@ const AdminRoute = ({ children }) => {
       return navigate("/Login");
     }
 
-    if (user.role !== "Admin") {
+    if (user.role === "Admin") {
       return navigate("/");
     }
   },[]);

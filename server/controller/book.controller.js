@@ -2,9 +2,9 @@ const { cloudinary } = require("../config/cloudinary");
 const Book = require("../model/book.model")
 const categories = require("../model/categories");
 const User = require("../model/user");
+const Cart = require("../model/cart");
 
 const handleBookStore = async (req, res) => {
-
     try {
         if (!req.files || !req.files.image) {
             return res.status(400).json({ message: "Image required" });
@@ -13,7 +13,7 @@ const handleBookStore = async (req, res) => {
         console.log("File :", req.files);
 
         const file = req.files.image;
-        const { bookname, bookTitle, bookAuthor, bookPrice, publishDate, bookCategory, stock } = req.body;
+        const { bookname, bookTitle, bookAuthor, bookPrice, publishDate, bookCategory, stock, description } = req.body;
         if (!bookname || !bookTitle || !bookAuthor || !bookPrice || !publishDate)
             return res.status(400).json('All fields required')
 
@@ -31,6 +31,7 @@ const handleBookStore = async (req, res) => {
             publishDate,
             bookCategory,
             stock,
+            description,
             image: result.secure_url,
 
         })
@@ -118,7 +119,7 @@ const updateById = async (req, res) => {
 
     const { id } = req.params;
 
-    const { bookname, bookTitle, bookAuthor, bookPrice, publishDate, stock } = req.body;
+    const { bookname, bookTitle, bookAuthor, bookPrice, publishDate, stock, description } = req.body;
     if (!bookname || !bookTitle || !bookAuthor || !bookPrice || !publishDate)
         return res.status(400).json('All fields required')
 
@@ -128,7 +129,8 @@ const updateById = async (req, res) => {
         bookAuthor,
         bookPrice,
         publishDate,
-        stock
+        stock,
+        description
     }, { new: true });
 
 
@@ -149,7 +151,7 @@ const save_category = async (req, res) => {
 
         });
         res.status(201).json({
-            message: "category added sucessfully ",
+            message: "category added successfully ",
             data: newcategory
         })
     } catch (err) {
@@ -182,7 +184,69 @@ const getallCategory = async (req, res) => {
         })
     }
 }
+const addtoCart = async (req, res) => {
 
+    try {
+       
+        const{bookId,quantity}=req.body;
+        let cart=await Cart.findOne({user:req.User.id});
+        if(!cart){
+            cart=new Cart({
+                user:req.User.id,
+                items:[]
+            });
+        }
+         const existingItem = cart.items.find(
+      item => item.book.toString() === bookId
+    ); 
 
-module.exports = { handleBookStore, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category};
+    if(existingItem){
+     existingItem.quantity += quantity;
+    }else{
+     cart.items.push({
+        user:req.User.id,
+        book:bookId,
+        quantity
+     })
+    }
+      await cart.save();
+
+    res.status(200).json({
+      message: "Book added to cart!",
+      data: cart
+    });
+
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "Error occurred in adding book to cart ",
+            error: err.message
+        })
+    }
+}
+    const findbookById = async (req, res) => {
+        try {
+           
+            const cartbook = await Cart.findOne({
+                user: req.User.id,
+                "items.book": req.params.id
+            });
+            if (!cartbook) return res.status(404).json({
+                message: "Book not found in cart !"
+            })
+            res.status(200).json({
+                message: "Book found in cart !",
+                data: cartbook || null
+            })
+        }
+        catch (err) {
+            res.status(400).json({
+                message: "Error occured",
+                error: err.message
+            })
+        }
+    }
+
+    module.exports = { handleBookStore, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category, addtoCart, findbookById };
+
 

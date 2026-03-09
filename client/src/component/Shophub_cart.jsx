@@ -1,19 +1,21 @@
-import React from "react";
+import React, { createContext, useContext } from "react";
 import { getallbooks } from "../api/bookapi";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Bookcontext } from "./BookContext";
 
 export default function Shophub_cart() {
   const [books, setBooks] = useState([]);
-  
 
+  const navigate = useNavigate();
 
-  const handleCart=async()=>{
-   
-  }
+  const { setSelectedBook } = useContext(Bookcontext);
+
   const fetchBooks = async () => {
     try {
       const res = await getallbooks();
+
       setBooks(res.data.data);
     } catch (err) {
       console.error("Error fetching books:", err);
@@ -22,6 +24,11 @@ export default function Shophub_cart() {
   useEffect(() => {
     fetchBooks();
   }, []);
+  const handleCart = (book) => {
+    localStorage.setItem("selectedBook", JSON.stringify(book));
+    setSelectedBook(book);
+    navigate("/ordercart");
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
@@ -50,7 +57,10 @@ export default function Shophub_cart() {
                   ${book.bookPrice}
                 </span>
 
-                <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+                <button
+                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+                  onClick={() => handleCart(book)}
+                >
                   Buy Now
                 </button>
               </div>

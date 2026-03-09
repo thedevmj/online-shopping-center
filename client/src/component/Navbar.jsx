@@ -74,7 +74,9 @@ export default function Navbar({ onLoginClick }) {
     navigate("/Login");
   };
  const user = JSON.parse(localStorage.getItem("user") || "null");
-
+const userCartCount = ()=>{
+  
+}
  
   const token = localStorage.getItem("token");
   const isLoggedIn = !!token;

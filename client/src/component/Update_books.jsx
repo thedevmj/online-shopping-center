@@ -14,9 +14,6 @@ export default function Update_books() {
       [name]: value,
     }));
   };
-  console.log("edit id", EditingId);
-  console.log("books", books);
-  console.log("form data", formData);
 
   const handleSubmit = async () => {
     try {

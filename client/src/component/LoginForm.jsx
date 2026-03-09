@@ -6,7 +6,7 @@ import {
   EyeSlashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import { LoginUser } from "../api/bookapi";
 
@@ -25,8 +25,8 @@ export default function LoginForm({ onClose }) {
       const response = await LoginUser({ email, password });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-
       alert("Login successful!");
+  
       navigate("/shopping");
       if (onClose) onClose();
     } catch (err) {
