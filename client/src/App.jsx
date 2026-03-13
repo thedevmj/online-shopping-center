@@ -13,9 +13,10 @@ import BookContext from "./component/BookContext";
 
 const App = () => {
   const [showlogin, setShowLogin] = useState(false);
+  const [category, selectedCategory] = useState("");
   return (
     <div>
-      <Navbar />
+      <Navbar selectedCategory={selectedCategory}/>
 
       <Routes>
         <Route
@@ -54,8 +55,10 @@ const App = () => {
           path="/shopping"
           element={
             <>
+
               <ProtectedRoute>
-                <Shophub_cart />
+                
+                <Shophub_cart category={category}/>
               </ProtectedRoute>
             </>
           }

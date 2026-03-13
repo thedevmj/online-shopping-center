@@ -5,23 +5,25 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bookcontext } from "./BookContext";
 
-export default function Shophub_cart() {
+export default function Shophub_cart({ category }) {
   const [books, setBooks] = useState([]);
-
+  console.log(category);
+  
+  
   const navigate = useNavigate();
 
   const { setSelectedBook } = useContext(Bookcontext);
 
-  const fetchBooks = async () => {
-    try {
-      const res = await getallbooks();
-
-      setBooks(res.data.data);
-    } catch (err) {
-      console.error("Error fetching books:", err);
-    }
-  };
   useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const res = await getallbooks();
+
+        setBooks(res.data.data);
+      } catch (err) {
+        console.error("Error fetching books:", err);
+      }
+    };
     fetchBooks();
   }, []);
   const handleCart = (book) => {

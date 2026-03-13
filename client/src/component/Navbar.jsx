@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import {
   Dialog,
   DialogPanel,
@@ -22,39 +22,10 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 import Logout from "./Logout";
+import { getallCategories } from "../api/bookapi";
+import e from "cors";
+import Shophub_cart from "./Shophub_cart";
 
-const categories = [
-  {
-    name: "Electronics",
-    description: "Latest gadgets and devices",
-    href: "#",
-    icon: SparklesIcon,
-  },
-  {
-    name: "Fashion",
-    description: "Trending clothes and accessories",
-    href: "#",
-    icon: SparklesIcon,
-  },
-  {
-    name: "Home & Garden",
-    description: "Furniture and decor items",
-    href: "#",
-    icon: SparklesIcon,
-  },
-  {
-    name: "Sports",
-    description: "Athletic gear and equipment",
-    href: "#",
-    icon: SparklesIcon,
-  },
-  {
-    name: "Books",
-    description: "Digital and physical books",
-    href: "#",
-    icon: SparklesIcon,
-  },
-];
 
 const features = [
   { name: "Free Shipping", icon: TruckIcon },
@@ -62,26 +33,45 @@ const features = [
   { name: "Easy Returns", icon: SparklesIcon },
 ];
 
-export default function Navbar({ onLoginClick }) {
+
+export default function Navbar({ onLoginClick ,selectedCategory}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartCount] = useState(3);
+  const [categories, setCategories] = useState([]);
+  
+  
   const navigate = useNavigate();
-
+ 
+  const fetchCategories=async()=>{
+    try{
+      const res=await getallCategories();
+       setCategories(res.data.data);
+       console.log("Categories fetched successfully !", res.data.data);
+        
+    }
+    catch(err){
+      console.log("Error occured in fetching categories",err.message);
+      
+    }
+  
+  }
+  
+  
+  
   const logOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    alert("Logged out successfully ")
+    alert("Logged out successfully ");
     navigate("/Login");
   };
- const user = JSON.parse(localStorage.getItem("user") || "null");
-const userCartCount = ()=>{
-  
-}
- 
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const userCartCount = () => {
+    if (!user) return 0;
+  };
+
   const token = localStorage.getItem("token");
   const isLoggedIn = !!token;
 
-  
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = mobileMenuOpen ? "hidden" : prev;
@@ -92,6 +82,7 @@ const userCartCount = ()=>{
 
   return (
     <>
+   
       <header className="sticky top-0 z-50 w-full">
         <div className="absolute inset-0 z-0 bg-white/70 backdrop-blur-md border-b border-white/20" />
 
@@ -151,80 +142,68 @@ const userCartCount = ()=>{
           <PopoverGroup className="hidden md:flex gap-x-8 items-center">
             <Popover className="relative">
               <PopoverButton className="flex items-center gap-1 font-semibold text-gray-900 hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 rounded">
-                Shop
+            
+             Categories
+           
                 <ChevronDownIcon className="h-5 w-5" />
+              
               </PopoverButton>
-
               <PopoverPanel
                 transition
                 className="absolute left-0 z-50 mt-3 w-screen max-w-md rounded-2xl bg-white/90 backdrop-blur-xl shadow-xl ring-1 ring-white/20"
               >
                 <div className="p-6">
-                  <h3 className="text-sm font-semibold mb-4">Categories</h3>
-                  <ul className="grid grid-cols-1 gap-2">
-                    {categories.map((item) => (
-                      <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className="flex items-start gap-4 p-3 rounded-lg hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-200"
-                        >
-                          <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-100">
-                            <item.icon className="h-5 w-5 text-blue-600" />
-                          </div>
-                          <div>
-                            <div className="font-semibold text-gray-900">
-                              {item.name}
-                            </div>
-                            <p className="text-sm text-gray-500">
-                              {item.description}
-                            </p>
-                          </div>
-                        </a>
-                      </li>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Category</h3>
+                  <select className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={fetchCategories} onChange={(e) => selectedCategory(e.target.value)}>
+                    <option value="">All Categories</option>
+                    {categories?.map((c) => (
+                      <option key={c.name || c} value={c.name || c} >
+                        {c.name || c}
+                      </option>
                     ))}
-                  </ul>
+                  </select>
                 </div>
               </PopoverPanel>
             </Popover>
- {user && user?.role === "Admin" ?
-            (<ul className="flex items-center gap-6">
-              <li>
-                <a
-                  href="/updateBook"
-                  className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded"
-                >
-                  Update Books
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/updateBook"
-                  className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded"
-                >
-                  Add Book
-                </a>
-              </li>
-              </ul>):(
-                <ul>
-              <li>
-                <a
-                  href="/shopping"
-                  className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded"
-                >
-                  shop
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded"
-                >
-                  About
-                </a>
-              </li>
-            </ul>
-            )
-            }
+            {user && user?.role === "Admin" ? (
+              <ul className="flex items-center gap-6">
+                <li>
+                  <a
+                    href="/updateBook"
+                    className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded"
+                  >
+                    Update Books
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/updateBook"
+                    className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded"
+                  >
+                    Add Book
+                  </a>
+                </li>
+              </ul>
+            ) : (
+              <ul>
+                <li>
+                  <a
+                    href="/shopping"
+                    className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded"
+                  >
+                    shop
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="font-semibold hover:text-emerald-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200 rounded"
+                  >
+                    About
+                  </a>
+                </li>
+              </ul>
+            )}
           </PopoverGroup>
 
           <div className="hidden lg:flex items-center gap-6">
@@ -357,9 +336,10 @@ const userCartCount = ()=>{
 
             <div className="pt-4 border-t mt-4 flex items-center justify-between">
               {isLoggedIn ? (
-               <div>
-                <Logout/>
-               </div>):(
+                <div>
+                  <Logout />
+                </div>
+              ) : (
                 <button
                   onClick={() => navigate("/login")}
                   className="p-1 hover:text-blue-600 transition"
