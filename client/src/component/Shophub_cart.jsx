@@ -31,14 +31,21 @@ export default function Shophub_cart({ category }) {
     setSelectedBook(book);
     navigate("/ordercart");
   };
-
+ 
+  const filteredBooks = category
+    ? books.filter((book) => book.bookCategory === category)
+    : books;
+    console.log("category ",category);
+    console.log("filtered books",filteredBooks);
+    console.log("books",books);
+    
   return (
     <div className="bg-gray-100 min-h-screen p-6">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {books.length === 0 ? (
           <p>No books found</p>
         ) : (
-          books.map((book) => (
+          filteredBooks.map((book) => (
             <div
               key={book._id}
               className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-6"

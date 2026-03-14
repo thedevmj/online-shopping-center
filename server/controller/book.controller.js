@@ -247,6 +247,24 @@ const addtoCart = async (req, res) => {
         }
     }
 
-    module.exports = { handleBookStore, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category, addtoCart, findbookById };
+const deleteBookFromCart=async(req,res)=>{
+    try{
+            const cart=await Cart.findByIdAndDelete({user:req.User.id});  
+           if(!cart){
+            res.status(404).json({
+                message:" Book Not found "
+            })
+           }
+            res.status(200).json({
+                message:"book deleted from cart "
+            })
+
+    }
+    catch(err){
+
+    }
+}
+
+    module.exports = { handleBookStore, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category, addtoCart, findbookById,deleteBookFromCart };
 
 

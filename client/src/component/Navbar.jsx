@@ -45,6 +45,7 @@ export default function Navbar({ onLoginClick ,selectedCategory}) {
   const fetchCategories=async()=>{
     try{
       const res=await getallCategories();
+       
        setCategories(res.data.data);
        console.log("Categories fetched successfully !", res.data.data);
         
@@ -157,7 +158,7 @@ export default function Navbar({ onLoginClick ,selectedCategory}) {
                   <select className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={fetchCategories} onChange={(e) => selectedCategory(e.target.value)}>
                     <option value="">All Categories</option>
                     {categories?.map((c) => (
-                      <option key={c.name || c} value={c.name || c} >
+                      <option key={c.name || c} value={c._id || c} >
                         {c.name || c}
                       </option>
                     ))}
