@@ -10,15 +10,18 @@ import ProtectedRoute from "./routes/ProtectedRoutes";
 import AdminRoute from "./routes/AdminRoute";
 import OrderCart from "./component/OrderCart";
 import BookContext from "./component/BookContext";
+import Allusercarts from "./component/Allusercarts";
 
 const App = () => {
   const [showlogin, setShowLogin] = useState(false);
   const [category, selectedCategory] = useState("");
+ 
   return (
     <div>
       <Navbar selectedCategory={selectedCategory}/>
 
       <Routes>
+     
         <Route
           path="/"
           element={
@@ -29,8 +32,8 @@ const App = () => {
                 </ProtectedRoute>
               </AdminRoute>
             </>
-          }
-        ></Route>
+          
+          }></Route>
         <Route
           path="/Login"
           element={<LoginForm onClose={() => setShowLogin(false)} />}
@@ -51,6 +54,7 @@ const App = () => {
           }
         ></Route>
         <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/allcarts" element={<><ProtectedRoute><Allusercarts /></ProtectedRoute></>}></Route>
         <Route
           path="/shopping"
           element={

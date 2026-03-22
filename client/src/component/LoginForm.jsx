@@ -28,7 +28,7 @@ export default function LoginForm({ onClose }) {
       alert("Login successful!");
   
       navigate("/shopping");
-      if (onClose) onClose();
+      if (onClose) onClose(true);
     } catch (err) {
       console.log(err);
     }

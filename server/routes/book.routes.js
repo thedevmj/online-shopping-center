@@ -1,5 +1,5 @@
 const express=require("express");
-const {handleBookStore, getbyid, deleteBookbyId, updateById, save_category, getallCategory, addtoCart, findbookById, deleteBookFromCart} = require("../controller/book.controller");
+const {handleBookStore, getbyid, deleteBookbyId, updateById, save_category, getallCategory, addtoCart, findbookById, deleteBookFromCart, getallCarts} = require("../controller/book.controller");
 const {getAllbooks} = require("../controller/book.controller");
 const { isAdmin, verifyToken } = require("../middleware/authmiddleware");
 
@@ -8,6 +8,7 @@ const router=express.Router()
 
 router.get("/getall",getAllbooks);
 router.get("/getcategories",getallCategory);
+router.get("/getallcarts/:id",verifyToken,getallCarts);
 router.get("/findbook/:id",verifyToken,findbookById);
 router.get("/:id",verifyToken,isAdmin,getbyid);
 router.delete("/delete/:id",verifyToken,isAdmin,deleteBookbyId);

@@ -10,6 +10,7 @@ const authHeader = () => {
   return t ? { Authorization: `Bearer ${t}` } : {};
 };
 
+
 export const createbook = (data) => {
   return axios.post(`${Api_url}addbook`, data, {
     headers: authHeader(),
@@ -24,7 +25,11 @@ export const createUser = (data) => {
 export const LoginUser = (data) => {
   return axios.post(`${AUTH_URL}login`, data);
 };
-
+export const getallCarts=(id)=>{
+  return axios.get(`${Api_url}getallcarts/${id}`,{
+    headers: authHeader(),
+  });
+};
 export const cartadd = (data) => {
   return axios.post(`${Api_url}addtocart`, data, {
     headers: authHeader(),
@@ -39,6 +44,7 @@ export const getcartById = (id) => {
 export const getallCategories = () => {
   return axios.get(`${Api_url}getcategories`);
 };
+
 export const getallbooks = () => {
   return axios.get(`${Api_url}getall`);
 };
@@ -51,4 +57,5 @@ export const Deletebook = (id) => {
 export const deleteCart=(id)=>{
   return axios.delete(`${Api_url}/deletecart/${id}`) 
 }
+
 

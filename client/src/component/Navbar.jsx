@@ -226,8 +226,9 @@ export default function Navbar({ onLoginClick ,selectedCategory}) {
                 <UserIcon className="h-6 w-6" />
               </button>
             )}
-            <button className="relative p-1">
+            <button className="relative p-1" onClick={()=>navigate("/allcarts")}>
               <ShoppingBagIcon className="h-6 w-6" />
+              
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-emerald-600 text-white text-xs h-5 w-5 rounded-full flex items-center justify-center">
                   {cartCount}

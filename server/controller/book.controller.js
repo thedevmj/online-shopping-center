@@ -265,6 +265,31 @@ const deleteBookFromCart=async(req,res)=>{
     }
 }
 
-    module.exports = { handleBookStore, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category, addtoCart, findbookById,deleteBookFromCart };
+const getallCarts=async(req,res)=>{
+try{
+   
+    const carts=await Cart.find({user:req.User.id || req.User._id})
+    .populate("user")
+    .populate("items.book");
+
+    if(!carts || carts.length === 0){
+        return res.status(404).json({
+            message:"No carts found for this user !"
+        })
+    }
+    res.status(200).json({
+        message:"all carts fetched ",
+        data:carts
+    }) 
+
+}
+catch(err){
+    res.status(500).json({
+        message:"Error occurred while fetching carts",
+        error:err.message
+    })
+}
+}
+    module.exports = { handleBookStore, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category, addtoCart, findbookById,deleteBookFromCart ,getallCarts};
 
 
