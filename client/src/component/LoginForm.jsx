@@ -37,19 +37,21 @@ export default function LoginForm({ onClose }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 via-white to-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-linear-to-r from-emerald-200 to-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-linear-to-r from-blue-200 to-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-linear-to-r from-purple-200 to-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+     
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-linear-to-r from-emerald-400/20 to-emerald-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-linear-to-r from-blue-400/20 to-blue-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-linear-to-r from-purple-400/20 to-purple-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
 
       <div className="w-full max-w-md z-10">
-        <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20 relative">
+        
+        <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl p-8 border border-white/20 relative">
           {onClose && (
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-200"
+              className="absolute top-4 right-4 p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300 backdrop-blur-sm"
               title="Close"
             >
               <XMarkIcon className="h-6 w-6" />
@@ -57,25 +59,25 @@ export default function LoginForm({ onClose }) {
           )}
 
           <div className="text-center mb-8">
-            <div className="inline-block p-3 bg-linear-to-br from-emerald-500 to-emerald-600 rounded-lg mb-4">
+            <div className="inline-block p-4 bg-linear-to-br from-emerald-400 to-emerald-500 rounded-2xl mb-6 shadow-lg">
               <LockClosedIcon className="h-8 w-8 text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            <h2 className="text-3xl font-bold text-white mb-2">
               Welcome Back
             </h2>
-            <p className="text-gray-600">Sign in to your account</p>
+            <p className="text-white/80">Sign in to your account</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="group">
               <label
                 htmlFor="email"
-                className="block text-sm font-semibold text-gray-800 mb-2"
+                className="block text-sm font-semibold text-white/90 mb-3"
               >
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute left-0 top-0 h-full w-12 flex items-center justify-center text-gray-400 group-focus-within:text-emerald-600 transition-colors duration-200">
+                <div className="absolute left-0 top-0 h-full w-12 flex items-center justify-center text-white/60 group-focus-within:text-emerald-300 transition-colors duration-300">
                   <EnvelopeIcon className="h-5 w-5" />
                 </div>
                 <input
@@ -84,7 +86,7 @@ export default function LoginForm({ onClose }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 text-gray-900 placeholder-gray-500 transition-all duration-200 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-0"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   required
                 />
               </div>
@@ -93,12 +95,12 @@ export default function LoginForm({ onClose }) {
             <div className="group">
               <label
                 htmlFor="password"
-                className="block text-sm font-semibold text-gray-800 mb-2"
+                className="block text-sm font-semibold text-white/90 mb-3"
               >
                 Password
               </label>
               <div className="relative">
-                <div className="absolute left-0 top-0 h-full w-12 flex items-center justify-center text-gray-400 group-focus-within:text-emerald-600 transition-colors duration-200">
+                <div className="absolute left-0 top-0 h-full w-12 flex items-center justify-center text-white/60 group-focus-within:text-emerald-300 transition-colors duration-300">
                   <LockClosedIcon className="h-5 w-5" />
                 </div>
                 <input
@@ -107,13 +109,13 @@ export default function LoginForm({ onClose }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-12 py-3 rounded-xl bg-gray-50 border-2 border-gray-200 text-gray-900 placeholder-gray-500 transition-all duration-200 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-0"
+                  className="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors duration-300"
                 >
                   {showPassword ? (
                     <EyeSlashIcon className="h-5 w-5" />
@@ -130,13 +132,13 @@ export default function LoginForm({ onClose }) {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                  className="w-4 h-4 rounded border-white/30 text-emerald-400 focus:ring-emerald-400 cursor-pointer bg-white/10"
                 />
-                <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                <span className="ml-3 text-sm text-white/80">Remember me</span>
               </label>
               <a
                 href="#"
-                className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors duration-200"
+                className="text-sm font-semibold text-emerald-300 hover:text-emerald-200 transition-colors duration-300"
               >
                 Forgot password?
               </a>
@@ -145,7 +147,7 @@ export default function LoginForm({ onClose }) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-4 bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed transform hover:scale-105"
+              className="w-full py-4 px-6 bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed transform hover:scale-105 backdrop-blur-sm border border-white/20"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">

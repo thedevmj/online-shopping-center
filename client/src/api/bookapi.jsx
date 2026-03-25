@@ -55,7 +55,9 @@ export const Deletebook = (id) => {
   return axios.delete(`${Api_url}delete/${id}`);
 };
 export const deleteCart=(id)=>{
-  return axios.delete(`${Api_url}/deletecart/${id}`) 
+  return axios.delete(`${Api_url}deletecart/${id}`, {
+    headers: authHeader(),
+  });
 }
 
 

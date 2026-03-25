@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const AdminRoute = ({ children }) => {
-  const user = localStorage.getItem("user");
+  
+  const user =JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -10,8 +11,14 @@ const AdminRoute = ({ children }) => {
       return navigate("/Login");
     }
 
-    if (user.role === "Admin") {
-      return navigate("/");
+    try {
+      
+      if (user.role !== "Admin") {
+        return navigate("/shopping");
+      }
+    } catch (error) {
+      console.error("Failed to parse user data", error);
+      return navigate("/Login");
     }
   },[]);
 

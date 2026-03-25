@@ -12,7 +12,7 @@ router.get("/getallcarts/:id",verifyToken,getallCarts);
 router.get("/findbook/:id",verifyToken,findbookById);
 router.get("/:id",verifyToken,isAdmin,getbyid);
 router.delete("/delete/:id",verifyToken,isAdmin,deleteBookbyId);
-router.delete("deletecart/:id",verifyToken,deleteBookFromCart);
+router.delete("/deletecart/:id",verifyToken,deleteBookFromCart);
 router.put("/update/:id",verifyToken,isAdmin,updateById);
 router.post("/category",verifyToken,isAdmin,save_category);
 router.post("/addtocart",verifyToken,addtoCart);
