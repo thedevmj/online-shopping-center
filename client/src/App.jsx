@@ -11,19 +11,21 @@ import AdminRoute from "./routes/AdminRoute";
 import OrderCart from "./component/OrderCart";
 import BookContext from "./component/BookContext";
 import Allusercarts from "./component/Allusercarts";
+import Logout from "./component/Logout";
 
 
 const App = () => {
   const [showlogin, setShowLogin] = useState(false);
   const [category, selectedCategory] = useState("");
   const [filter, setfilter] = useState("");
- 
+ const [search, setsearch] = useState("");
 
   return (
     <div>
-      <Navbar selectedCategory={selectedCategory} setfilter={setfilter} />
-     
+      <Navbar selectedCategory={selectedCategory} setfilter={setfilter} setsearch={setsearch} />
+      
       <Routes>
+        <Route path="/Logout" element={<Logout />}></Route>
         <Route
           path="/"
           element={
@@ -81,7 +83,7 @@ const App = () => {
           element={
             <>
               <ProtectedRoute>
-                <Shophub_cart category={category} filter={filter} />
+                <Shophub_cart category={category} filter={filter} search={search || ""} setsearch={setsearch} />
               </ProtectedRoute>
             </>
           }

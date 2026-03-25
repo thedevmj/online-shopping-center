@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogPanel,
@@ -15,30 +15,20 @@ import {
   MagnifyingGlassIcon,
   UserIcon,
   HeartIcon,
-  SparklesIcon,
-  TruckIcon,
-  ShieldCheckIcon,
   ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 import Logout from "./Logout";
 import { getallCategories } from "../api/bookapi";
-import Shophub_cart from "./Shophub_cart";
 
 
-const features = [
-  { name: "Free Shipping", icon: TruckIcon },
-  { name: "Secure Payment", icon: ShieldCheckIcon },
-  { name: "Easy Returns", icon: SparklesIcon },
-];
-
-
-export default function Navbar({ onLoginClick, selectedCategory, setfilter }) {
+export default function Navbar({ selectedCategory, setfilter,setsearch }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const [cartCount] = useState(3);
   const [categories, setCategories] = useState([]);
-  
+  const [searchQuery, setSearchQuery] = useState("");
   
   const navigate = useNavigate();
  
@@ -60,15 +50,9 @@ export default function Navbar({ onLoginClick, selectedCategory, setfilter }) {
   
   
   const logOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    alert("Logged out successfully ");
-    navigate("/Login");
+    setLogoutModalOpen(true);
   };
   const user = JSON.parse(localStorage.getItem("user") || "null");
-  const userCartCount = () => {
-    if (!user) return 0;
-  };
 
   const token = localStorage.getItem("token");
   const isLoggedIn = !!token;
@@ -109,6 +93,11 @@ export default function Navbar({ onLoginClick, selectedCategory, setfilter }) {
               <label className="relative block group">
                 <span className="sr-only">Search</span>
                 <input
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setsearch(e.target.value);
+                  }}
                   className="w-full rounded-full backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400/80 focus:bg-slate-700/70 focus:shadow-xl focus:shadow-emerald-500/20"
                   placeholder="Search products, categories, brands..."
                 />
@@ -296,11 +285,16 @@ export default function Navbar({ onLoginClick, selectedCategory, setfilter }) {
 
           <div className="mb-6">
             <label className="relative block group">
-              <span className="sr-only">Search</span>
+              <span className="sr-only">Search For books</span>
               <input
                 className="w-full rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 py-3 pl-11 pr-4 text-sm placeholder-white/50 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:bg-white/15"
                 placeholder="Search products, categories..."
-              />
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setsearch(e.target.value);
+                }}
+             />
               <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/60 group-focus-within:text-emerald-300 transition-colors" />
             </label>
           </div>
@@ -432,6 +426,8 @@ export default function Navbar({ onLoginClick, selectedCategory, setfilter }) {
           </nav>
         </DialogPanel>
       </Dialog>
+      
+      <Logout isOpen={logoutModalOpen} onClose={() => setLogoutModalOpen(false)} />
     </>
   );
 }

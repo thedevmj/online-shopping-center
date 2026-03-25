@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bookcontext } from "./BookContext";
 
-export default function Shophub_cart({ category, filter }) {
+export default function Shophub_cart({ category, filter,search, setsearch }) {
   const [books, setBooks] = useState([]);
   
   
@@ -32,12 +32,26 @@ export default function Shophub_cart({ category, filter }) {
     navigate("/ordercart");
   };
  
+   
+
   const filteredByCategory = category
     ? books.filter((book) => book.bookCategory === category)
     : books;
 
   const applyFilter = (list, filterKey) => {
-    const clone = [...list];
+    // First apply search filter if search exists
+    let filteredList = list;
+    if (search && search.trim()) {
+      const searchLower = search.toLowerCase();
+      filteredList = list.filter((book) =>
+        book.bookTitle?.toLowerCase().includes(searchLower) ||
+        book.bookAuthor?.toLowerCase().includes(searchLower) ||
+        book.bookCategory?.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    // Then apply other filters to the search results
+    const clone = [...filteredList];
     switch (filterKey) {
       case "price-asc":
         return clone.sort((a, b) => a.bookPrice - b.bookPrice);
@@ -63,11 +77,30 @@ export default function Shophub_cart({ category, filter }) {
       </div>
 
       <div className="relative z-10">
+        {/* Search Results Indicator */}
+        {search && search.trim() && (
+          <div className="mb-6 text-center">
+            <p className="text-white/80 text-lg">
+              {filteredBooks.length} result{filteredBooks.length !== 1 ? 's' : ''} for "{search}"
+            </p>
+          </div>
+        )}
+
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {books.length === 0 || filteredBooks.length === 0 ? (
             <div className="col-span-full">
               <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-12 text-center border border-white/20">
-                <p className="text-white/80 text-xl">No books found</p>
+                <p className="text-white/80 text-xl">
+                  {search && search.trim() ? `No books found for "${search}"` : "No books found"}
+                </p>
+                {search && search.trim() && (
+                  <button
+                    onClick={() => setsearch("")}
+                    className="mt-4 px-6 py-2 bg-emerald-500/20 text-emerald-300 rounded-xl hover:bg-emerald-500/30 transition-colors border border-emerald-500/30"
+                  >
+                    Clear search
+                  </button>
+                )}
               </div>
             </div>
           ) : (
