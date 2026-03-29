@@ -47,8 +47,6 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
   
   }
   
-  
-  
   const logOut = () => {
     setLogoutModalOpen(true);
   };
@@ -64,6 +62,10 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
       document.body.style.overflow = prev;
     };
   }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
     <>
@@ -141,7 +143,7 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
               >
                 <div className="p-6">
                   <h3 className="text-lg font-semibold text-emerald-400 mb-4">Select Category</h3>
-                  <select className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/80 transition-all duration-300" onClick={fetchCategories} onChange={(e) => selectedCategory(e.target.value)}>
+                  <select className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/80 transition-all duration-300" onChange={(e) => selectedCategory(e.target.value)}>
                     <option value="" className="bg-slate-900 text-emerald-400">All Categories</option>
                     {categories?.map((c) => (
                       <option key={c.name || c} value={c._id || c} className="bg-slate-900 text-emerald-400">
@@ -179,6 +181,14 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                   ))}
                 </div>
               </PopoverPanel>
+            </Popover>
+            
+            <Popover className="relative">
+              <PopoverButton className="flex items-center gap-1 font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300" onClick={()=>navigate("/userdashboard")}>
+                UserDashBoard 
+              
+              </PopoverButton>
+             
             </Popover>
             {user && user?.role === "Admin" ? (
               <ul className="flex items-center gap-6">
@@ -223,7 +233,7 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
 
           <div className="hidden lg:flex items-center gap-6">
             <button className="relative p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300">
-              <HeartIcon className="h-6 w-6" />
+             Orders
             </button>
             <button 
               className="relative p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300"

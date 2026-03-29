@@ -17,7 +17,8 @@ export default function Signup({ onClose }) {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  
+  
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -44,19 +45,19 @@ export default function Signup({ onClose }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Animated background elements */}
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-emerald-400/20 to-emerald-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-gradient-to-r from-blue-400/20 to-blue-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-gradient-to-r from-purple-400/20 to-purple-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-linear-to-rrom-emerald-400/20 to-emerald-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-linear-to-r from-blue-400/20 to-blue-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-linear-to-r from-purple-400/20 to-purple-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
 
       <div className="w-full max-w-md z-10">
-        {/* Glassmorphism card */}
+      
         <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl p-8 border border-white/20">
           <div className="text-center mb-8">
-            <div className="inline-block p-4 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-2xl mb-6 shadow-lg">
+            <div className="inline-block p-4 bg-linear-to-br from-emerald-400 to-emerald-500 rounded-2xl mb-6 shadow-lg">
               <LockClosedIcon className="h-8 w-8 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-white mb-2">
@@ -132,7 +133,7 @@ export default function Signup({ onClose }) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-4 px-6 bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed transform hover:scale-105 backdrop-blur-sm border border-white/20"
+              className="w-full py-4 px-6 bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed transform hover:scale-105 backdrop-blur-sm border border-white/20"
             >
               {isLoading ? "Creating Account..." : "Create Account"}
             </button>

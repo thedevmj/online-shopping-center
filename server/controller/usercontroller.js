@@ -1,5 +1,6 @@
 const User=require("../model/user");
 
+
 const addUser = async (req, res) => {
     
   try{
@@ -73,5 +74,7 @@ const loginUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 module.exports={addUser,loginUser}

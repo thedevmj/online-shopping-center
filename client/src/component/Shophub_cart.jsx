@@ -1,72 +1,83 @@
-import React, { createContext, useContext } from "react";
+import React, { useContext, useMemo, useState, useEffect } from "react";
 import { getallbooks } from "../api/bookapi";
-import { useState } from "react";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bookcontext } from "./BookContext";
+import Billboard from "./Billboard";
 
-export default function Shophub_cart({ category, filter,search, setsearch }) {
-  const [books, setBooks] = useState([]);
-  
-  
-  
+export default function Shophub_cart({ category, filter, search, setsearch }) {
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  const { setSelectedBook } = useContext(Bookcontext);
+  const { setSelectedBook, books, setBooks } = useContext(Bookcontext);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchBooks = async () => {
+      if (books.length > 0) {
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const res = await getallbooks();
-
-        setBooks(res.data.data);
+        if (!isMounted) return;
+        setBooks(res.data.data || []);
       } catch (err) {
         console.error("Error fetching books:", err);
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
     };
+
     fetchBooks();
-  }, []);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [books.length, setBooks]);
+
   const handleCart = (book) => {
     localStorage.setItem("selectedBook", JSON.stringify(book));
     setSelectedBook(book);
     navigate("/ordercart");
   };
- 
-   
 
-  const filteredByCategory = category
-    ? books.filter((book) => book.bookCategory === category)
-    : books;
+  const filteredBooks = useMemo(() => {
+    const base = category
+      ? books.filter((book) => book.bookCategory === category)
+      : books;
 
-  const applyFilter = (list, filterKey) => {
-    // First apply search filter if search exists
-    let filteredList = list;
-    if (search && search.trim()) {
-      const searchLower = search.toLowerCase();
-      filteredList = list.filter((book) =>
-        book.bookTitle?.toLowerCase().includes(searchLower) ||
-        book.bookAuthor?.toLowerCase().includes(searchLower) ||
-        book.bookCategory?.toLowerCase().includes(searchLower)
+    const searchTerm = search?.trim().toLowerCase();
+    let filtered = base;
+
+    if (searchTerm) {
+      filtered = base.filter((book) =>
+        book.bookTitle?.toLowerCase().includes(searchTerm) ||
+          book.bookAuthor?.toLowerCase().includes(searchTerm) ||
+          book.bookCategory?.toLowerCase().includes(searchTerm)
       );
     }
-    
-    // Then apply other filters to the search results
-    const clone = [...filteredList];
-    switch (filterKey) {
-      case "price-asc":
-        return clone.sort((a, b) => a.bookPrice - b.bookPrice);
-      case "price-desc":
-        return clone.sort((a, b) => b.bookPrice - a.bookPrice);
-      case "az":
-        return clone.sort((a, b) => a.bookTitle.localeCompare(b.bookTitle));
-      case "za":
-        return clone.sort((a, b) => b.bookTitle.localeCompare(a.bookTitle));
-      default:
-        return clone;
-    }
-  };
 
-  const filteredBooks = applyFilter(filteredByCategory, filter);
+    const sorted = [...filtered];
+    switch (filter) {
+      case "price-asc":
+        sorted.sort((a, b) => a.bookPrice - b.bookPrice);
+        break;
+      case "price-desc":
+        sorted.sort((a, b) => b.bookPrice - a.bookPrice);
+        break;
+      case "az":
+        sorted.sort((a, b) => a.bookTitle.localeCompare(b.bookTitle));
+        break;
+      case "za":
+        sorted.sort((a, b) => b.bookTitle.localeCompare(a.bookTitle));
+        break;
+      default:
+        break;
+    }
+
+    return sorted;
+  }, [books, category, filter, search]);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
@@ -77,34 +88,39 @@ export default function Shophub_cart({ category, filter,search, setsearch }) {
       </div>
 
       <div className="relative z-10">
-        {/* Search Results Indicator */}
-        {search && search.trim() && (
-          <div className="mb-6 text-center">
-            <p className="text-white/80 text-lg">
-              {filteredBooks.length} result{filteredBooks.length !== 1 ? 's' : ''} for "{search}"
-            </p>
+        {isLoading ? (
+          <div className="text-center py-20">
+            <div className="text-xl text-white/80">Loading books...</div>
           </div>
-        )}
-
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {books.length === 0 || filteredBooks.length === 0 ? (
-            <div className="col-span-full">
-              <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-12 text-center border border-white/20">
-                <p className="text-white/80 text-xl">
-                  {search && search.trim() ? `No books found for "${search}"` : "No books found"}
+        ) : (
+          <>
+            <Billboard books={books} />
+            {search && search.trim() && (
+              <div className="mb-6 text-center">
+                <p className="text-white/80 text-lg">
+                  {filteredBooks.length} result{filteredBooks.length !== 1 ? 's' : ''} for "{search}"
                 </p>
-                {search && search.trim() && (
-                  <button
-                    onClick={() => setsearch("")}
-                    className="mt-4 px-6 py-2 bg-emerald-500/20 text-emerald-300 rounded-xl hover:bg-emerald-500/30 transition-colors border border-emerald-500/30"
-                  >
-                    Clear search
-                  </button>
-                )}
               </div>
-            </div>
-          ) : (
-            filteredBooks.map((book) => (
+            )}
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredBooks.length === 0 ? (
+                <div className="col-span-full">
+                  <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-12 text-center border border-white/20">
+                    <p className="text-white/80 text-xl">
+                      {search && search.trim() ? `No books found for "${search}"` : "No books found"}
+                    </p>
+                    {search && search.trim() && (
+                      <button
+                        onClick={() => setsearch("")}
+                        className="mt-4 px-6 py-2 bg-emerald-500/20 text-emerald-300 rounded-xl hover:bg-emerald-500/30 transition-colors border border-emerald-500/30"
+                      >
+                        Clear search
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                filteredBooks.map((book) => (
               <div
                 key={book._id}
                 className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 p-6 border border-white/20 hover:bg-white/15 hover:scale-105 group"
@@ -137,8 +153,10 @@ export default function Shophub_cart({ category, filter,search, setsearch }) {
                 </div>
               </div>
             ))
-          )}
-        </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

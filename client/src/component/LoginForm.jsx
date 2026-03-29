@@ -18,18 +18,18 @@ export default function LoginForm({ onClose }) {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
-  // Load saved email and remember me preference on component mount
+
   useEffect(() => {
     const savedLoginData = localStorage.getItem("rememberMeData");
     if (savedLoginData) {
       try {
         const { email: savedEmail, expiresAt } = JSON.parse(savedLoginData);
-        // Check if the saved data hasn't expired (30 days)
+      
         if (new Date().getTime() < expiresAt) {
           setEmail(savedEmail);
           setRememberMe(true);
         } else {
-          // Remove expired data
+        
           localStorage.removeItem("rememberMeData");
         }
       } catch (err) {
@@ -45,16 +45,17 @@ export default function LoginForm({ onClose }) {
       const response = await LoginUser({ email, password });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      onClose(()=>{setShowLogin(true)});
 
-      // Save "Remember Me" data if checkbox is checked
+   
       if (rememberMe) {
         const loginData = {
           email: email,
-          expiresAt: new Date().getTime() + 30 * 24 * 60 * 60 * 1000, // 30 days
+          expiresAt: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,
         };
         localStorage.setItem("rememberMeData", JSON.stringify(loginData));
       } else {
-        // Remove saved data if unchecked
+       
         localStorage.removeItem("rememberMeData");
       }
 

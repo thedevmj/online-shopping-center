@@ -7,11 +7,13 @@ import Update_books from "./component/Update_books";
 import Shophub_cart from "./component/Shophub_cart";
 import Signup from "./component/Signup";
 import ProtectedRoute from "./routes/ProtectedRoutes";
+import AuthRoute from "./routes/AuthRoute";
 import AdminRoute from "./routes/AdminRoute";
 import OrderCart from "./component/OrderCart";
 import BookContext from "./component/BookContext";
 import Allusercarts from "./component/Allusercarts";
 import Logout from "./component/Logout";
+import Userdashboard from "./component/Userdashboard";
 
 
 const App = () => {
@@ -19,6 +21,7 @@ const App = () => {
   const [category, selectedCategory] = useState("");
   const [filter, setfilter] = useState("");
  const [search, setsearch] = useState("");
+ 
 
   return (
     <div>
@@ -40,7 +43,13 @@ const App = () => {
         ></Route>
         <Route
           path="/Login"
-          element={<LoginForm onClose={() => setShowLogin(false)} />}
+          element={
+            <>
+              <AuthRoute>
+                <LoginForm onClose={() => setShowLogin(false)} />
+              </AuthRoute>
+            </>
+          }
         ></Route>
 
         <Route
@@ -66,7 +75,11 @@ const App = () => {
             </>
           }
         ></Route>
-        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/signup" element={
+          <AuthRoute>
+            <Signup />
+          </AuthRoute>
+        }></Route>
         <Route
           path="/allcarts"
           element={
@@ -77,7 +90,7 @@ const App = () => {
             </>
           }
         ></Route>
-
+        <Route path="/userdashboard" element={<Userdashboard />} />
         <Route
           path="/shopping"
           element={
