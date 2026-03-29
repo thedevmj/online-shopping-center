@@ -51,11 +51,8 @@ export default function Home() {
 
       const ctg=await getallCategories();
       setcategory(ctg.data.data);
- 
-      
     }
     catch(err){
-      console.log("error occurred in fetching category" ,err);
       
     }
   }

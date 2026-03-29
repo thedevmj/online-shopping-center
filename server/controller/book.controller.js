@@ -3,6 +3,7 @@ const Book = require("../model/book.model")
 const categories = require("../model/categories");
 const User = require("../model/user");
 const Cart = require("../model/cart");
+const favorite = require("../model/Favorite");
 
 const handleBookStore = async (req, res) => {
     try {
@@ -303,7 +304,52 @@ catch(err){
 }
 }
 
+const handleFavorite = async (req, res) => {
+    try {
+        const { bookId } = req.body;
+        const userId=req.User.id || req.User._id;
+        const bookExists = await Book.findById(bookId);
+        if (!bookExists) {
+            return res.status(404).json({
+                message: "Book not found"
+            });
+        }
+        const response=await favorite.findOneAndUpdate(
+            { book: bookId, user: userId },
+            { $set: { favorite: true } },
+            { new: true, upsert: true }
+        );
+        res.status(200).json({  
+            message: "Book marked as favorite",
+            data: response
+        });
+    }   catch (err) {
+        res.status(500).json({
+            message: "Error occurred while marking book as favorite",
+            error: err.message
+        });
+    }
+}
 
-    module.exports = { handleBookStore, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category, addtoCart, findbookById,deleteBookFromCart ,getallCarts};
+const getAllFavoritebooks =async(req,res)=>{
+    try{
+  const userId=req.User.id || req.User._id;
+  const favoriteBooks=await favorite.find({user:userId,favorite:true}).populate("book");
+    res.status(200).json({
+        message:"Favorite books fetched successfully",
+        data:favoriteBooks
+    })
+    }
+    catch(err){
+        res.status(500).json({
+            message: "Error occurred while fetching favorite books",
+            error: err.message
+        });
+
+
+
+    }
+}
+    module.exports = { handleBookStore,getAllFavoritebooks, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category, addtoCart, findbookById,deleteBookFromCart ,getallCarts,handleFavorite};
 
 

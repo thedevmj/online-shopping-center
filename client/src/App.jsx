@@ -14,6 +14,7 @@ import BookContext from "./component/BookContext";
 import Allusercarts from "./component/Allusercarts";
 import Logout from "./component/Logout";
 import Userdashboard from "./component/Userdashboard";
+import Favorites from "./component/Favorites";
 
 
 const App = () => {
@@ -75,6 +76,7 @@ const App = () => {
             </>
           }
         ></Route>
+        <Route path="/favorites" element={<><ProtectedRoute><Favorites /></ProtectedRoute></>} />
         <Route path="/signup" element={
           <AuthRoute>
             <Signup />

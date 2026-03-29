@@ -34,7 +34,7 @@ export default function Update_books() {
       setEditingId(null);
       fetchBooks();
     } catch (err) {
-      console.log("Error occurred !", err);
+      console.error("Error deleting book:", err);
     }
   };
   const fetchBooks = async () => {

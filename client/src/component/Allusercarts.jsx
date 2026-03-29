@@ -10,7 +10,6 @@ export default function Allusercarts() {
         try{
             const cartsData=await getallCarts(user.id || user._id);
             if(!cartsData?.data?.data){
-                console.log("No carts found for this user !");
                 return;
             }
             setCarts(cartsData.data.data);
@@ -30,7 +29,6 @@ export default function Allusercarts() {
         try{
             const response=await deleteCart(id);
             if(response.status === 200){
-                console.log("Item removed from cart successfully !");
                 fetchCarts();
             }
             else{

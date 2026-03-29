@@ -34,10 +34,8 @@ export default function Signup({ onClose }) {
     try {
        
       await createUser(formData);
-      console.log("Submitting:", formData);
       alert("User added successfully!");
     } catch (error) {
-     console.log("error ",error);
      
     } finally {
       setIsLoading(false);

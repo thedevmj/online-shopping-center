@@ -58,6 +58,16 @@ export const deleteCart=(id)=>{
   return axios.delete(`${Api_url}deletecart/${id}`, {
     headers: authHeader(),
   });
+
 }
 
-
+export const addtoFavorite=(bookId)=>{
+  return axios.put(`${Api_url}favorite/${bookId}`, { bookId }, {
+    headers: authHeader(),
+  });
+}
+export const getallfavorite=()=>{
+  return axios.get(`${Api_url}favoritebooks`, {
+    headers: authHeader(),
+  });
+}

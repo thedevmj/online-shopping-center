@@ -1,13 +1,13 @@
 import React, { useContext, useMemo, useState, useEffect } from "react";
-import { getallbooks } from "../api/bookapi";
+import { addtoFavorite, getallbooks } from "../api/bookapi";
 import { useNavigate } from "react-router-dom";
 import { Bookcontext } from "./BookContext";
 import Billboard from "./Billboard";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
 export default function Shophub_cart({ category, filter, search, setsearch }) {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
   const { setSelectedBook, books, setBooks } = useContext(Bookcontext);
 
   useEffect(() => {
@@ -42,6 +42,17 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
     navigate("/ordercart");
   };
 
+  const handlefavoritebook=async(e)=>{
+   
+    try{
+       
+     const response= await addtoFavorite(e._id);
+      alert("Book added to favorites!");
+    }
+    catch(err){
+      console.error("Error adding book to favorite:", err);
+    }
+  }
   const filteredBooks = useMemo(() => {
     const base = category
       ? books.filter((book) => book.bookCategory === category)
@@ -143,7 +154,7 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
                   <span className="text-2xl font-bold text-emerald-300">
                     ${book.bookPrice}
                   </span>
-
+                  <HeartIcon className="h-6 w-6 text-white/70 hover:text-emerald-300 transition-colors cursor-pointer" onClick={() => handlefavoritebook(book)}/>
                   <button
                     className="bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20"
                     onClick={() => handleCart(book)}

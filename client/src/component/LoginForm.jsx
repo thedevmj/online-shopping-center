@@ -33,7 +33,7 @@ export default function LoginForm({ onClose }) {
           localStorage.removeItem("rememberMeData");
         }
       } catch (err) {
-        console.log("Error loading saved login data:", err);
+        // Silently handle any errors loading saved data
       }
     }
   }, []);
@@ -63,7 +63,6 @@ export default function LoginForm({ onClose }) {
       navigate("/shopping");
       if (onClose) onClose(true);
     } catch (err) {
-      console.log(err);
       alert(err.response?.data?.message || "Login failed. Please try again.");
     }
 

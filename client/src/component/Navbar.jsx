@@ -18,7 +18,7 @@ import {
   ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Logout from "./Logout";
 import { getallCategories } from "../api/bookapi";
 
@@ -31,17 +31,21 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
   const [searchQuery, setSearchQuery] = useState("");
   
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Helper function to determine active state
+  const isActive = (path) => location.pathname === path;
+  const activeButtonClass = "bg-emerald-500/30 border-emerald-400/60 text-emerald-300";
+  const inactiveButtonClass = "bg-slate-700/50 border-emerald-500/30 text-emerald-400";
  
   const fetchCategories=async()=>{
     try{
       const res=await getallCategories();
        
        setCategories(res.data.data);
-       console.log("Categories fetched successfully !", res.data.data);
         
     }
     catch(err){
-      console.log("Error occured in fetching categories",err.message);
       
     }
   
@@ -121,7 +125,11 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
             <button aria-label="Open search" className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300">
               <MagnifyingGlassIcon className="h-6 w-6" />
             </button>
-            <button aria-label="Cart" className="relative p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300" onClick={()=>navigate("/allcarts")}>
+            <button aria-label="Cart" className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+              isActive("/allcarts")
+                ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+            }`} onClick={()=>navigate("/allcarts")}>
               <ShoppingBagIcon className="h-6 w-6" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
@@ -184,7 +192,11 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
             </Popover>
             
             <Popover className="relative">
-              <PopoverButton className="flex items-center gap-1 font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300" onClick={()=>navigate("/userdashboard")}>
+              <PopoverButton className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                isActive("/userdashboard") 
+                  ? activeButtonClass 
+                  : inactiveButtonClass
+              }`} onClick={()=>navigate("/userdashboard")}>
                 UserDashBoard 
               
               </PopoverButton>
@@ -195,7 +207,11 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 <li>
                   <a
                     href="/updateBook"
-                    className="font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300"
+                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                      isActive("/updateBook") 
+                        ? activeButtonClass 
+                        : inactiveButtonClass
+                    }`}
                   >
                     Update Books
                   </a>
@@ -203,7 +219,11 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 <li>
                   <a
                     href="/updateBook"
-                    className="font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300"
+                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                      isActive("/updateBook") 
+                        ? activeButtonClass 
+                        : inactiveButtonClass
+                    }`}
                   >
                     Add Book
                   </a>
@@ -214,7 +234,11 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 <li>
                   <a
                     href="/shopping"
-                    className="font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300"
+                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                      isActive("/shopping") 
+                        ? activeButtonClass 
+                        : inactiveButtonClass
+                    }`}
                   >
                     Shop
                   </a>
@@ -232,11 +256,23 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
           </PopoverGroup>
 
           <div className="hidden lg:flex items-center gap-6">
-            <button className="relative p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300">
-             Orders
+            <button 
+              className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                isActive("/favorites") 
+                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                  : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+              }`}
+              onClick={() => navigate("/favorites")}
+              title="My Favorites"
+            >
+              <HeartIcon className="h-6 w-6" />
             </button>
             <button 
-              className="relative p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300"
+              className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                isActive("/orders") 
+                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                  : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+              }`}
               onClick={() => navigate("/orders")}
               title="My Orders"
             >
@@ -257,7 +293,11 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 <UserIcon className="h-6 w-6" />
               </button>
             )}
-            <button className="relative p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300" onClick={()=>navigate("/allcarts")}>
+            <button className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+              isActive("/allcarts")
+                ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+            }`} onClick={()=>navigate("/allcarts")}>
               <ShoppingBagIcon className="h-6 w-6" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-xs h-5 w-5 rounded-full flex items-center justify-center">
@@ -313,7 +353,11 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
             <a
               href="/shopping"
               onClick={() => setMobileMenuOpen(false)}
-              className="block font-semibold text-white py-3 px-4 rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300"
+              className={`block font-semibold py-3 px-4 rounded-2xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
+                isActive("/shopping")
+                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                  : "bg-white/10 border-white/20 text-white"
+              }`}
             >
               Shop
             </a>
@@ -386,12 +430,27 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                     navigate("/orders");
                     setMobileMenuOpen(false);
                   }}
-                  className="p-2 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
+                  className={`p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
+                    isActive("/orders")
+                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                      : "bg-white/10 border-white/20 text-white"
+                  }`}
                   title="My Orders"
                 >
                   <ClipboardDocumentListIcon className="h-6 w-6" />
                 </button>
-                <button className="p-2 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300" title="Wishlist">
+                <button 
+                  onClick={() => {
+                    navigate("/favorites");
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
+                    isActive("/favorites")
+                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                      : "bg-white/10 border-white/20 text-white"
+                  }`}
+                  title="My Favorites"
+                >
                   <HeartIcon className="h-6 w-6" />
                 </button>
                 <button 
@@ -399,7 +458,11 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                     navigate("/allcarts");
                     setMobileMenuOpen(false);
                   }}
-                  className="relative p-2 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
+                  className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
+                    isActive("/allcarts")
+                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                      : "bg-white/10 border-white/20 text-white"
+                  }`}
                   title="Cart"
                 >
                   <ShoppingBagIcon className="h-6 w-6" />

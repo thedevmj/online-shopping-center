@@ -1,15 +1,23 @@
-const mongoose=require("mongoose")
+const mongoose = require("mongoose")
 
-const myfavorite =new mongoose.Schema({
-
-    book:{
-        type:mongoose.Schema.ObjectId,
-        ref:"books"
+const myfavorite = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "user",
+        required: true
     },
-    favorite:{
-        type:Boolean,
-        default:false
+    book: {
+        type: mongoose.Schema.ObjectId,
+        ref: "books",
+        required: true
+    },
+    favorite: {
+        type: Boolean,
+        default: true
     }
+}, {
+    timestamps: true
 })
-const favorite =mongoose.model("favBook",myfavorite);
-module.exports=favorite; 
+
+const favorite = mongoose.model("favBook", myfavorite);
+module.exports = favorite; 
