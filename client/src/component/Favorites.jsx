@@ -50,16 +50,16 @@ export default function Favorites() {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
-      {/* Animated background elements */}
+   
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-emerald-400/10 to-emerald-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-96 h-96 bg-linear-to-r from-blue-400/10 to-blue-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
         <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-purple-400/10 to-purple-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
 
-      {/* Content */}
+      
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header */}
+       
         <div className="mb-12">
           <h1 className="text-5xl font-bold text-white mb-3 flex items-center gap-3">
             <HeartIcon className="w-10 h-10 text-emerald-400" />
@@ -70,7 +70,7 @@ export default function Favorites() {
           </p>
         </div>
 
-        {/* Empty State */}
+
         {isLoading ? (
           <div className="flex items-center justify-center min-h-96">
             <div className="text-white/70 text-xl">Loading your favorites...</div>
@@ -98,7 +98,7 @@ export default function Favorites() {
                 key={book._id}
                 className="group backdrop-blur-xl bg-white/10 rounded-2xl overflow-hidden border border-white/20 hover:border-white/40 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/20"
               >
-                {/* Book Image Container */}
+                
                 <div className="relative overflow-hidden h-64 bg-linear-to-br from-slate-800 to-slate-900">
                   <img
                     src={book.image}
@@ -107,36 +107,38 @@ export default function Favorites() {
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                  {/* Favorite Badge */}
+                  
                   <div className="absolute top-3 right-3 bg-emerald-400/20 backdrop-blur-md rounded-full p-2 border border-emerald-400/40">
                     <HeartIcon className="w-5 h-5 text-emerald-400 fill-emerald-400" />
                   </div>
                 </div>
 
-                {/* Content */}
+                
                 <div className="p-5">
-                  {/* Category */}
-                  <span className="text-xs font-semibold text-emerald-300 bg-emerald-400/20 px-3 py-1 rounded-full">
-                    {book.bookCategory || "Book"}
-                  </span>
+                  
+                  {book.bookCategory && book.bookCategory.length < 20 && (
+                    <span className="text-xs font-semibold text-emerald-300 bg-emerald-400/20 px-3 py-1 rounded-full">
+                      {book.bookCategory}
+                    </span>
+                  )}
 
-                  {/* Title */}
+               
                   <h3 className="text-white font-bold text-lg mt-3 line-clamp-2">
                     {book.bookTitle}
                   </h3>
 
-                  {/* Author */}
+                 
                   <p className="text-white/70 text-sm mt-1">
                     by {book.bookAuthor}
                   </p>
 
-                  {/* Rating */}
+                  
                   <div className="flex items-center mt-3 gap-1">
                     <span className="text-yellow-400 text-sm">★★★★☆</span>
                     <span className="text-white/50 text-xs">(4.5)</span>
                   </div>
 
-                  {/* Price */}
+                 
                   <div className="flex items-baseline gap-2 mt-4">
                     <span className="text-2xl font-bold text-emerald-300">
                       ${book.bookPrice}
@@ -146,7 +148,7 @@ export default function Favorites() {
                     </span>
                   </div>
 
-                  {/* Actions */}
+                  
                   <div className="flex gap-3 mt-6">
                     <button
                       onClick={() => handleAddToCart(book)}

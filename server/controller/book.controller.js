@@ -350,6 +350,33 @@ const getAllFavoritebooks =async(req,res)=>{
 
     }
 }
-    module.exports = { handleBookStore,getAllFavoritebooks, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category, addtoCart, findbookById,deleteBookFromCart ,getallCarts,handleFavorite};
+
+const removeFromFavorite = async (req, res) => {
+    try {
+        const { bookId } = req.body;
+        const userId=req.User.id || req.User._id;
+        const response=await favorite.findOneAndUpdate(
+            { book: bookId, user: userId },
+            { $set: { favorite: false } },
+            { new: true }
+        );
+        if (!response) {    
+            return res.status(404).json({
+                message: "Favorite entry not found"
+            });
+        }
+        res.status(200).json({
+            message: "Book removed from favorites",
+            data: response
+        });
+    }
+    catch (err) {   
+        res.status(500).json({
+            message: "Error occurred while removing book from favorites",
+            error: err.message
+        });
+    }
+}
+    module.exports = { handleBookStore,getAllFavoritebooks, getAllbooks, getbyid, deleteBookbyId, updateById, getallCategory, save_category, addtoCart, findbookById,deleteBookFromCart ,getallCarts,handleFavorite,removeFromFavorite };
 
 
