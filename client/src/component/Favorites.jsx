@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { getallfavorite, addtoFavorite } from "../api/bookapi";
+import { getallfavorite, addtoFavorite, removeFromfav } from "../api/bookapi";
 import { useNavigate } from "react-router-dom";
 import { Bookcontext } from "./BookContext";
 import { HeartIcon, ShoppingCartIcon, TrashIcon } from "@heroicons/react/24/solid";
@@ -31,16 +31,16 @@ export default function Favorites() {
     }
   };
 
-  /* const handleRemoveFavorite = async (bookId) => {
+  const handleRemoveFavorite = async (favoriteId, bookId) => {
     try {
-      await addtoFavorite(bookId);
-      setFavorites(favorites.filter((book) => book._id !== bookId));
+      await removeFromfav(bookId); 
+      setFavorites(favorites.filter((fav) => fav._id !== favoriteId)); // Filter by favorite record ID
       alert("Book removed from favorites!");
     } catch (err) {
       console.error("Error removing favorite:", err);
       alert("Failed to remove from favorites");
     }
-  }; */
+  }; 
 
   const handleAddToCart = (book) => {
     localStorage.setItem("selectedBook", JSON.stringify(book));
@@ -157,12 +157,12 @@ export default function Favorites() {
                       <ShoppingCartIcon className="w-4 h-4" />
                       Add to Cart
                     </button>
-                    {/* <button
-                      onClick={() => handleRemoveFavorite(book._id)}
+                    <button
+                      onClick={() => handleRemoveFavorite(fav._id, book._id)}
                       className="px-4 py-2 bg-red-500/20 hover:bg-red-500/40 text-red-300 border border-red-400/30 rounded-lg transition-all"
                     >
                       <TrashIcon className="w-4 h-4" />
-                    </button> */}
+                    </button>
                   </div>
                 </div>
               </div>
