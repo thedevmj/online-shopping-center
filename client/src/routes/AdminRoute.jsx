@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { Usercontext } from "../context/Authcontext";
 
 const AdminRoute = ({ children }) => {
   
-  const user =JSON.parse(localStorage.getItem("user"));
+  const { user } = useContext(Usercontext);
   const navigate = useNavigate();
   
-  useEffect(() => {
+   
+ useEffect(() => {
     if (!user) {
       return navigate("/Login");
     }
@@ -20,7 +22,7 @@ const AdminRoute = ({ children }) => {
       console.error("Failed to parse user data", error);
       return navigate("/Login");
     }
-  },[]);
+  }, [user, navigate]);
 
   return children;
 };

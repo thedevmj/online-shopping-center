@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { deleteCart, getallCarts } from '../api/bookapi';
+import { Usercontext } from '../context/Authcontext';
 
 export default function Allusercarts() {
  
  const [carts,setCarts]=useState([]);
-   const user=JSON.parse( localStorage.getItem("user"));
+   const user=useContext(Usercontext);
   
     const fetchCarts=async()=>{
         try{

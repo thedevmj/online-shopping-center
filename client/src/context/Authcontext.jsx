@@ -1,20 +1,20 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 
-const usercontext = React.createContext();
+export const Usercontext = createContext();
 
 export default function Authcontext({ children }) {
-  const [user, setUser] = React.useState([]);
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const [token, setToken] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
+  const [user, setUser] = useState({}||null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
   
   return (
     <div>
-      <usercontext.Provider
+      <Usercontext.Provider
         value={{ user, setUser, isAuthenticated, setIsAuthenticated, token, setToken }}
       >
         {children}
-      </usercontext.Provider>
+      </Usercontext.Provider>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   EnvelopeIcon,
   LockClosedIcon,
@@ -9,6 +9,8 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { LoginUser } from "../api/bookapi";
+import Authcontext, { Usercontext } from "../context/Authcontext";
+
 
 export default function LoginForm({ onClose }) {
   const [email, setEmail] = useState("");
@@ -33,18 +35,20 @@ export default function LoginForm({ onClose }) {
           localStorage.removeItem("rememberMeData");
         }
       } catch (err) {
-        // Silently handle any errors loading saved data
+        console.error("Failed to parse saved login data", err);
       }
     }
   }, []);
 
+  const { setUser, setIsAuthenticated, setToken } = useContext(Usercontext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
       const response = await LoginUser({ email, password });
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      setUser(response.data.user);
+      setIsAuthenticated(true);
+      setToken(response.data.token);
       onClose(()=>{setShowLogin(true)});
 
    

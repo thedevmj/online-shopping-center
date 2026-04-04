@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Dialog,
   DialogPanel,
@@ -21,6 +21,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logout from "./Logout";
 import { getallCategories } from "../api/bookapi";
+import { Usercontext } from "../context/Authcontext";
 
 export default function Navbar({ selectedCategory, setfilter, setsearch }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -52,10 +53,10 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
   const logOut = () => {
     setLogoutModalOpen(true);
   };
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const user = useContext(Usercontext).user;
   const isadmin = user?.role === "Admin";
-  const token = localStorage.getItem("token");
-  const isLoggedIn = !!token;
+  const token = useContext(Usercontext ).token;
+  const isLoggedIn = !token;
 
   useEffect(() => {
     const prev = document.body.style.overflow;

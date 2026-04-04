@@ -78,14 +78,7 @@ export default function AdminStats() {
   const fetchStats = useCallback(async () => {
     try {
       setLoading(true);
-      // Simulated API calls - replace with actual endpoints
-      // const booksRes = await fetch('/api/books/count');
-      // const usersRes = await fetch('/api/users/count');
-      // const ordersRes = await fetch('/api/orders');
-      // const revenueRes = await fetch('/api/revenue');
-
-      // Placeholder data
-      setStats({
+          setStats({
         totalBooks: 245,
         totalUsers: 1234,
         totalOrders: 5678,
