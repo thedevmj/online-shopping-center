@@ -4,13 +4,16 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import BookContext from './component/BookContext.jsx'
+import Authcontext from './context/Authcontext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <BookContext>
-  <BrowserRouter>
+  <Authcontext>
+    <BookContext>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+    </BookContext>
+  </Authcontext>
 
-    <App />
- 
-  </BrowserRouter>,
-  </BookContext>
+  
 )

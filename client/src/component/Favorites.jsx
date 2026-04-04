@@ -6,7 +6,6 @@ import { HeartIcon, ShoppingCartIcon, TrashIcon } from "@heroicons/react/24/soli
 
 export default function Favorites() {
   const [favorites, setFavorites] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { setSelectedBook } = useContext(Bookcontext);
   const user = JSON.parse(localStorage.getItem("user"));
@@ -26,8 +25,6 @@ export default function Favorites() {
       setFavorites(response.data.data || []);
     } catch (err) {
       console.error("Error fetching favorites:", err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -71,11 +68,7 @@ export default function Favorites() {
         </div>
 
 
-        {isLoading ? (
-          <div className="flex items-center justify-center min-h-96">
-            <div className="text-white/70 text-xl">Loading your favorites...</div>
-          </div>
-        ) : favorites.length === 0 ? (
+        {favorites.length === 0 ? (
           <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-16 border border-white/20 text-center">
             <HeartIcon className="w-20 h-20 text-white/30 mx-auto mb-6" />
             <h2 className="text-3xl font-bold text-white mb-2">No Favorites Yet</h2>

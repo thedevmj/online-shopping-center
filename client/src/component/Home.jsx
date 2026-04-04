@@ -100,16 +100,16 @@ export default function Home() {
 
       <div className="relative z-10 w-full max-w-2xl mx-auto">
         {message.text && (
-          <div
-            className={`mb-6 p-4 rounded-2xl backdrop-blur-xl border text-white text-center font-semibold ${
-              message.type === "success"
-                ? "bg-emerald-500/20 border-emerald-400/30"
-                : "bg-red-500/20 border-red-400/30"
-            }`}
-          >
-            {message.text}
-          </div>
-        )}
+              <div
+                className={`mb-6 p-4 rounded-2xl backdrop-blur-xl border text-white text-center font-semibold ${
+                  message.type === "success"
+                    ? "bg-emerald-500/20 border-emerald-400/30"
+                    : "bg-red-500/20 border-red-400/30"
+                }`}
+              >
+                {message.text}
+              </div>
+            )}
 
         <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl p-8 border border-white/20">
           <div className="text-center mb-8">

@@ -21,13 +21,20 @@ const addUser = async (req, res) => {
 
     });
     const token = user.getSignedJwtToken();
+
+    res.cookie("authToken", token, {
+        httpOnly: true,
+        secure:process.env.NODE_ENV==="production",
+        sameSite:"strict",
+        maxAge:7*24*60*60*1000 
+    });
+
     res.status(201).json({
         success: true,
         token,
         user: {
             id: user._id,
             email: user.email,
-            password:user.password,
             role: user.role,
         },
     })
@@ -60,6 +67,12 @@ const loginUser = async (req, res) => {
 
     const token = user.getSignedJwtToken();
 
+    res.cookie("authToken",token,{
+      httpOnly:true,
+      secure:process.env.NODE_ENV === "production",
+      sameSite:"strict",
+      maxAge:7*24*60*60*1000
+    });
     res.status(200).json({
       success: true,
       token,
@@ -75,6 +88,29 @@ const loginUser = async (req, res) => {
   }
 };
 
+const logoutuser=async(req,res)=>{
+try{
 
+  res.clearCookie("authToken");
+  res.status(200).json({
+    success:true,
+    message:"Logged out successfully"
+  })
 
-module.exports={addUser,loginUser}
+}
+catch(error){
+  res.status(500).json({ message: error.message });
+}
+}
+const checkAuth=(req,res)=>{
+  res.status(200).json({
+    success:true,
+    user:{
+      _id: req.User._id,
+      email: req.User.email,
+      role: req.User.role
+    }
+
+  });
+}
+module.exports={addUser,loginUser,logoutuser,checkAuth}

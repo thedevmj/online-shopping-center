@@ -22,40 +22,38 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Logout from "./Logout";
 import { getallCategories } from "../api/bookapi";
 
-
-export default function Navbar({ selectedCategory, setfilter,setsearch }) {
+export default function Navbar({ selectedCategory, setfilter, setsearch }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const [cartCount] = useState(3);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const navigate = useNavigate();
   const location = useLocation();
 
   // Helper function to determine active state
   const isActive = (path) => location.pathname === path;
-  const activeButtonClass = "bg-emerald-500/30 border-emerald-400/60 text-emerald-300";
-  const inactiveButtonClass = "bg-slate-700/50 border-emerald-500/30 text-emerald-400";
- 
-  const fetchCategories=async()=>{
-    try{
-      const res=await getallCategories();
-       
-       setCategories(res.data.data);
-        
+  const activeButtonClass =
+    "bg-emerald-500/30 border-emerald-400/60 text-emerald-300";
+  const inactiveButtonClass =
+    "bg-slate-700/50 border-emerald-500/30 text-emerald-400";
+
+  const fetchCategories = async () => {
+    try {
+      const res = await getallCategories();
+
+      setCategories(res.data.data);
+    } catch (err) {
+      console.error("Error fetching categories:", err);
     }
-    catch(err){
-      
-    }
-  
-  }
-  
+  };
+
   const logOut = () => {
     setLogoutModalOpen(true);
   };
   const user = JSON.parse(localStorage.getItem("user") || "null");
-
+  const isadmin = user?.role === "Admin";
   const token = localStorage.getItem("token");
   const isLoggedIn = !!token;
 
@@ -73,7 +71,6 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
 
   return (
     <>
-   
       <header className="sticky top-0 z-50 w-full">
         <div className="absolute inset-0 z-0 backdrop-blur-xl bg-linear-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 border-b border-emerald-500/30" />
 
@@ -122,14 +119,21 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
             >
               <Bars3Icon className="h-6 w-6" />
             </button>
-            <button aria-label="Open search" className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300">
+            <button
+              aria-label="Open search"
+              className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300"
+            >
               <MagnifyingGlassIcon className="h-6 w-6" />
             </button>
-            <button aria-label="Cart" className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
-              isActive("/allcarts")
-                ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
-            }`} onClick={()=>navigate("/allcarts")}>
+            <button
+              aria-label="Cart"
+              className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                isActive("/allcarts")
+                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                  : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+              }`}
+              onClick={() => navigate("/allcarts")}
+            >
               <ShoppingBagIcon className="h-6 w-6" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
@@ -149,17 +153,30 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 transition
                 className="absolute left-0 z-50 mt-3 w-screen max-w-md rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
               >
+                { !isadmin?
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-emerald-400 mb-4">Select Category</h3>
-                  <select className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/80 transition-all duration-300" onChange={(e) => selectedCategory(e.target.value)}>
-                    <option value="" className="bg-slate-900 text-emerald-400">All Categories</option>
+                  <h3 className="text-lg font-semibold text-emerald-400 mb-4">
+                    Select Category
+                  </h3>
+                  <select
+                    className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/80 transition-all duration-300"
+                    onChange={(e) => selectedCategory(e.target.value)}
+                  >
+                    <option value="" className="bg-slate-900 text-emerald-400">
+                      All Categories
+                    </option>
                     {categories?.map((c) => (
-                      <option key={c.name || c} value={c._id || c} className="bg-slate-900 text-emerald-400">
+                      <option
+                        key={c.name || c}
+                        value={c._id || c}
+                        className="bg-slate-900 text-emerald-400"
+                      >
                         {c.name || c}
                       </option>
                     ))}
                   </select>
-                </div>
+                </div>:null
+}
               </PopoverPanel>
             </Popover>
             <Popover className="relative">
@@ -171,12 +188,13 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 transition
                 className="absolute left-0 z-50 mt-3 w-48 rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
               >
-                <div className="p-3 space-y-1">
-                  {[
-                    { label: "All", value: "" },
-                    { label: "Price Low to High", value: "price-asc" },
-                    { label: "Price High to Low", value: "price-desc" },
-                    { label: "A-Z", value: "az" },
+                { isadmin ? (
+                  <div className="p-3 space-y-1">
+                    {[
+                      { label: "All", value: "" },
+                      { label: "Price Low to High", value: "price-asc" },
+                      { label: "Price High to Low", value: "price-desc" },
+                      { label: "A-Z", value: "az" },
                     { label: "Z-A", value: "za" },
                   ].map((option) => (
                     <button
@@ -187,61 +205,77 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                       {option.label}
                     </button>
                   ))}
-                </div>
+                </div>) : (
+                  <div></div>
+                 )
+}
               </PopoverPanel>
             </Popover>
-            
-            <Popover className="relative">
-              <PopoverButton className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
-                isActive("/userdashboard") 
-                  ? activeButtonClass 
-                  : inactiveButtonClass
-              }`} onClick={()=>navigate("/userdashboard")}>
-                UserDashBoard 
-              
-              </PopoverButton>
-             
-            </Popover>
+            {!isadmin ? (
+              <Popover className="relative">
+                <PopoverButton
+                  className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                    isActive("/userdashboard")
+                      ? activeButtonClass
+                      : inactiveButtonClass
+                  }`}
+                  onClick={() => navigate("/userdashboard")}
+                >
+                  UserDashBoard
+                </PopoverButton>
+              </Popover>
+            ) : (
+              <Popover className="relative">
+                <PopoverButton
+                  className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                    isActive("/userdashboard")
+                      ? activeButtonClass
+                      : inactiveButtonClass
+                  }`}
+                  onClick={() => navigate("/admindashboard")}
+                >
+                  AdminDashboard
+                </PopoverButton>
+              </Popover>
+            )}
             {user && user?.role === "Admin" ? (
               <ul className="flex items-center gap-6">
                 <li>
-                  <a
-                    href="/updateBook"
-                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
-                      isActive("/updateBook") 
-                        ? activeButtonClass 
-                        : inactiveButtonClass
+                  <button
+                    onClick={() => navigate("/")}
+                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-4 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 flex items-center gap-2 ${
+                      isActive("/") ? activeButtonClass : inactiveButtonClass
                     }`}
                   >
-                    Update Books
-                  </a>
+                    ➕ Add Book
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="/updateBook"
-                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
-                      isActive("/updateBook") 
-                        ? activeButtonClass 
+                  <button
+                    onClick={() => navigate("/updateBook")}
+                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-4 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 flex items-center gap-2 ${
+                      isActive("/updateBook")
+                        ? activeButtonClass
                         : inactiveButtonClass
                     }`}
                   >
-                    Add Book
-                  </a>
+                    ✏️ Update Books
+                  </button>
                 </li>
               </ul>
             ) : (
               <ul className="flex items-center gap-6">
                 <li>
-                  <a
-                    href="/shopping"
+                  <button
+                    onClick={() => navigate("/shopping")}
                     className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
-                      isActive("/shopping") 
-                        ? activeButtonClass 
+                      isActive("/shopping")
+                        ? activeButtonClass
                         : inactiveButtonClass
                     }`}
                   >
                     Shop
-                  </a>
+                  </button>
                 </li>
                 <li>
                   <a
@@ -256,28 +290,33 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
           </PopoverGroup>
 
           <div className="hidden lg:flex items-center gap-6">
-            <button 
-              className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
-                isActive("/favorites") 
-                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                  : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
-              }`}
-              onClick={() => navigate("/favorites")}
-              title="My Favorites"
-            >
-              <HeartIcon className="h-6 w-6" />
-            </button>
-            <button 
-              className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
-                isActive("/orders") 
-                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                  : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
-              }`}
-              onClick={() => navigate("/orders")}
-              title="My Orders"
-            >
-              <ClipboardDocumentListIcon className="h-6 w-6" />
-            </button>
+            {!isadmin ? (
+              <button
+                className={`relative p-2 ml-2.5 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                  isActive("/favorites")
+                    ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                    : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+                }`}
+                onClick={() => navigate("/favorites")}
+                title="My Favorites"
+              >
+                <HeartIcon className=" h-6 w-6" />
+              </button>
+            ) : null}
+            {!isadmin ? (
+              <button
+                className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                  isActive("/orders")
+                    ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                    : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+                }`}
+                onClick={() => navigate("/orders")}
+                title="My Orders"
+              >
+                <ClipboardDocumentListIcon className="h-6 w-6" />
+              </button>
+            ) : null}
+
             {isLoggedIn ? (
               <button
                 onClick={logOut}
@@ -293,11 +332,14 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 <UserIcon className="h-6 w-6" />
               </button>
             )}
-            <button className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
-              isActive("/allcarts")
-                ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
-            }`} onClick={()=>navigate("/allcarts")}>
+            <button
+              className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                isActive("/allcarts")
+                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                  : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+              }`}
+              onClick={() => navigate("/allcarts")}
+            >
               <ShoppingBagIcon className="h-6 w-6" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-xs h-5 w-5 rounded-full flex items-center justify-center">
@@ -314,7 +356,10 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
         onClose={setMobileMenuOpen}
         className="md:hidden"
       >
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" aria-hidden="true" />
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+          aria-hidden="true"
+        />
         <DialogPanel
           id="mobile-menu"
           className="fixed right-0 top-0 h-full w-80 sm:w-96 backdrop-blur-xl bg-white/10 p-6 shadow-2xl border-l border-white/20"
@@ -322,7 +367,9 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <ShoppingBagIcon className="h-6 w-6 text-emerald-400" />
-              <span className="font-bold text-lg bg-linear-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">ShopHub</span>
+              <span className="font-bold text-lg bg-linear-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                ShopHub
+              </span>
             </div>
             <button
               onClick={() => setMobileMenuOpen(false)}
@@ -344,7 +391,7 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                   setSearchQuery(e.target.value);
                   setsearch(e.target.value);
                 }}
-             />
+              />
               <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/60 group-focus-within:text-emerald-300 transition-colors" />
             </label>
           </div>
@@ -371,7 +418,9 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                   className="flex items-center gap-3 py-3 px-4 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:bg-white/15 text-white/90 hover:text-white transition-all duration-300"
                 >
                   <div className="h-8 w-8 flex items-center justify-center rounded-xl backdrop-blur-xl bg-emerald-400/20 border border-emerald-400/30">
-                    <span className="text-xs font-bold text-emerald-300">{(c.name || c).charAt(0).toUpperCase()}</span>
+                    <span className="text-xs font-bold text-emerald-300">
+                      {(c.name || c).charAt(0).toUpperCase()}
+                    </span>
                   </div>
                   <div>
                     <div className="text-sm font-medium">{c.name || c}</div>
@@ -403,7 +452,10 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 About
               </a>
               <div className="px-4 pt-2">
-                <label className="block text-sm text-white/80 mb-1" htmlFor="mobile-filter">
+                <label
+                  className="block text-sm text-white/80 mb-1"
+                  htmlFor="mobile-filter"
+                >
                   Filter
                 </label>
                 <select
@@ -425,7 +477,7 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
 
             <div className="pt-4 border-t border-white/20 mt-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <button 
+                <button
                   onClick={() => {
                     navigate("/orders");
                     setMobileMenuOpen(false);
@@ -439,7 +491,7 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 >
                   <ClipboardDocumentListIcon className="h-6 w-6" />
                 </button>
-                <button 
+                <button
                   onClick={() => {
                     navigate("/favorites");
                     setMobileMenuOpen(false);
@@ -453,7 +505,7 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
                 >
                   <HeartIcon className="h-6 w-6" />
                 </button>
-                <button 
+                <button
                   onClick={() => {
                     navigate("/allcarts");
                     setMobileMenuOpen(false);
@@ -499,8 +551,11 @@ export default function Navbar({ selectedCategory, setfilter,setsearch }) {
           </nav>
         </DialogPanel>
       </Dialog>
-      
-      <Logout isOpen={logoutModalOpen} onClose={() => setLogoutModalOpen(false)} />
+
+      <Logout
+        isOpen={logoutModalOpen}
+        onClose={() => setLogoutModalOpen(false)}
+      />
     </>
   );
 }
