@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Navbar from "./component/Navbar";
 import LoginForm from "./component/LoginForm";
-import Home from "./component/Home";
+import Home from "./component/AdminHome";
 import { Route, Routes } from "react-router-dom";
 import Update_books from "./component/Update_books";
 import Shophub_cart from "./component/Shophub_cart";
 import Signup from "./component/Signup";
 import ProtectedRoute from "./routes/ProtectedRoutes";
-import AuthRoute from "./routes/AuthRoute";
 import AdminRoute from "./routes/AdminRoute";
 import OrderCart from "./component/OrderCart";
 import BookContext from "./component/BookContext";
@@ -37,21 +36,21 @@ const App = () => {
           element={
             <>
               <AdminRoute>
-                <ProtectedRoute>
+                
                   <Home />
-                </ProtectedRoute>
+               
               </AdminRoute>
             </>
           }
         ></Route>
-        <Route path="/admindashboard" element={<><AdminRoute><ProtectedRoute><Admindashboard /></ProtectedRoute></AdminRoute></>} />
+        <Route path="/admindashboard" element={<><AdminRoute><Admindashboard category={category} search={search} /></AdminRoute></>} />
         <Route
           path="/Login"
           element={
             <>
-              <AuthRoute>
+             
                 <LoginForm onClose={() => setShowLogin(false)} />
-              </AuthRoute>
+              
             </>
           }
         ></Route>
@@ -72,18 +71,18 @@ const App = () => {
           element={
             <>
               <AdminRoute>
-                <ProtectedRoute>
+                
                   <Update_books />
-                </ProtectedRoute>
+               
               </AdminRoute>
             </>
           }
         ></Route>
         <Route path="/favorites" element={<><ProtectedRoute><Favorites /></ProtectedRoute></>} />
         <Route path="/signup" element={
-          <AuthRoute>
+          
             <Signup />
-          </AuthRoute>
+          
         }></Route>
         <Route path="/orders" element={<><ProtectedRoute><Orders/></ProtectedRoute></>} />
         <Route

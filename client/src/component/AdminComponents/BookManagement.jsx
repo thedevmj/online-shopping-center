@@ -4,7 +4,7 @@ import {
   PencilIcon,
   TrashIcon,
   PlusIcon,
-  ArrowUpDownIcon,
+ 
 } from '@heroicons/react/24/outline';
 
 const BookRow = React.memo(({ book, onEdit, onDelete }) => (
@@ -22,7 +22,7 @@ const BookRow = React.memo(({ book, onEdit, onDelete }) => (
         </div>
       </div>
     </td>
-    <td className="px-6 py-4 text-slate-300">{book.bookCategory}</td>
+    <td className="px-6 py-4 text-slate-300">{book.bookCategory?.name || 'N/A'}</td>
     <td className="px-6 py-4 text-emerald-400 font-semibold">${book.bookPrice}</td>
     <td className="px-6 py-4">
       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -56,60 +56,29 @@ const BookRow = React.memo(({ book, onEdit, onDelete }) => (
 
 BookRow.displayName = 'BookRow';
 
-export default function BookManagement() {
+export default function BookManagement({ category ,search}) {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('title');
+  const [sortBy, setSortBy] = useState('');
   const [editingBook, setEditingBook] = useState(null);
-
+  const [categories, setCategories] = useState([]);
+  
   const fetchBooks = useCallback(async () => {
     try {
       setLoading(true);
-      // Replace with actual API call
-      // const response = await fetch('/api/books');
-      // const data = await response.json();
-      // setBooks(data.data);
+      const response=await fetch("http://localhost:3000/api/book/getall" ,{
+        method:"GET",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        credentials:"include"
+      })
 
-      // Placeholder data
-      setBooks([
-        {
-          _id: '1',
-          bookTitle: 'The Great Gatsby',
-          bookAuthor: 'F. Scott Fitzgerald',
-          bookCategory: 'Fiction',
-          bookPrice: 12.99,
-          stock: 15,
-          image: 'https://via.placeholder.com/100',
-        },
-        {
-          _id: '2',
-          bookTitle: 'To Kill a Mockingbird',
-          bookAuthor: 'Harper Lee',
-          bookCategory: 'Drama',
-          bookPrice: 14.99,
-          stock: 8,
-          image: 'https://via.placeholder.com/100',
-        },
-        {
-          _id: '3',
-          bookTitle: '1984',
-          bookAuthor: 'George Orwell',
-          bookCategory: 'Dystopian',
-          bookPrice: 13.99,
-          stock: 0,
-          image: 'https://via.placeholder.com/100',
-        },
-        {
-          _id: '4',
-          bookTitle: 'Pride and Prejudice',
-          bookAuthor: 'Jane Austen',
-          bookCategory: 'Romance',
-          bookPrice: 11.99,
-          stock: 22,
-          image: 'https://via.placeholder.com/100',
-        },
-      ]);
+      const data=await response.json()
+      
+      setBooks(data.data);
+       
     } catch (error) {
       console.error('Error fetching books:', error);
     } finally {
@@ -117,8 +86,10 @@ export default function BookManagement() {
     }
   }, []);
 
+  
   useEffect(() => {
     fetchBooks();
+    setSearchQuery(search||"");
   }, [fetchBooks]);
 
   const filteredAndSortedBooks = useMemo(() => {
@@ -188,7 +159,7 @@ export default function BookManagement() {
             onClick={() => setSortBy(sortBy === 'title' ? 'price' : 'title')}
             className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 border border-emerald-500/30 rounded-lg text-slate-300 hover:bg-slate-600/50 transition-colors"
           >
-            <ArrowUpDownIcon className="h-5 w-5" />
+           
             Sort
           </button>
           <button className="flex items-center gap-2 px-4 py-2 bg-emerald-500/20 border border-emerald-400/60 rounded-lg text-emerald-300 hover:bg-emerald-500/30 transition-colors font-medium">
@@ -198,7 +169,7 @@ export default function BookManagement() {
         </div>
       </div>
 
-      {/* Books Table */}
+      
       <div className="rounded-lg backdrop-blur-xl bg-linear-to-br from-slate-700/50 to-slate-800/50 border border-emerald-500/20 overflow-x-auto">
         <table className="w-full">
           <thead>

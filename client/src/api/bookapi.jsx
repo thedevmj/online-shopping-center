@@ -3,11 +3,9 @@ import axios from "axios";
 const Api_url = "http://localhost:3000/api/book/";
 const AUTH_URL = "http://localhost:3000/auth/user/";
 
-// Helper function to get auth headers
-const authHeader = () => {
-  const t = localStorage.getItem("token");
-  return t ? { Authorization: `Bearer ${t}` } : {};
-};
+axios.defaults.withCredentials = true; 
+
+
 
 // ==================== AUTHENTICATION ====================
 export const createUser = (data) => {
@@ -20,9 +18,7 @@ export const LoginUser = (data) => {
 
 // ==================== BOOKS ====================
 export const createbook = (data) => {
-  return axios.post(`${Api_url}addbook`, data, {
-    headers: authHeader(),
-  });
+  return axios.post(`${Api_url}addbook`, data);
 };
 
 export const getallbooks = () => {
@@ -30,21 +26,15 @@ export const getallbooks = () => {
 };
 
 export const getcartById = (id) => {
-  return axios.get(`${Api_url}findbook/${id}`, {
-    headers: authHeader(),
-  });
+  return axios.get(`${Api_url}findbook/${id}`);
 };
 
 export const Updatebooks = (id, updatedData) => {
-  return axios.put(`${Api_url}update/${id}`, updatedData, {
-    headers: authHeader(),
-  });
+  return axios.put(`${Api_url}update/${id}`, updatedData);
 };
 
 export const Deletebook = (id) => {
-  return axios.delete(`${Api_url}delete/${id}`, {
-    headers: authHeader(),
-  });
+  return axios.delete(`${Api_url}delete/${id}`);
 };
 
 export const getallCategories = () => {
@@ -53,38 +43,25 @@ export const getallCategories = () => {
 
 // ==================== CART ====================
 export const cartadd = (data) => {
-  return axios.post(`${Api_url}addtocart`, data, {
-    headers: authHeader(),
-  });
+  return axios.post(`${Api_url}addtocart`, data);
 };
 
-export const getallCarts = (id) => {
-  return axios.get(`${Api_url}getallcarts/${id}`, {
-    headers: authHeader(),
-  });
+export const getallCarts = () => {
+  return axios.get(`${Api_url}getallcarts`);
 };
 
 export const deleteCart = (id) => {
-  return axios.delete(`${Api_url}deletecart/${id}`, {
-    headers: authHeader(),
-  });
+  return axios.delete(`${Api_url}deletecart/${id}`)
 };
 
 // ==================== FAVORITES ====================
 export const addtoFavorite = (bookId) => {
-  return axios.put(`${Api_url}favorite/${bookId}`, { bookId }, {
-    headers: authHeader(),
-  });
+  return axios.put(`${Api_url}favorite/${bookId}`, { bookId });
 };
-
 export const getallfavorite = () => {
-  return axios.get(`${Api_url}favoritebooks`, {
-    headers: authHeader(),
-  });
+  return axios.get(`${Api_url}favoritebooks`);
 };
 
 export const removeFromfav = (id) => {
-  return axios.delete(`${Api_url}removefromfavorite/${id}`, {
-    headers: authHeader(),
-  });
+  return axios.delete(`${Api_url}removefromfavorite/${id}`)
 };

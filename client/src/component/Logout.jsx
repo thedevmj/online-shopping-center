@@ -10,10 +10,13 @@ export default function Logout({ isOpen, onClose }) {
   const handleConfirmLogout = () => {
     setIsLoggingOut(true);
     
+   const response= fetch("http://localhost:3000/auth/user/logout",{
+      method:"POST",
+      credentials:"include",
+
+
+    })
     setTimeout(() => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("rememberMeData"); // Clear remember me data on logout
       setIsLoggingOut(false);
       onClose();
       navigate("/Login");

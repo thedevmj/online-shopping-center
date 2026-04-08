@@ -5,10 +5,13 @@ const fileUpload = require("express-fileupload");
 const path = require("path");
 const authRoutes = require("./routes/auth-routes")
 const cookieParser = require("cookie-parser");
+
 require("dotenv").config({ path: "./config/config.env" });
 
 const app = express();
 app.use(cors({
+    
+    origin: "http://localhost:5173",
     credentials: true,
 }
 ))

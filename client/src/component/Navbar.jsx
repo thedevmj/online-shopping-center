@@ -21,7 +21,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logout from "./Logout";
 import { getallCategories } from "../api/bookapi";
-import { Usercontext } from "../context/Authcontext";
+
 
 export default function Navbar({ selectedCategory, setfilter, setsearch }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,10 +53,9 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
   const logOut = () => {
     setLogoutModalOpen(true);
   };
-  const user = useContext(Usercontext).user;
-  const isadmin = user?.role === "Admin";
-  const token = useContext(Usercontext ).token;
-  const isLoggedIn = !token;
+  const user = localStorage.getItem("user");
+  const isadmin = user === "Admin"?true:false;
+  const isLoggedIn = user.length == 0 ? false : true;
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -154,7 +153,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 transition
                 className="absolute left-0 z-50 mt-3 w-screen max-w-md rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
               >
-                { !isadmin?
+                { !isadmin?(
                 <div className="p-6">
                   <h3 className="text-lg font-semibold text-emerald-400 mb-4">
                     Select Category
@@ -176,7 +175,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                       </option>
                     ))}
                   </select>
-                </div>:null
+                </div>):<div></div>
 }
               </PopoverPanel>
             </Popover>
@@ -189,7 +188,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 transition
                 className="absolute left-0 z-50 mt-3 w-48 rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
               >
-                { isadmin ? (
+                { !isadmin ? (
                   <div className="p-3 space-y-1">
                     {[
                       { label: "All", value: "" },
@@ -239,7 +238,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 </PopoverButton>
               </Popover>
             )}
-            {user && user?.role === "Admin" ? (
+            {user === "Admin" ? (
               <ul className="flex items-center gap-6">
                 <li>
                   <button
@@ -321,7 +320,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
             {isLoggedIn ? (
               <button
                 onClick={logOut}
-                className="font-semibold text-red-400 hover:text-red-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-red-500/40 hover:bg-red-600/20 transition-all duration-300"
+                className="font-semibold ml-1.5 text-red-400 hover:text-red-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-red-500/40 hover:bg-red-600/20 transition-all duration-300"
               >
                 Logout
               </button>

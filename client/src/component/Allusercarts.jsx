@@ -1,51 +1,56 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { deleteCart, getallCarts } from '../api/bookapi';
-import { Usercontext } from '../context/Authcontext';
+import React, { useContext, useEffect, useState } from "react";
 
 export default function Allusercarts() {
- 
- const [carts,setCarts]=useState([]);
-   const user=useContext(Usercontext);
-  
-    const fetchCarts=async()=>{
-        try{
-            const cartsData=await getallCarts(user.id || user._id);
-            if(!cartsData?.data?.data){
-                return;
-            }
-            setCarts(cartsData.data.data);
-            
-        
-        }
-        catch(err){
-            console.error("Error fetching carts:",err);
-        }
-    }
-    useEffect(()=>{
-        fetchCarts();
-    },[])
-    
-    
-    const removeCartItem=async(id)=>{
-        try{
-            const response=await deleteCart(id);
-            if(response.status === 200){
-                fetchCarts();
-            }
-            else{
-                console.error("Failed to remove item from cart !");
-            }
+  const [carts, setCarts] = useState([]);
 
-        }
-        catch(err){
-            
-            console.error("Error removing item from cart:",err);
-            
-        }
+  const fetchCarts = async () => {
+    try {
+      const cartsData = await fetch(`http://localhost:3000/api/book/getallcarts`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        },
+      );
+      const data = await cartsData.json();
+      if (!data?.data) {
+        return;
+      }
+      setCarts(data.data);
+    } catch (err) {
+      console.error("Error fetching carts:", err);
     }
+  };
+
+  useEffect(() => {
+    fetchCarts();
+  }, []);
+
+  const removeCartItem = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/book/deletecart/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        },
+      );
+      if (response.status === 200) {
+        fetchCarts();
+      } else {
+        console.error("Failed to remove item from cart !");
+      }
+    } catch (err) {
+      console.error("Error removing item from cart:", err);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
-      
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-emerald-400/10 to-emerald-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-96 h-96 bg-linear-to-r from-blue-400/10 to-blue-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
@@ -54,7 +59,9 @@ export default function Allusercarts() {
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-8 mb-8 border border-white/20 shadow-2xl">
-          <h1 className="text-4xl font-bold text-white mb-2">Your Shopping Cart</h1>
+          <h1 className="text-4xl font-bold text-white mb-2">
+            Your Shopping Cart
+          </h1>
           <p className="text-white/70">Manage your selected books</p>
         </div>
 
@@ -100,7 +107,9 @@ export default function Allusercarts() {
                           </p>
                           <button
                             className="bg-linear-to-r from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20"
-                            onClick={() => { removeCartItem(item._id) }}
+                            onClick={() => {
+                              removeCartItem(item._id);
+                            }}
                           >
                             Remove
                           </button>
@@ -110,7 +119,9 @@ export default function Allusercarts() {
                   ))
                 ) : (
                   <div className="text-center py-12">
-                    <p className="text-white/60 text-lg">No items in this cart</p>
+                    <p className="text-white/60 text-lg">
+                      No items in this cart
+                    </p>
                   </div>
                 )}
               </div>
@@ -119,8 +130,12 @@ export default function Allusercarts() {
         ) : (
           <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-12 text-center border border-white/20 shadow-2xl">
             <div className="text-6xl mb-4">🛒</div>
-            <h2 className="text-2xl font-bold text-white mb-2">Your cart is empty</h2>
-            <p className="text-white/70">Start shopping to add items to your cart</p>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Your cart is empty
+            </h2>
+            <p className="text-white/70">
+              Start shopping to add items to your cart
+            </p>
           </div>
         )}
       </div>

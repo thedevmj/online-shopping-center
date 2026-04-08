@@ -8,8 +8,7 @@ export default function Favorites() {
   const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
   const { setSelectedBook } = useContext(Bookcontext);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = localStorage.getItem("token");
+  
 
   useEffect(() => {
     fetchFavorites();
@@ -17,12 +16,20 @@ export default function Favorites() {
 
   const fetchFavorites = async () => {
     try {
-      if (!user) {
+        const role=localStorage.getItem("user");
+      if (!role) {
         navigate("/login");
         return;
       }
-      const response = await getallfavorite();
-      setFavorites(response.data.data || []);
+      const response = await fetch(`http://localhost:3000/api/book/favoritebooks`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      setFavorites(data.data || []);
     } catch (err) {
       console.error("Error fetching favorites:", err);
     }
@@ -30,7 +37,13 @@ export default function Favorites() {
 
   const handleRemoveFavorite = async (favoriteId, bookId) => {
     try {
-      await removeFromfav(bookId); 
+      await fetch(`/removefromfavorite/${bookId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
       setFavorites(favorites.filter((fav) => fav._id !== favoriteId)); // Filter by favorite record ID
       alert("Book removed from favorites!");
     } catch (err) {
@@ -76,7 +89,7 @@ export default function Favorites() {
               Start adding your favorite books to see them here!
             </p>
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/shopping")}
               className="px-8 py-3 bg-linear-to-r from-emerald-400 to-emerald-500 text-slate-900 font-bold rounded-full hover:shadow-2xl hover:shadow-emerald-500/50 transition-all transform hover:scale-105"
             >
               Browse Books

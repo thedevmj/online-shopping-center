@@ -9,7 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function UserDashboard() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const role = localStorage.getItem("user");
   const navigate = useNavigate();
 
   const dashboardItems = [
@@ -68,7 +68,7 @@ export default function UserDashboard() {
 
         <div className="relative z-10 max-w-6xl mx-auto">
           <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-8 mb-8 border border-white/20 shadow-2xl">
-            <h1 className="text-4xl font-bold text-white mb-2">Welcome back, {user?.name || "User"}!</h1>
+            <h1 className="text-4xl font-bold text-white mb-2">Welcome back User !"</h1>
             <p className="text-white/70">Manage your account, track orders, and discover new books in your personalized dashboard.</p>
           </div>
 

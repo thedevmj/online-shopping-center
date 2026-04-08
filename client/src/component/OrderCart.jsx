@@ -5,11 +5,11 @@ import { cartadd } from "../api/bookapi";
 
 
 export default function OrderCart() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  
   const book = JSON.parse(localStorage.getItem("selectedBook"));
   const {selectedBook } = React.useContext(Bookcontext|| null);
   const [Count, setcartCount] = useState(1);
-  const token = localStorage.getItem("token");
+ 
   const bookData = selectedBook || book;
 
   if (!bookData) {
@@ -21,18 +21,32 @@ export default function OrderCart() {
   }
 
   const addToCart = async () => {
-    try {
-      await cartadd({
-        user: user._id,
+  try {
+    const response = await fetch("http://localhost:3000/api/book/addtocart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", 
+      body: JSON.stringify({
         bookId: bookData._id,
         quantity: Count,
-      });
-      alert("Book added to cart!");
-    } catch (err) {
-      console.error("Error adding book to cart:", err);
-      alert("Failed to add book to cart");
+        
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to add book to cart");
     }
-  };
+
+    const data = await response.json();
+    alert("Book added to cart!");
+  } catch (err) {
+    console.error("Error adding book to cart:", err);
+    alert("Failed to add book to cart");
+  }
+};
+
   
 
   return (

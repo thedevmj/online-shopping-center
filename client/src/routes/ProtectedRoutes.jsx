@@ -1,9 +1,11 @@
+import { useContext } from "react";
 import { Navigate } from "react-router-dom";
-
  const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
+ 
+ const role=localStorage.getItem("user");
 
-  if (!token) {
+ 
+  if (role!== "User") {
     return <Navigate to="/Login" />;
   }
 

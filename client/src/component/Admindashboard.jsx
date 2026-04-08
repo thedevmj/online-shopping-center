@@ -8,7 +8,7 @@ import {
   ArrowTrendingDownIcon,
 } from '@heroicons/react/24/outline';
 
-// Lazy load tab components
+
 const AdminStats = React.lazy(() => import('./AdminComponents/AdminStats'));
 const BookManagement = React.lazy(() => import('./AdminComponents/BookManagement'));
 const OrderManagement = React.lazy(() => import('./AdminComponents/OrderManagement'));
@@ -21,7 +21,7 @@ const TABS = [
   { id: 'users', label: 'Users', icon: UsersIcon },
 ];
 
-export default function Admindashboard() {
+export default function Admindashboard({category,search}) {
   const [activeTab, setActiveTab] = useState('stats');
 
   const handleTabChange = useCallback((tabId) => {
@@ -33,7 +33,7 @@ export default function Admindashboard() {
       case 'stats':
         return <AdminStats />;
       case 'books':
-        return <BookManagement />;
+        return <BookManagement category={category} search={search} />;
       case 'orders':
         return <OrderManagement />;
       case 'users':
@@ -45,15 +45,15 @@ export default function Admindashboard() {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Background Elements */}
+   
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
       </div>
 
-      {/* Main Content */}
+    
       <div className="relative z-10">
-        {/* Header */}
+        
         <div className="border-b border-emerald-500/30 backdrop-blur-xl bg-slate-900/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <h1 className="text-3xl font-bold bg-linear-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
@@ -63,7 +63,7 @@ export default function Admindashboard() {
           </div>
         </div>
 
-        {/* Navigation Tabs */}
+       
         <div className="border-b border-emerald-500/20 backdrop-blur-xl bg-slate-900/30 sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex overflow-x-auto space-x-1 py-4">
@@ -85,7 +85,7 @@ export default function Admindashboard() {
           </div>
         </div>
 
-        {/* Content Area */}
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <React.Suspense
             fallback={

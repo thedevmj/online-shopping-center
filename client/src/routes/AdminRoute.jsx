@@ -1,28 +1,38 @@
 import { useContext, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Usercontext } from "../context/Authcontext";
+
 
 const AdminRoute = ({ children }) => {
   
-  const { user } = useContext(Usercontext);
+  const role=localStorage.getItem("user");
   const navigate = useNavigate();
   
-   
+  
+  
+    
  useEffect(() => {
-    if (!user) {
-      return navigate("/Login");
+   
+    
+  if (!role) {
+      
+      return navigate("/Login")
+             
+    
     }
+    
+    
 
     try {
       
-      if (user.role !== "Admin") {
+      if (role === "User") {
         return navigate("/shopping");
       }
+      
     } catch (error) {
       console.error("Failed to parse user data", error);
       return navigate("/Login");
     }
-  }, [user, navigate]);
+  }, []);
 
   return children;
 };

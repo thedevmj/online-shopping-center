@@ -9,7 +9,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { LoginUser } from "../api/bookapi";
-import Authcontext, { Usercontext } from "../context/Authcontext";
+
 
 
 export default function LoginForm({ onClose }) {
@@ -40,38 +40,54 @@ export default function LoginForm({ onClose }) {
     }
   }, []);
 
-  const { setUser, setIsAuthenticated, setToken } = useContext(Usercontext);
+  
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const response = await LoginUser({ email, password });
-      setUser(response.data.user);
-      setIsAuthenticated(true);
-      setToken(response.data.token);
-      onClose(()=>{setShowLogin(true)});
+  e.preventDefault();
+  setIsLoading(true);
 
-   
-      if (rememberMe) {
-        const loginData = {
-          email: email,
-          expiresAt: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,
-        };
-        localStorage.setItem("rememberMeData", JSON.stringify(loginData));
-      } else {
-       
-        localStorage.removeItem("rememberMeData");
-      }
+  try {
+    const response = await fetch("http://localhost:3000/auth/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: "include", // ensures cookie is set
+    });
 
-      alert("Login successful!");
-      navigate("/shopping");
-      if (onClose) onClose(true);
-    } catch (err) {
-      alert(err.response?.data?.message || "Login failed. Please try again.");
+    if (!response.ok) {
+      throw new Error("Login failed");
     }
 
+    const data = await response.json();
+    
+   
+    onClose?.(() => setShowLogin(false));
+
+ 
+    if (rememberMe) {
+      const loginData = {
+        email,
+        expiresAt: new Date().getTime() + 30 * 24 * 60 * 60 * 1000,
+      };
+      localStorage.setItem("rememberMeData", JSON.stringify(loginData));
+    } else {
+      localStorage.removeItem("rememberMeData");
+    }
+    localStorage.setItem("user", data.user.role);
+    alert("Login successful!");
+    if(data.user.role === "User")
+    navigate("/shopping");
+   if(data.user.role === "Admin")
+    navigate("/")
+    if (onClose) onClose(true);
+  } catch (err) {
+    alert(err.message || "Login failed. Please try again.");
+  } finally {
     setIsLoading(false);
-  };
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">

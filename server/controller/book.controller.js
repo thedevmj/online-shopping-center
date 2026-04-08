@@ -1,7 +1,7 @@
 const { cloudinary } = require("../config/cloudinary");
 const Book = require("../model/book.model")
 const categories = require("../model/categories");
-const User = require("../model/user");
+const user = require("../model/user");
 const Cart = require("../model/cart");
 const favorite = require("../model/Favorite");
 
@@ -52,7 +52,7 @@ const handleBookStore = async (req, res) => {
 }
 const getAllbooks = async (req, res) => {
     try {
-        const books = await Book.find();
+        const books = await Book.find().populate("bookCategory", "name");
 
         res.status(200).json({
             message: "all book fetched !",
@@ -190,10 +190,10 @@ const addtoCart = async (req, res) => {
     try {
        
         const{bookId,quantity}=req.body;
-        let cart=await Cart.findOne({user:req.User.id});
+        let cart=await Cart.findOne({user:req.user.id});
         if(!cart){
             cart=new Cart({
-                user:req.User.id,
+                user:req.user.id,
                 items:[]
             });
         }
@@ -205,7 +205,7 @@ const addtoCart = async (req, res) => {
      existingItem.quantity += quantity;
     }else{
      cart.items.push({
-        user:req.User.id,
+        user:req.user.id,
         book:bookId,
         quantity
      })
@@ -229,7 +229,7 @@ const addtoCart = async (req, res) => {
         try {
            
             const cartbook = await Cart.findOne({
-                user: req.User.id,
+                user: req.user.id,
                 "items.book": req.params.id
             });
             if (!cartbook) return res.status(404).json({
@@ -251,7 +251,7 @@ const addtoCart = async (req, res) => {
 const deleteBookFromCart=async(req,res)=>{
     try{
         const { id } = req.params; 
-        const userId = req.User.id || req.User._id;
+        const userId = req.user.id || req.user._id;
         
         const cart = await Cart.findOneAndUpdate(
             { user: userId },
@@ -280,8 +280,9 @@ const deleteBookFromCart=async(req,res)=>{
 
 const getallCarts=async(req,res)=>{
 try{
-   
-    const carts=await Cart.find({user:req.User.id || req.User._id})
+    
+   const userId=req.user.id || req.user._id;
+    const carts=await Cart.find({user:userId})
     .populate("user")
     .populate("items.book");
 
@@ -307,7 +308,7 @@ catch(err){
 const handleFavorite = async (req, res) => {
     try {
         const { bookId } = req.body;
-        const userId=req.User.id || req.User._id;
+        const userId=req.user.id || req.user._id;
         const bookExists = await Book.findById(bookId);
         if (!bookExists) {
             return res.status(404).json({
@@ -333,7 +334,7 @@ const handleFavorite = async (req, res) => {
 
 const getAllFavoritebooks =async(req,res)=>{
     try{
-  const userId=req.User.id || req.User._id;
+  const userId=req.user.id || req.user._id;
   const favoriteBooks=await favorite.find({user:userId,favorite:true}).populate("book");
     res.status(200).json({
         message:"Favorite books fetched successfully",
@@ -354,7 +355,7 @@ const getAllFavoritebooks =async(req,res)=>{
 const removeFromFavorite = async (req, res) => {
     try {
         const { id } = req.params; // Get bookId from URL params
-        const userId = req.User.id || req.User._id;
+        const userId = req.user.id || req.user._id;
         const response = await favorite.findOneAndDelete(
             { book: id, user: userId }
         );
