@@ -18,6 +18,7 @@ export default function LoginForm({ onClose }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const[status,setStatus]=useState("");
   const navigate = useNavigate();
 
 
@@ -45,14 +46,16 @@ export default function LoginForm({ onClose }) {
   const handleSubmit = async (e) => {
   e.preventDefault();
   setIsLoading(true);
+  setStatus("active");
 
   try {
+    
     const response = await fetch("http://localhost:3000/auth/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password }), 
       credentials: "include", // ensures cookie is set
     });
 

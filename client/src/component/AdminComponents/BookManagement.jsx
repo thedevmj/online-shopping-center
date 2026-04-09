@@ -4,8 +4,8 @@ import {
   PencilIcon,
   TrashIcon,
   PlusIcon,
- 
 } from '@heroicons/react/24/outline';
+import { useNavigate } from "react-router-dom";
 
 const BookRow = React.memo(({ book, onEdit, onDelete }) => (
   <tr className="border-b border-slate-700/50 hover:bg-slate-800/30 transition-colors">
@@ -22,30 +22,41 @@ const BookRow = React.memo(({ book, onEdit, onDelete }) => (
         </div>
       </div>
     </td>
-    <td className="px-6 py-4 text-slate-300">{book.bookCategory?.name || 'N/A'}</td>
-    <td className="px-6 py-4 text-emerald-400 font-semibold">${book.bookPrice}</td>
+
+    <td className="px-6 py-4 text-slate-300">
+      {book.bookCategory?.name || 'N/A'}
+    </td>
+
+    <td className="px-6 py-4 text-emerald-400 font-semibold">
+      ${book.bookPrice}
+    </td>
+
     <td className="px-6 py-4">
-      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-        book.stock > 10
-          ? 'bg-green-500/20 text-green-300'
-          : book.stock > 0
-          ? 'bg-yellow-500/20 text-yellow-300'
-          : 'bg-red-500/20 text-red-300'
-      }`}>
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-medium ${
+          book.stock > 10
+            ? 'bg-green-500/20 text-green-300'
+            : book.stock > 0
+            ? 'bg-yellow-500/20 text-yellow-300'
+            : 'bg-red-500/20 text-red-300'
+        }`}
+      >
         {book.stock} units
       </span>
     </td>
+
     <td className="px-6 py-4">
       <div className="flex items-center gap-2">
         <button
           onClick={() => onEdit(book)}
-          className="p-2 rounded-lg hover:bg-emerald-500/20 text-emerald-400 transition-colors"
+          className="p-2 rounded-lg hover:bg-emerald-500/20 text-emerald-400"
         >
           <PencilIcon className="h-5 w-5" />
         </button>
+
         <button
           onClick={() => onDelete(book._id)}
-          className="p-2 rounded-lg hover:bg-red-500/20 text-red-400 transition-colors"
+          className="p-2 rounded-lg hover:bg-red-500/20 text-red-400"
         >
           <TrashIcon className="h-5 w-5" />
         </button>
@@ -56,29 +67,29 @@ const BookRow = React.memo(({ book, onEdit, onDelete }) => (
 
 BookRow.displayName = 'BookRow';
 
-export default function BookManagement({ category ,search}) {
+export default function BookManagement({ search }) {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('');
-  const [editingBook, setEditingBook] = useState(null);
-  const [categories, setCategories] = useState([]);
-  
+
+  const navigate = useNavigate(); // ✅ navigation
+
+  // ✅ Fetch books
   const fetchBooks = useCallback(async () => {
     try {
       setLoading(true);
-      const response=await fetch("http://localhost:3000/api/book/getall" ,{
-        method:"GET",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        credentials:"include"
-      })
+      const response = await fetch(
+        'http://localhost:3000/api/book/getall',
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+        }
+      );
 
-      const data=await response.json()
-      
+      const data = await response.json();
       setBooks(data.data);
-       
     } catch (error) {
       console.error('Error fetching books:', error);
     } finally {
@@ -86,26 +97,25 @@ export default function BookManagement({ category ,search}) {
     }
   }, []);
 
-  
   useEffect(() => {
     fetchBooks();
-    setSearchQuery(search||"");
-  }, [fetchBooks]);
+    setSearchQuery(search || '');
+  }, [fetchBooks, search]);
 
+  // ✅ Filter + sort
   const filteredAndSortedBooks = useMemo(() => {
-    let filtered = books.filter(book =>
-      book.bookTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      book.bookAuthor.toLowerCase().includes(searchQuery.toLowerCase())
+    let filtered = books.filter(
+      (book) =>
+        book.bookTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        book.bookAuthor.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Sort by selected criteria
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'price':
           return a.bookPrice - b.bookPrice;
         case 'stock':
           return b.stock - a.stock;
-        case 'title':
         default:
           return a.bookTitle.localeCompare(b.bookTitle);
       }
@@ -114,98 +124,44 @@ export default function BookManagement({ category ,search}) {
     return filtered;
   }, [books, searchQuery, sortBy]);
 
-  const handleDelete = useCallback((bookId) => {
-    if (window.confirm('Are you sure you want to delete this book?')) {
-      setBooks(prev => prev.filter(book => book._id !== bookId));
-    }
-  }, []);
-
+  // ✅ Navigate to update page
   const handleEdit = useCallback((book) => {
-    setEditingBook(book);
+    navigate("/updateBook", { state: { book } });
+  }, [navigate]);
+
+  const handleDelete = useCallback((bookId) => {
+    navigate("/updateBook", { state: { bookId } });
+    
   }, []);
 
+  // ✅ Loading UI
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-emerald-500/10 mb-4 animate-pulse">
-            <div className="h-8 w-8 border-t-2 border-emerald-400 rounded-full animate-spin" />
-          </div>
-          <p className="text-emerald-300">Loading books...</p>
-        </div>
-      </div>
-    );
+    return <div className="text-center p-10">Loading...</div>;
   }
 
+  // ✅ Main UI
   return (
     <div className="space-y-6">
-      {/* Header with Controls */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-        <div className="flex-1 w-full sm:max-w-md">
-          <div className="relative">
-            <MagnifyingGlassIcon className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search books..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-700/50 border border-emerald-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-400/60 transition-colors"
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="p-2 bg-slate-700 text-white w-full"
+      />
+
+      <table className="w-full">
+        <tbody>
+          {filteredAndSortedBooks.map((book) => (
+            <BookRow
+              key={book._id}
+              book={book}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
-          </div>
-        </div>
-
-        <div className="flex gap-3">
-          <button
-            onClick={() => setSortBy(sortBy === 'title' ? 'price' : 'title')}
-            className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 border border-emerald-500/30 rounded-lg text-slate-300 hover:bg-slate-600/50 transition-colors"
-          >
-           
-            Sort
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-emerald-500/20 border border-emerald-400/60 rounded-lg text-emerald-300 hover:bg-emerald-500/30 transition-colors font-medium">
-            <PlusIcon className="h-5 w-5" />
-            Add Book
-          </button>
-        </div>
-      </div>
-
-      
-      <div className="rounded-lg backdrop-blur-xl bg-linear-to-br from-slate-700/50 to-slate-800/50 border border-emerald-500/20 overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-emerald-500/20 bg-slate-800/50">
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Title</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Category</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Price</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Stock</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredAndSortedBooks.length > 0 ? (
-              filteredAndSortedBooks.map(book => (
-                <BookRow
-                  key={book._id}
-                  book={book}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="px-6 py-8 text-center text-slate-400">
-                  No books found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Stats Footer */}
-      <div className="flex justify-between items-center text-sm text-slate-400">
-        <p>Showing {filteredAndSortedBooks.length} of {books.length} books</p>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

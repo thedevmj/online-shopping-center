@@ -1,4 +1,10 @@
-import React, { useContext, useMemo, useState, useEffect, useCallback } from "react";
+import React, {
+  useContext,
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { addtoFavorite, getallbooks } from "../api/bookapi";
 import { useNavigate } from "react-router-dom";
 import { Bookcontext } from "./BookContext";
@@ -11,15 +17,22 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
 
   useEffect(() => {
     let isMounted = true;
+
     const fetchBooks = async () => {
       if (books.length > 0) {
         return;
       }
 
       try {
-        const res = await getallbooks();
+        const response = await fetch("http://localhost:3000/api/book/getall", {
+          method: "GET",
+
+          credentials: "include",
+        });
+        const data = await response.json();
+
         if (!isMounted) return;
-        setBooks(res.data.data || []);
+        setBooks(data.data || []);
       } catch (err) {
         console.error("Error fetching books:", err);
       }
@@ -32,13 +45,16 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
     };
   }, [books.length, setBooks]);
 
-  const handleCart = useCallback((book) => {
-    localStorage.setItem("selectedBook", JSON.stringify(book));
-    setSelectedBook(book);
-    navigate("/ordercart");
-  }, [navigate, setSelectedBook]);
+  const handleCart = useCallback(
+    (book) => {
+      localStorage.setItem("selectedBook", JSON.stringify(book));
+      setSelectedBook(book);
+      navigate("/ordercart");
+    },
+    [navigate, setSelectedBook],
+  );
 
-  const handlefavoritebook = useCallback(async(book) => {
+  const handlefavoritebook = useCallback(async (book) => {
     try {
       const response = await addtoFavorite(book._id);
       alert("Book added to favorites!");
@@ -51,42 +67,74 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
     setsearch("");
   }, [setsearch]);
 
-  const filteredBooks = useMemo(() => {
-    const base = category
-      ? books.filter((book) => book.bookCategory === category)
-      : books;
+ const filteredBooks = useMemo(() => {
+  let base = books;
 
-    const searchTerm = search?.trim().toLowerCase();
-    let filtered = base;
+  
+  if (category) {
+    base = books.filter((book) => {
+      if (!book.bookCategory) return false;
 
-    if (searchTerm) {
-      filtered = base.filter((book) =>
-        book.bookTitle?.toLowerCase().includes(searchTerm) ||
-          book.bookAuthor?.toLowerCase().includes(searchTerm) ||
-          book.bookCategory?.toLowerCase().includes(searchTerm)
+      const bookCat =
+        typeof book.bookCategory === "object"
+          ? book.bookCategory._id
+          : book.bookCategory;
+
+      return String(bookCat) === String(category);
+    });
+  }
+
+ 
+  const searchTerm = search?.trim().toLowerCase();
+  let filtered = base;
+
+  if (searchTerm) {
+    filtered = base.filter((book) => {
+      const title = book.bookTitle?.toLowerCase() || "";
+      const author = book.bookAuthor?.toLowerCase() || "";
+
+      const categoryName =
+        typeof book.bookCategory === "object"
+          ? book.bookCategory?.name?.toLowerCase()
+          : "";
+
+      return (
+        title.includes(searchTerm) ||
+        author.includes(searchTerm) ||
+        categoryName.includes(searchTerm)
       );
-    }
+    });
+  }
 
-    const sorted = [...filtered];
-    switch (filter) {
-      case "price-asc":
-        sorted.sort((a, b) => a.bookPrice - b.bookPrice);
-        break;
-      case "price-desc":
-        sorted.sort((a, b) => b.bookPrice - a.bookPrice);
-        break;
-      case "az":
-        sorted.sort((a, b) => a.bookTitle.localeCompare(b.bookTitle));
-        break;
-      case "za":
-        sorted.sort((a, b) => b.bookTitle.localeCompare(a.bookTitle));
-        break;
-      default:
-        break;
-    }
+  const sorted = [...filtered];
 
-    return sorted;
-  }, [books, category, filter, search]);
+  switch (filter) {
+    case "price-asc":
+      sorted.sort((a, b) => Number(a.bookPrice) - Number(b.bookPrice));
+      break;
+
+    case "price-desc":
+      sorted.sort((a, b) => Number(b.bookPrice) - Number(a.bookPrice));
+      break;
+
+    case "az":
+      sorted.sort((a, b) =>
+        (a.bookTitle || "").localeCompare(b.bookTitle || "")
+      );
+      break;
+
+    case "za":
+      sorted.sort((a, b) =>
+        (b.bookTitle || "").localeCompare(a.bookTitle || "")
+      );
+      break;
+
+    default:
+      break;
+  }
+
+  return sorted;
+}, [books, category, search, filter]);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
@@ -102,7 +150,8 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
           {search && search.trim() && (
             <div className="mb-6 text-center">
               <p className="text-white/80 text-lg">
-                {filteredBooks.length} result{filteredBooks.length !== 1 ? 's' : ''} for "{search}"
+                {filteredBooks.length} result
+                {filteredBooks.length !== 1 ? "s" : ""} for "{search}"
               </p>
             </div>
           )}
@@ -111,7 +160,9 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
               <div className="col-span-full">
                 <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-12 text-center border border-white/20">
                   <p className="text-white/80 text-xl">
-                    {search && search.trim() ? `No books found for "${search}"` : "No books found"}
+                    {search && search.trim()
+                      ? `No books found for "${search}"`
+                      : "No books found"}
                   </p>
                   {search && search.trim() && (
                     <button
@@ -141,16 +192,21 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
                     {book.bookTitle}
                   </h2>
 
-                  <p className="text-white/70 mb-4 line-clamp-1">by {book.bookAuthor}</p>
+                  <p className="text-white/70 mb-4 line-clamp-1">
+                    by {book.bookAuthor}
+                  </p>
 
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-emerald-300">
                       ${book.bookPrice}
                     </span>
-                    <HeartIcon className="h-6 w-6 text-white/70 hover:text-emerald-300 transition-colors cursor-pointer" onClick={() => handlefavoritebook(book)} />
+                    <HeartIcon
+                      className="h-6 w-6 text-white/70 hover:text-emerald-300 transition-colors cursor-pointer"
+                      onClick={() => handlefavoritebook(book)}
+                    />
                     <button
                       className="bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20"
-                      onClick={() => handleCart(book)} 
+                      onClick={() => handleCart(book)}
                     >
                       Buy Now
                     </button>

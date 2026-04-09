@@ -37,7 +37,7 @@ export default function Favorites() {
 
   const handleRemoveFavorite = async (favoriteId, bookId) => {
     try {
-      await fetch(`/removefromfavorite/${bookId}`, {
+      await fetch(`http://localhost:3000/api/book/removefromfavorite/${bookId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

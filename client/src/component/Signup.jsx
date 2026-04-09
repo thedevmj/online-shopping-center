@@ -12,6 +12,7 @@ export default function Signup({ onClose }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    status: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);

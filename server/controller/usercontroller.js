@@ -36,11 +36,12 @@ const addUser = async (req, res) => {
         id: user._id,
         email: user.email,
         role: user.role,
+
       },
     })
   }
   catch (error) {
-    console.log("error ", error);
+    console.log("error occured in adding user ", error);
 
   }
 }
@@ -55,6 +56,7 @@ const loginUser = async (req, res) => {
 
 
     const user = await User.findOne({ email }).select("+password");
+
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -64,6 +66,9 @@ const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
+
+    user.status="active";
+    await user.save();
 
     const token = user.getSignedJwtToken();
 
@@ -90,13 +95,15 @@ const loginUser = async (req, res) => {
 
 const logoutuser = async (req, res) => {
   try {
-
+   
+  
+   const updateduser= await User.findByIdAndUpdate(req.user.id, { status: "inactive" },{new:true})
     res.clearCookie("authToken");
     res.status(200).json({
       success: true,
       message: "Logged out successfully"
     })
-
+ 
   }
   catch (error) {
     res.status(500).json({ message: error.message });
@@ -121,5 +128,24 @@ const checkAuth = async (req, res) => {
 
 }
 
+const getuserDetails = async (req, res) => {
+  try {
 
-module.exports = { addUser, loginUser, logoutuser, checkAuth }
+    const user = await User.find();
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "No user found"
+      })
+    }
+    res.status(200).json({
+      success: true,
+      data: user
+    })
+
+  }
+  catch (err) {
+    console.log("error occurred while fetching user details ", err);
+  }
+}
+module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails }

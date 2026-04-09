@@ -13,10 +13,10 @@ const UserRow = React.memo(({ user, onDelete, onToggleRole }) => (
     <td className="px-6 py-4">
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-300 font-semibold">
-          {user.name.charAt(0)}
+          {user.email}
         </div>
         <div>
-          <p className="font-medium text-emerald-300">{user.name}</p>
+          <p className="font-medium text-emerald-300">{user.email}</p>
           <p className="text-xs text-slate-400">{user.joinDate}</p>
         </div>
       </div>
@@ -38,7 +38,7 @@ const UserRow = React.memo(({ user, onDelete, onToggleRole }) => (
         ) : (
           <ExclamationCircleIcon className="h-3 w-3" />
         )}
-        {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+        {user.email(0).toUpperCase() + user.status.slice(1)}
       </span>
     </td>
     <td className="px-6 py-4">
@@ -82,71 +82,26 @@ export default function UserManagement() {
   const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
-      // Replace with actual API call
-      // const response = await fetch('/api/users');
-      // const data = await response.json();
-      // setUsers(data.data);
-
-      // Placeholder data
-      setUsers([
-        {
-          id: '1',
-          name: 'John Doe',
-          email: 'john@example.com',
-          status: 'active',
-          role: 'user',
-          joinDate: '2024-01-15',
-          totalSpent: 234.99,
-          orders: 5,
-        },
-        {
-          id: '2',
-          name: 'Jane Smith',
-          email: 'jane@example.com',
-          status: 'active',
-          role: 'admin',
-          joinDate: '2024-01-10',
-          totalSpent: 1234.50,
-          orders: 28,
-        },
-        {
-          id: '3',
-          name: 'Bob Johnson',
-          email: 'bob@example.com',
-          status: 'inactive',
-          role: 'user',
-          joinDate: '2024-02-01',
-          totalSpent: 89.99,
-          orders: 2,
-        },
-        {
-          id: '4',
-          name: 'Alice Brown',
-          email: 'alice@example.com',
-          status: 'active',
-          role: 'user',
-          joinDate: '2024-02-15',
-          totalSpent: 342.00,
-          orders: 8,
-        },
-        {
-          id: '5',
-          name: 'Charlie Wilson',
-          email: 'charlie@example.com',
-          status: 'active',
-          role: 'user',
-          joinDate: '2024-03-01',
-          totalSpent: 198.50,
-          orders: 4,
-        },
-      ]);
+    const userlist= await fetch("http://localhost:3000/auth/user/getuserdetails",{
+        method:"GET",
+        credentials:"include"
+      })
+      
+      if(userlist.length === 0){
+       console.log("error fetching user !");
+       return;
+      }
+    const data=await userlist.json();
+    setUsers(data.data);
+     
     } catch (error) {
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
     }
   }, []);
-
+ console.log(users);
+ 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
@@ -157,7 +112,7 @@ export default function UserManagement() {
     
     if (searchQuery) {
       filtered = filtered.filter(user =>
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.email.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
@@ -227,7 +182,7 @@ export default function UserManagement() {
                   : 'bg-slate-700/50 text-slate-300 border border-emerald-500/30 hover:bg-slate-600/50'
               }`}
             >
-              {status.charAt(0).toUpperCase() + status.slice(1)}
+              { status.slice(1)}
             </button>
           ))}
         </div>
@@ -250,7 +205,7 @@ export default function UserManagement() {
             {filteredUsers.length > 0 ? (
               filteredUsers.map(user => (
                 <UserRow
-                  key={user.id}
+                  key={user._id}
                   user={user}
                   onDelete={handleDelete}
                   onToggleRole={handleToggleRole}

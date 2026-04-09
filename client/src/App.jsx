@@ -101,7 +101,7 @@ const App = () => {
           element={
             <>
               <ProtectedRoute>
-                <Shophub_cart category={category} filter={filter} search={search || ""} setsearch={setsearch} />
+                <Shophub_cart category={category||""} filter={filter} search={search || ""} setsearch={setsearch} />
               </ProtectedRoute>
             </>
           }

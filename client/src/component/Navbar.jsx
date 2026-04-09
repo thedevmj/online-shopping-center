@@ -55,7 +55,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
   };
   const user = localStorage.getItem("user");
   const isadmin = user === "Admin"?true:false;
-  const isLoggedIn = user.length == 0 ? false : true;
+  const isLoggedIn = !user? false : true;
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -167,8 +167,8 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                     </option>
                     {categories?.map((c) => (
                       <option
-                        key={c.name || c}
-                        value={c._id || c}
+                        key={c._id || c}
+                        value={c._id||c}
                         className="bg-slate-900 text-emerald-400"
                       >
                         {c.name || c}

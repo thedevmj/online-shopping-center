@@ -16,6 +16,9 @@ export const LoginUser = (data) => {
   return axios.post(`${AUTH_URL}login`, data);
 };
 
+export const LogoutUser=()=>{
+  return axios.post(`${AUTH_URL}/logout`);
+}
 // ==================== BOOKS ====================
 export const createbook = (data) => {
   return axios.post(`${Api_url}addbook`, data);
@@ -28,6 +31,9 @@ export const getallbooks = () => {
 export const getcartById = (id) => {
   return axios.get(`${Api_url}findbook/${id}`);
 };
+export const getusers=async()=>{
+  return axios.get(`${AUTH_URL}getuserdetails`);
+}
 
 export const Updatebooks = (id, updatedData) => {
   return axios.put(`${Api_url}update/${id}`, updatedData);
@@ -65,3 +71,4 @@ export const getallfavorite = () => {
 export const removeFromfav = (id) => {
   return axios.delete(`${Api_url}removefromfavorite/${id}`)
 };
+
