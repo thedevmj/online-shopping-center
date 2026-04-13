@@ -33,7 +33,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Helper function to determine active state
+
   const isActive = (path) => location.pathname === path;
   const activeButtonClass =
     "bg-emerald-500/30 border-emerald-400/60 text-emerald-300";
@@ -238,7 +238,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 </PopoverButton>
               </Popover>
             )}
-            {user === "Admin" ? (
+            {isadmin ? (
               <ul className="flex items-center gap-6">
                 <li>
                   <button
@@ -326,7 +326,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               </button>
             ) : (
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/Login")}
                 className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300"
               >
                 <UserIcon className="h-6 w-6" />

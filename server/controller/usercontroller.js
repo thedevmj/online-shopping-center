@@ -1,3 +1,4 @@
+const order = require("../model/order");
 const User = require("../model/user");
 
 
@@ -67,7 +68,7 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    user.status="active";
+    user.status = "active";
     await user.save();
 
     const token = user.getSignedJwtToken();
@@ -95,15 +96,15 @@ const loginUser = async (req, res) => {
 
 const logoutuser = async (req, res) => {
   try {
-   
-  
-   const updateduser= await User.findByIdAndUpdate(req.user.id, { status: "inactive" },{new:true})
+
+
+    const updateduser = await User.findByIdAndUpdate(req.user.id, { status: "inactive" }, { new: true })
     res.clearCookie("authToken");
     res.status(200).json({
       success: true,
       message: "Logged out successfully"
     })
- 
+
   }
   catch (error) {
     res.status(500).json({ message: error.message });
@@ -132,12 +133,14 @@ const getuserDetails = async (req, res) => {
   try {
 
     const user = await User.find();
+
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "No user found"
       })
     }
+
     res.status(200).json({
       success: true,
       data: user
@@ -148,4 +151,51 @@ const getuserDetails = async (req, res) => {
     console.log("error occurred while fetching user details ", err);
   }
 }
-module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails }
+
+const manageOrders = async (req, res) => {
+  try {
+    const userId = req.user.id || req.user._id;
+
+    if (!userId) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found "
+      });
+    }
+    const { items, paymentId } = req.body.orderData || req.body;
+    
+    if (!items || !Array.isArray(items)) {
+      return res.status(400).json({ message: "Invalid items" });
+    }
+    const ifexist= order.findOne(items._id);
+    if (ifexist){
+      return res.status(403).json({
+        message :"Already ordered "
+      })
+    }
+    if (!req.body) {
+      return res.status(400).json({ message: "Request body missing" });
+    }
+   const totalAmount = items.reduce((acc, item) => {
+      return acc + Number(item.priceAtPurchase) * item.quantity;
+    }, 0);
+
+    const success = order.create({
+      user: userId,
+      items,
+      totalAmount,
+      paymentId,
+      paymentStatus: "completed"
+    });
+    if(success){
+    res.status(200).json({
+      message: "Order successfull"
+    })
+  }
+  }
+  catch (err) {
+    console.log("error occurred while saving user Order ", err);
+  }
+
+}
+module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders }

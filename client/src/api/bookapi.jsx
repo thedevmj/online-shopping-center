@@ -72,3 +72,21 @@ export const removeFromfav = (id) => {
   return axios.delete(`${Api_url}removefromfavorite/${id}`)
 };
 
+/*=========================== Orders =============================*/
+
+export const createOrder = async (orderData) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/auth/user/userorder",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ orderData }),
+        },
+      );
+      return response.json();
+    } catch (err) {
+      console.log("Sorry failed to order ", err);
+    }
+  };

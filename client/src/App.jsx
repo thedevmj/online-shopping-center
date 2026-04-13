@@ -14,8 +14,9 @@ import Allusercarts from "./component/Allusercarts";
 import Logout from "./component/Logout";
 import Userdashboard from "./component/Userdashboard";
 import Favorites from "./component/Favorites";
-import Orders from "./component/Orders";
+import Orders from "./component/UserOrders";
 import Admindashboard from "./component/Admindashboard";
+import UserOrders from "./component/UserOrders";
 
 
 const App = () => {
@@ -84,7 +85,7 @@ const App = () => {
             <Signup />
           
         }></Route>
-        <Route path="/orders" element={<><ProtectedRoute><Orders/></ProtectedRoute></>} />
+        <Route path="/orders" element={<><ProtectedRoute><UserOrders/></ProtectedRoute></>} />
         <Route
           path="/allcarts"
           element={

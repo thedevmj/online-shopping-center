@@ -9,11 +9,11 @@ import {
 } from '@heroicons/react/24/outline';
 
 const UserRow = React.memo(({ user, onDelete, onToggleRole }) => (
-  <tr className="border-b border-slate-700/50 hover:bg-slate-800/30 transition-colors">
+  <tr className="border-b border-slate-700/50 hover:bg-slate-800/30 transition-colors" key={user._id}>
     <td className="px-6 py-4">
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-300 font-semibold">
-          {user.email}
+          {user.email.split[1]}
         </div>
         <div>
           <p className="font-medium text-emerald-300">{user.email}</p>
@@ -38,7 +38,7 @@ const UserRow = React.memo(({ user, onDelete, onToggleRole }) => (
         ) : (
           <ExclamationCircleIcon className="h-3 w-3" />
         )}
-        {user.email(0).toUpperCase() + user.status.slice(1)}
+        {user.status}
       </span>
     </td>
     <td className="px-6 py-4">
@@ -48,7 +48,7 @@ const UserRow = React.memo(({ user, onDelete, onToggleRole }) => (
           : 'bg-slate-700/50 text-slate-300'
       }`}>
         <ShieldCheckIcon className="h-4 w-4" />
-        {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+        {user.role}
       </span>
     </td>
     <td className="px-6 py-4">${user.totalSpent}</td>
@@ -100,7 +100,7 @@ export default function UserManagement() {
       setLoading(false);
     }
   }, []);
- console.log(users);
+
  
   useEffect(() => {
     fetchUsers();
@@ -112,8 +112,8 @@ export default function UserManagement() {
     
     if (searchQuery) {
       filtered = filtered.filter(user =>
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+        users.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        users.email.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -127,16 +127,16 @@ export default function UserManagement() {
 
   const handleDelete = useCallback((userId) => {
     if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
-      setUsers(prev => prev.filter(user => user.id !== userId));
+      setUsers(prev => prev.filter(users => users.id !== userId));
     }
   }, []);
 
   const handleToggleRole = useCallback((userId) => {
     setUsers(prev =>
-      prev.map(user =>
-        user.id === userId
-          ? { ...user, role: user.role === 'admin' ? 'user' : 'admin' }
-          : user
+      prev.map(users =>
+        users.id === userId
+          ? { ...users, role: users.role === 'Admin' ? 'User' : 'Admin' }
+          : users
       )
     );
   }, []);
@@ -182,7 +182,7 @@ export default function UserManagement() {
                   : 'bg-slate-700/50 text-slate-300 border border-emerald-500/30 hover:bg-slate-600/50'
               }`}
             >
-              { status.slice(1)}
+              { status}
             </button>
           ))}
         </div>
