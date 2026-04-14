@@ -1,5 +1,5 @@
 const express=require("express")
-const { addUser, loginUser,logoutuser, checkAuth, getuserDetails, manageOrders } = require("../controller/usercontroller");
+const { addUser, loginUser,logoutuser, checkAuth, getuserDetails, manageOrders, viewOrders } = require("../controller/usercontroller");
 const { verifyToken } = require("../middleware/authmiddleware");
 const router=express.Router();
 
@@ -9,5 +9,5 @@ router.post("/logout",verifyToken,logoutuser);
 router.post("/userorder",verifyToken,manageOrders);
 router.get("/me",checkAuth);
 router.get("/getuserdetails",getuserDetails);
-
+router.get("/getuserorder",verifyToken,viewOrders);
 module.exports=router;

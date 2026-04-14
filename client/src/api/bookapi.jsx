@@ -90,3 +90,7 @@ export const createOrder = async (orderData) => {
       console.log("Sorry failed to order ", err);
     }
   };
+
+  export const getallOrders=async()=>{
+    return axios.get(`${AUTH_URL}getuserorder`);
+  }

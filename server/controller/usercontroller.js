@@ -152,6 +152,26 @@ const getuserDetails = async (req, res) => {
   }
 }
 
+const viewOrders=async(req,res)=>{
+
+  try{
+
+   const data= await order.findById(req.user.id || req.user._id)
+   
+   if(!data){
+    return res.status(404).json({success:false,message:" Order not found for this user"})
+  }
+  res.status(201).json({
+    message:"Order fetch success ",
+    data:data
+  })
+}
+  catch(err){
+  console.log("Error occurred in fetching order ",err);
+  
+  }
+
+}
 const manageOrders = async (req, res) => {
   try {
     const userId = req.user.id || req.user._id;
@@ -198,4 +218,4 @@ const manageOrders = async (req, res) => {
   }
 
 }
-module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders }
+module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders,viewOrders }
