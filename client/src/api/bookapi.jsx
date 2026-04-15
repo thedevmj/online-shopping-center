@@ -3,9 +3,7 @@ import axios from "axios";
 const Api_url = "http://localhost:3000/api/book/";
 const AUTH_URL = "http://localhost:3000/auth/user/";
 
-axios.defaults.withCredentials = true; 
-
-
+axios.defaults.withCredentials = true;
 
 // ==================== AUTHENTICATION ====================
 export const createUser = (data) => {
@@ -16,9 +14,9 @@ export const LoginUser = (data) => {
   return axios.post(`${AUTH_URL}login`, data);
 };
 
-export const LogoutUser=()=>{
+export const LogoutUser = () => {
   return axios.post(`${AUTH_URL}/logout`);
-}
+};
 // ==================== BOOKS ====================
 export const createbook = (data) => {
   return axios.post(`${Api_url}addbook`, data);
@@ -31,9 +29,9 @@ export const getallbooks = () => {
 export const getcartById = (id) => {
   return axios.get(`${Api_url}findbook/${id}`);
 };
-export const getusers=async()=>{
+export const getusers = async () => {
   return axios.get(`${AUTH_URL}getuserdetails`);
-}
+};
 
 export const Updatebooks = (id, updatedData) => {
   return axios.put(`${Api_url}update/${id}`, updatedData);
@@ -57,7 +55,7 @@ export const getallCarts = () => {
 };
 
 export const deleteCart = (id) => {
-  return axios.delete(`${Api_url}deletecart/${id}`)
+  return axios.delete(`${Api_url}deletecart/${id}`);
 };
 
 // ==================== FAVORITES ====================
@@ -69,28 +67,29 @@ export const getallfavorite = () => {
 };
 
 export const removeFromfav = (id) => {
-  return axios.delete(`${Api_url}removefromfavorite/${id}`)
+  return axios.delete(`${Api_url}removefromfavorite/${id}`);
 };
 
 /*=========================== Orders =============================*/
 
 export const createOrder = async (orderData) => {
-    try {
-      const response = await fetch(
-        "http://localhost:3000/auth/user/userorder",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ orderData }),
-        },
-      );
-      return response.json();
-    } catch (err) {
-      console.log("Sorry failed to order ", err);
-    }
-  };
-
-  export const getallOrders=async()=>{
-    return axios.get(`${AUTH_URL}getuserorder`);
+  try {
+    const response = await fetch("http://localhost:3000/auth/user/userorder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ orderData }),
+    });
+    return response.json();
+  } catch (err) {
+    console.log("Sorry failed to order ", err);
   }
+};
+
+export const getallOrders = async () => {
+  return axios.get(`${AUTH_URL}getuserorder`);
+};
+
+export const orderstatus = async (orderId) => {
+  return axios.put(`${AUTH_URL}/${orderId}`);
+};

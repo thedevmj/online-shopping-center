@@ -354,7 +354,7 @@ const getAllFavoritebooks =async(req,res)=>{
 
 const removeFromFavorite = async (req, res) => {
     try {
-        const { id } = req.params; // Get bookId from URL params
+        const { id } = req.params; 
         const userId = req.user.id || req.user._id;
         const response = await favorite.findOneAndDelete(
             { book: id, user: userId }

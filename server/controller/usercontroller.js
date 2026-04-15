@@ -151,17 +151,18 @@ const getuserDetails = async (req, res) => {
     console.log("error occurred while fetching user details ", err);
   }
 }
-
+//for admin
 const viewOrders=async(req,res)=>{
 
   try{
 
-   const data= await order.findById(req.user.id || req.user._id)
+   const data= await order.find().populate("user","email");
    
-   if(!data){
-    return res.status(404).json({success:false,message:" Order not found for this user"})
+   if(data.length === 0){
+    return res.status(404).json({success:false,message:" Order not fetched"})
   }
-  res.status(201).json({
+  res.status(200).json({
+    sucess:true,
     message:"Order fetch success ",
     data:data
   })
@@ -218,4 +219,24 @@ const manageOrders = async (req, res) => {
   }
 
 }
-module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders,viewOrders }
+
+const changeOrderStatus=async(req,res)=>{
+  try{
+    const orderId=req.params.orderid;
+    const response=await order.findByIdAndUpdate(orderId);
+   if(!response){
+    return res.status(404).json({
+      message:"Order not found for the user"
+    })
+   }
+    res.status(200).json({
+      message:"Order Updated !"
+    })
+
+  }
+  catch(err){
+  console.log("Error changing Order status ",err);
+  
+  }
+}
+module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders,viewOrders ,changeOrderStatus}

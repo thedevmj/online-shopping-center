@@ -73,9 +73,9 @@ export default function BookManagement({ search }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('');
 
-  const navigate = useNavigate(); // ✅ navigation
+  const navigate = useNavigate(); 
 
-  // ✅ Fetch books
+  
   const fetchBooks = useCallback(async () => {
     try {
       setLoading(true);
@@ -102,7 +102,7 @@ export default function BookManagement({ search }) {
     setSearchQuery(search || '');
   }, [fetchBooks, search]);
 
-  // ✅ Filter + sort
+ 
   const filteredAndSortedBooks = useMemo(() => {
     let filtered = books.filter(
       (book) =>
@@ -124,7 +124,7 @@ export default function BookManagement({ search }) {
     return filtered;
   }, [books, searchQuery, sortBy]);
 
-  // ✅ Navigate to update page
+
   const handleEdit = useCallback((book) => {
     navigate("/updateBook", { state: { book } });
   }, [navigate]);
@@ -134,12 +134,12 @@ export default function BookManagement({ search }) {
     
   }, []);
 
-  // ✅ Loading UI
+
   if (loading) {
     return <div className="text-center p-10">Loading...</div>;
   }
 
-  // ✅ Main UI
+  
   return (
     <div className="space-y-6">
       <input
