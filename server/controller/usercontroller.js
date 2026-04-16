@@ -222,8 +222,12 @@ const manageOrders = async (req, res) => {
 
 const changeOrderStatus=async(req,res)=>{
   try{
-    const orderId=req.params.orderid;
-    const response=await order.findByIdAndUpdate(orderId);
+    const orderId=req.params.id;
+    const{status}=req.body;
+    const response=await order.findByIdAndUpdate(orderId,
+      {orderStatus:status},
+    {new:true});
+
    if(!response){
     return res.status(404).json({
       message:"Order not found for the user"

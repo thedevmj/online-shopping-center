@@ -6,6 +6,7 @@ import {
   ClockIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
+import { orderstatus } from "../../api/bookapi";
 
 //  FIXED STATUS BADGE
 const StatusBadge = ({ status }) => {
@@ -32,7 +33,7 @@ export default function OrderManagement() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
-
+  const [Orderstatus, setOrderstatus] = useState("");
   // FETCH
   const fetchOrders = useCallback(async () => {
     try {
@@ -43,7 +44,6 @@ export default function OrderManagement() {
       const data = await res.json();
       const normalized = Array.isArray(data.data) ? data.data : [data.data];
       setOrders(normalized);
-
     } catch (err) {
       console.error(err);
     } finally {
@@ -55,6 +55,13 @@ export default function OrderManagement() {
     fetchOrders();
   }, [fetchOrders]);
 
+  // for changing status
+  const statuschange = async (orderId) => {
+    try {
+    } catch (err) {
+      console.log("Error changing status ", err);
+    }
+  };
   //  FILTER + SEARCH
   const filteredOrders = useMemo(() => {
     return orders.filter((order) => {
@@ -73,11 +80,29 @@ export default function OrderManagement() {
     });
   }, [orders, searchQuery, filterStatus]);
   //  STATUS CHANGE (frontend only)
-  const handleStatusChange = (id, status) => {
-    setOrders((prev) =>
-      prev.map((o) => (o._id === id ? { ...o, orderStatus: status } : o)),
+  const handleStatusChange = useCallback(async (id, status) => {
+    try {
+      const res = await fetch(`http://localhost:3000/auth/user/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials:"include",
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok){ 
+        console.log("Could not change status ", err);
+        return;
+      };
+       setOrders((prev) =>
+      prev.map((order) =>
+        order._id === id ? { ...order, orderStatus: status } : order
+      )
     );
-  };
+      alert("Status changed !");
+      
+    } catch (err) {
+      console.log("Error occured while changing status ", err);
+    }
+  });
 
   if (loading) {
     return <p className="text-center mt-10">Loading...</p>;
@@ -134,7 +159,7 @@ export default function OrderManagement() {
                 key={order._id}
                 className="border-t border-gray-700 text-center"
               >
-                <td>{order.user.email.slice(0,4)}</td>
+                <td>{order.user.email.slice(0, 4)}</td>
 
                 <td>{order.user?.email || "N/A"}</td>
 
