@@ -17,7 +17,8 @@ import Favorites from "./component/Favorites";
 import Orders from "./component/UserOrders";
 import Admindashboard from "./component/Admindashboard";
 import UserOrders from "./component/UserOrders";
-
+import viewOrder from "./component/Vieworder";
+import ViewOrder from "./component/Vieworder";
 
 const App = () => {
   const [showlogin, setShowLogin] = useState(false);
@@ -66,7 +67,9 @@ const App = () => {
             </>
           }
         ></Route>
+         <Route path="/vieworder" element={<><ProtectedRoute><ViewOrder></ViewOrder></ProtectedRoute></>}>
 
+         </Route>
         <Route
           path="/updateBook"
           element={

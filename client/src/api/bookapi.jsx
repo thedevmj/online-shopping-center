@@ -90,6 +90,9 @@ export const getallOrders = async () => {
   return axios.get(`${AUTH_URL}getuserorder`);
 };
 
+export const getorderById=async()=>{
+  return axios.get(`${AUTH_URL}orderbyid`);
+}
 export const orderstatus = async (orderId) => {
   return axios.put(`${AUTH_URL}/${orderId}`);
 };

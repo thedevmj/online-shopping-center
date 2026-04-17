@@ -279,10 +279,10 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    className="font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300"
+                    href="/vieworder"
+                    className="font-semibold w-2.5 text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-3xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300"
                   >
-                    About
+                   Orders 
                   </a>
                 </li>
               </ul>

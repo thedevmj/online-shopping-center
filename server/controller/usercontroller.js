@@ -243,4 +243,32 @@ const changeOrderStatus=async(req,res)=>{
   
   }
 }
-module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders,viewOrders ,changeOrderStatus}
+const getOrderByid=async(req,res)=>{
+
+  try{
+    const id =req.user.id||req.user._id;
+
+    const orders=await order.find({user:id}).populate("user").populate("items.book");
+
+    if(!orders || orders.length === 0){
+      return res.status(404).json({success:false,message:"Order not found for this user "})
+    }
+
+    res.status(200).json({
+      success:true,
+      message:"order found for this user ",
+      data:orders
+      
+    })
+
+  }
+  catch(err){
+     
+      res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+}
+
+module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders,viewOrders ,changeOrderStatus,getOrderByid}
