@@ -22,7 +22,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Logout from "./Logout";
 import { getallCategories } from "../api/bookapi";
 
-
 export default function Navbar({ selectedCategory, setfilter, setsearch }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -32,7 +31,6 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
 
   const navigate = useNavigate();
   const location = useLocation();
-
 
   const isActive = (path) => location.pathname === path;
   const activeButtonClass =
@@ -54,8 +52,8 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
     setLogoutModalOpen(true);
   };
   const user = localStorage.getItem("user");
-  const isadmin = user === "Admin"?true:false;
-  const isLoggedIn = !user? false : true;
+  const isadmin = user === "Admin" ? true : false;
+  const isLoggedIn = !user ? false : true;
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -90,25 +88,27 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               </span>
             </a>
           </div>
-
-          <div className="hidden md:flex flex-1 items-center justify-center px-4">
-            <div className="w-full max-w-xl">
-              <label className="relative block group">
-                <span className="sr-only">Search</span>
-                <input
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setsearch(e.target.value);
-                  }}
-                  className="w-full rounded-full backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400/80 focus:bg-slate-700/70 focus:shadow-xl focus:shadow-emerald-500/20"
-                  placeholder="Search products, categories, brands..."
-                />
-                <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-emerald-400 transition-colors" />
-              </label>
+          {isLoggedIn && !isadmin? (
+            <div className="hidden md:flex flex-1 items-center justify-center px-4">
+              <div className="w-full max-w-xl">
+                <label className="relative block group">
+                  <span className="sr-only">Search</span>
+                  <input
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      setsearch(e.target.value);
+                    }}
+                    className="w-full rounded-full backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400/80 focus:bg-slate-700/70 focus:shadow-xl focus:shadow-emerald-500/20"
+                    placeholder="Search products, categories, brands..."
+                  />
+                  <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-emerald-400 transition-colors" />
+                </label>
+              </div>
             </div>
-          </div>
-
+          ) : (
+            <div></div>
+          )}
           <div className="flex md:hidden items-center gap-3">
             <button
               onClick={() => setMobileMenuOpen(true)}
@@ -142,7 +142,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               )}
             </button>
           </div>
-
+{isLoggedIn && !isadmin?
           <PopoverGroup className="hidden md:flex gap-x-8 items-center">
             <Popover className="relative">
               <PopoverButton className="flex items-center gap-1 font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300">
@@ -153,90 +153,106 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 transition
                 className="absolute left-0 z-50 mt-3 w-screen max-w-md rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
               >
-                { !isadmin?(
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-emerald-400 mb-4">
-                    Select Category
-                  </h3>
-                  <select
-                    className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/80 transition-all duration-300"
-                    onChange={(e) => selectedCategory(e.target.value)}
-                  >
-                    <option value="" className="bg-slate-900 text-emerald-400">
-                      All Categories
-                    </option>
-                    {categories?.map((c) => (
+                {!isadmin ? (
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold text-emerald-400 mb-4">
+                      Select Category
+                    </h3>
+                    <select
+                      className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/80 transition-all duration-300"
+                      onChange={(e) => selectedCategory(e.target.value)}
+                    >
                       <option
-                        key={c._id || c}
-                        value={c._id||c}
+                        value=""
                         className="bg-slate-900 text-emerald-400"
                       >
-                        {c.name || c}
+                        All Categories
                       </option>
-                    ))}
-                  </select>
-                </div>):<div></div>
-}
-              </PopoverPanel>
-            </Popover>
-            <Popover className="relative">
-              <PopoverButton className="flex items-center gap-1 font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300">
-                Filter
-                <ChevronDownIcon className="h-5 w-5" />
-              </PopoverButton>
-              <PopoverPanel
-                transition
-                className="absolute left-0 z-50 mt-3 w-48 rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
-              >
-                { !isadmin ? (
-                  <div className="p-3 space-y-1">
-                    {[
-                      { label: "All", value: "" },
-                      { label: "Price Low to High", value: "price-asc" },
-                      { label: "Price High to Low", value: "price-desc" },
-                      { label: "A-Z", value: "az" },
-                    { label: "Z-A", value: "za" },
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => setfilter?.(option.value)}
-                      className="w-full text-left text-white/90 hover:text-white hover:bg-slate-700 rounded-xl px-3 py-2 transition"
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>) : (
+                      {categories?.map((c) => (
+                        <option
+                          key={c._id || c}
+                          value={c._id || c}
+                          className="bg-slate-900 text-emerald-400"
+                        >
+                          {c.name || c}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
                   <div></div>
-                 )
-}
+                )}
               </PopoverPanel>
             </Popover>
-            {!isadmin ? (
+          </PopoverGroup>:<div></div>
+          }
+          <PopoverGroup className="hidden md:flex gap-x-8 items-center">
+            {isLoggedIn && !isadmin ? (
               <Popover className="relative">
-                <PopoverButton
-                  className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
-                    isActive("/userdashboard")
-                      ? activeButtonClass
-                      : inactiveButtonClass
-                  }`}
-                  onClick={() => navigate("/userdashboard")}
-                >
-                  UserDashBoard
+                <PopoverButton className="flex items-center gap-1 font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300">
+                  Filter
+                  <ChevronDownIcon className="h-5 w-5" />
                 </PopoverButton>
+                <PopoverPanel
+                  transition
+                  className="absolute left-0 z-50 mt-3 w-48 rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
+                >
+                  {!isadmin ? (
+                    <div className="p-3 space-y-1">
+                      {[
+                        { label: "All", value: "" },
+                        { label: "Price Low to High", value: "price-asc" },
+                        { label: "Price High to Low", value: "price-desc" },
+                        { label: "A-Z", value: "az" },
+                        { label: "Z-A", value: "za" },
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => setfilter?.(option.value)}
+                          className="w-full text-left text-white/90 hover:text-white hover:bg-slate-700 rounded-xl px-3 py-2 transition"
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                </PopoverPanel>
               </Popover>
             ) : (
-              <Popover className="relative">
-                <PopoverButton
-                  className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
-                    isActive("/userdashboard")
-                      ? activeButtonClass
-                      : inactiveButtonClass
-                  }`}
-                  onClick={() => navigate("/admindashboard")}
-                >
-                  AdminDashboard
-                </PopoverButton>
-              </Popover>
+              <div></div>
+            )}
+            {isLoggedIn ? (
+              !isadmin ? (
+                <Popover className="relative">
+                  <PopoverButton
+                    className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                      isActive("/userdashboard")
+                        ? activeButtonClass
+                        : inactiveButtonClass
+                    }`}
+                    onClick={() => navigate("/userdashboard")}
+                  >
+                    UserDashBoard
+                  </PopoverButton>
+                </Popover>
+              ) : (
+                <Popover className="relative">
+                  <PopoverButton
+                    className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                      isActive("/userdashboard")
+                        ? activeButtonClass
+                        : inactiveButtonClass
+                    }`}
+                    onClick={() => navigate("/admindashboard")}
+                  >
+                    AdminDashboard
+                  </PopoverButton>
+                </Popover>
+              )
+            ) : (
+              <div></div>
             )}
             {isadmin ? (
               <ul className="flex items-center gap-6">
@@ -264,6 +280,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 </li>
               </ul>
             ) : (
+              isLoggedIn?
               <ul className="flex items-center gap-6">
                 <li>
                   <button
@@ -282,15 +299,16 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                     href="/vieworder"
                     className="font-semibold w-2.5 text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-3xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300"
                   >
-                   Orders 
+                    Orders
                   </a>
                 </li>
-              </ul>
+              </ul>:<div></div>
             )}
           </PopoverGroup>
 
           <div className="hidden lg:flex items-center gap-6">
             {!isadmin ? (
+              isLoggedIn?
               <button
                 className={`relative p-2 ml-2.5 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
                   isActive("/favorites")
@@ -301,9 +319,11 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 title="My Favorites"
               >
                 <HeartIcon className=" h-6 w-6" />
-              </button>
+              </button>:<div></div>
+                
             ) : null}
             {!isadmin ? (
+              isLoggedIn?
               <button
                 className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
                   isActive("/orders")
@@ -314,7 +334,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 title="My Orders"
               >
                 <ClipboardDocumentListIcon className="h-6 w-6" />
-              </button>
+              </button>:<div></div>
             ) : null}
 
             {isLoggedIn ? (
@@ -329,9 +349,11 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 onClick={() => navigate("/Login")}
                 className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300"
               >
-                <UserIcon className="h-6 w-6" />
+                <UserIcon className="h-6 w-6" title="Login" />
               </button>
             )}
+            {
+            isLoggedIn && !isadmin?
             <button
               className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
                 isActive("/allcarts")
@@ -346,7 +368,8 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                   {cartCount}
                 </span>
               )}
-            </button>
+            </button>:<div></div>
+}
           </div>
         </nav>
       </header>
