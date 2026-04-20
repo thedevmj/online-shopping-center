@@ -152,123 +152,124 @@ const getuserDetails = async (req, res) => {
   }
 }
 //for admin
-const viewOrders=async(req,res)=>{
+const viewOrders = async (req, res) => {
 
-  try{
+  try {
 
-   const data= await order.find().populate("user","email");
-   
-   if(data.length === 0){
-    return res.status(404).json({success:false,message:" Order not fetched"})
+    const data = await order.find().populate("user", "email");
+
+    if (data.length === 0) {
+      return res.status(404).json({ success: false, message: " Order not fetched" })
+    }
+    res.status(200).json({
+      sucess: true,
+      message: "Order fetch success ",
+      data: data
+    })
   }
-  res.status(200).json({
-    sucess:true,
-    message:"Order fetch success ",
-    data:data
-  })
-}
-  catch(err){
-  console.log("Error occurred in fetching order ",err);
-  
+  catch (err) {
+    console.log("Error occurred in fetching order ", err);
+
   }
 
 }
 const manageOrders = async (req, res) => {
   try {
-    const userId = req.user.id || req.user._id;
+    const userId = req.user?.id || req.user?._id;
 
     if (!userId) {
       return res.status(404).json({
         success: false,
-        message: "User not found "
+        message: "User not found"
       });
     }
+
     const { items, paymentId } = req.body.orderData || req.body;
-    
+
     if (!items || !Array.isArray(items)) {
       return res.status(400).json({ message: "Invalid items" });
     }
-    const ifexist= order.findOne(items._id);
-    if (ifexist){
-      return res.status(403).json({
-        message :"Already ordered "
-      })
-    }
-    if (!req.body) {
-      return res.status(400).json({ message: "Request body missing" });
-    }
-   const totalAmount = items.reduce((acc, item) => {
+
+    const totalAmount = items.reduce((acc, item) => {
       return acc + Number(item.priceAtPurchase) * item.quantity;
     }, 0);
 
-    const success = order.create({
-      user: userId,
-      items,
-      totalAmount,
-      paymentId,
-      paymentStatus: "completed"
+    const updatedOrder = await order.findOneAndUpdate(
+      { user: userId }, 
+      {
+        $push: { items: { $each: items } }, 
+        $set: {
+          paymentId,
+          paymentStatus: "completed"
+        },
+        $inc: { totalAmount } 
+      },
+      {
+        new: true,
+        upsert: true 
+      }
+    );
+
+    return res.status(200).json({
+      message: "Order updated/created successfully",
+      data: updatedOrder
     });
-    if(success){
-    res.status(200).json({
-      message: "Order successfull"
-    })
+
+  } catch (err) {
+    console.log("error occurred while saving user Order", err);
+    return res.status(500).json({ message: "Server error" });
   }
+};
+
+const changeOrderStatus = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const { status } = req.body;
+    const response = await order.findByIdAndUpdate(orderId,
+      { orderStatus: status },
+      { new: true });
+
+    if (!response) {
+      return res.status(404).json({
+        message: "Order not found for the user"
+      })
+    }
+    res.status(200).json({
+      message: "Order Updated !"
+    })
+
   }
   catch (err) {
-    console.log("error occurred while saving user Order ", err);
-  }
+    console.log("Error changing Order status ", err);
 
-}
-
-const changeOrderStatus=async(req,res)=>{
-  try{
-    const orderId=req.params.id;
-    const{status}=req.body;
-    const response=await order.findByIdAndUpdate(orderId,
-      {orderStatus:status},
-    {new:true});
-
-   if(!response){
-    return res.status(404).json({
-      message:"Order not found for the user"
-    })
-   }
-    res.status(200).json({
-      message:"Order Updated !"
-    })
-
-  }
-  catch(err){
-  console.log("Error changing Order status ",err);
-  
   }
 }
-const getOrderByid=async(req,res)=>{
+const getOrderByid = async (req, res) => {
 
-  try{
-    const id =req.user.id||req.user._id;
+  try {
+    const id = req.user.id || req.user._id;
 
-    const orders=await order.find({user:id}).populate("user").populate("items.book");
+    const orders = await order.find({ user: id }).populate("user").populate("items.book");
 
-    if(!orders || orders.length === 0){
-      return res.status(404).json({success:false,message:"Order not found for this user "})
+    if (!orders || orders.length === 0) {
+      return;
     }
 
     res.status(200).json({
-      success:true,
-      message:"order found for this user ",
-      data:orders
-      
+      success: true,
+      message: "order found for this user ",
+      data: orders
+
     })
 
   }
-  catch(err){
-     
-      res.status(500).json({
+  catch (err) {
+
+    res.status(500).json({
       success: false,
       message: "Server error"
     });
   }
 }
 
-module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders,viewOrders ,changeOrderStatus,getOrderByid}
+module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders, viewOrders, changeOrderStatus, getOrderByid }

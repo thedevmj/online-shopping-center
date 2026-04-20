@@ -39,7 +39,7 @@ const handleBookStore = async (req, res) => {
 
         res.status(201).json({
             message: "Book added sucessfully ",
-            data: book
+        
         })
     }
     catch (err) {
@@ -56,7 +56,7 @@ const getAllbooks = async (req, res) => {
 
         res.status(200).json({
             message: "all book fetched !",
-            data: books
+             data:books
         })
 
 
@@ -81,7 +81,7 @@ const getbyid = async (req, res) => {
 
         res.status(200).json({
             message: "Book found",
-            data: books
+            data:books
         })
     }
     catch (err) {
@@ -105,7 +105,7 @@ const deleteBookbyId = async (req, res) => {
         }
         res.status(200).json({
             message: "Book deleted successfully !",
-
+             
         })
     }
     catch (err) {

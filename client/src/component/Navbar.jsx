@@ -88,7 +88,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               </span>
             </a>
           </div>
-          {isLoggedIn && !isadmin? (
+          {isLoggedIn && !isadmin ? (
             <div className="hidden md:flex flex-1 items-center justify-center px-4">
               <div className="w-full max-w-xl">
                 <label className="relative block group">
@@ -142,50 +142,52 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               )}
             </button>
           </div>
-{isLoggedIn && !isadmin?
-          <PopoverGroup className="hidden md:flex gap-x-8 items-center">
-            <Popover className="relative">
-              <PopoverButton className="flex items-center gap-1 font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300">
-                Categories
-                <ChevronDownIcon className="h-5 w-5" />
-              </PopoverButton>
-              <PopoverPanel
-                transition
-                className="absolute left-0 z-50 mt-3 w-screen max-w-md rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
-              >
-                {!isadmin ? (
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold text-emerald-400 mb-4">
-                      Select Category
-                    </h3>
-                    <select
-                      className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/80 transition-all duration-300"
-                      onChange={(e) => selectedCategory(e.target.value)}
-                    >
-                      <option
-                        value=""
-                        className="bg-slate-900 text-emerald-400"
+          {isLoggedIn && !isadmin ? (
+            <PopoverGroup className="hidden md:flex gap-x-8 items-center">
+              <Popover className="relative">
+                <PopoverButton className="flex items-center gap-1 font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300">
+                  Categories
+                  <ChevronDownIcon className="h-5 w-5" />
+                </PopoverButton>
+                <PopoverPanel
+                  transition
+                  className="absolute left-0 z-50 mt-3 w-screen max-w-md rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
+                >
+                  {!isadmin ? (
+                    <div className="p-6">
+                      <h3 className="text-lg font-semibold text-emerald-400 mb-4">
+                        Select Category
+                      </h3>
+                      <select
+                        className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/80 transition-all duration-300"
+                        onChange={(e) => selectedCategory(e.target.value)}
                       >
-                        All Categories
-                      </option>
-                      {categories?.map((c) => (
                         <option
-                          key={c._id || c}
-                          value={c._id || c}
+                          value=""
                           className="bg-slate-900 text-emerald-400"
                         >
-                          {c.name || c}
+                          All Categories
                         </option>
-                      ))}
-                    </select>
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </PopoverPanel>
-            </Popover>
-          </PopoverGroup>:<div></div>
-          }
+                        {categories?.map((c) => (
+                          <option
+                            key={c._id || c}
+                            value={c._id || c}
+                            className="bg-slate-900 text-emerald-400"
+                          >
+                            {c.name || c}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                </PopoverPanel>
+              </Popover>
+            </PopoverGroup>
+          ) : (
+            <div></div>
+          )}
           <PopoverGroup className="hidden md:flex gap-x-8 items-center">
             {isLoggedIn && !isadmin ? (
               <Popover className="relative">
@@ -279,8 +281,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                   </button>
                 </li>
               </ul>
-            ) : (
-              isLoggedIn?
+            ) : isLoggedIn ? (
               <ul className="flex items-center gap-6">
                 <li>
                   <button
@@ -302,39 +303,46 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                     Orders
                   </a>
                 </li>
-              </ul>:<div></div>
+              </ul>
+            ) : (
+              <div></div>
             )}
           </PopoverGroup>
 
           <div className="hidden lg:flex items-center gap-6">
             {!isadmin ? (
-              isLoggedIn?
-              <button
-                className={`relative p-2 ml-2.5 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
-                  isActive("/favorites")
-                    ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                    : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
-                }`}
-                onClick={() => navigate("/favorites")}
-                title="My Favorites"
-              >
-                <HeartIcon className=" h-6 w-6" />
-              </button>:<div></div>
-                
+              isLoggedIn ? (
+                <button
+                  className={`relative p-2 ml-2.5 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                    isActive("/favorites")
+                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                      : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+                  }`}
+                  onClick={() => navigate("/favorites")}
+                  title="My Favorites"
+                >
+                  <HeartIcon className=" h-6 w-6" />
+                </button>
+              ) : (
+                <div></div>
+              )
             ) : null}
             {!isadmin ? (
-              isLoggedIn?
-              <button
-                className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
-                  isActive("/orders")
-                    ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                    : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
-                }`}
-                onClick={() => navigate("/orders")}
-                title="My Orders"
-              >
-                <ClipboardDocumentListIcon className="h-6 w-6" />
-              </button>:<div></div>
+              isLoggedIn ? (
+                <button
+                  className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                    isActive("/orders")
+                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                      : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+                  }`}
+                  onClick={() => navigate("/orders")}
+                  title="My Orders"
+                >
+                  <ClipboardDocumentListIcon className="h-6 w-6" />
+                </button>
+              ) : (
+                <div></div>
+              )
             ) : null}
 
             {isLoggedIn ? (
@@ -352,229 +360,234 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 <UserIcon className="h-6 w-6" title="Login" />
               </button>
             )}
-            {
-            isLoggedIn && !isadmin?
-            <button
-              className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
-                isActive("/allcarts")
-                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                  : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
-              }`}
-              onClick={() => navigate("/allcarts")}
-            >
-              <ShoppingBagIcon className="h-6 w-6" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-xs h-5 w-5 rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </button>:<div></div>
-}
+            {isLoggedIn && !isadmin ? (
+              <button
+                className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                  isActive("/allcarts")
+                    ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                    : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+                }`}
+                onClick={() => navigate("/allcarts")}
+              >
+                <ShoppingBagIcon className="h-6 w-6" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-xs h-5 w-5 rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+            ) : (
+              <div></div>
+            )}
           </div>
         </nav>
       </header>
-
-      <Dialog
-        open={mobileMenuOpen}
-        onClose={setMobileMenuOpen}
-        className="md:hidden"
-      >
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-          aria-hidden="true"
-        />
-        <DialogPanel
-          id="mobile-menu"
-          className="fixed right-0 top-0 h-full w-80 sm:w-96 backdrop-blur-xl bg-white/10 p-6 shadow-2xl border-l border-white/20"
+      {isLoggedIn ? (
+        <Dialog
+          open={mobileMenuOpen}
+          onClose={setMobileMenuOpen}
+          className="relative z[9999] md:hidden"
         >
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <ShoppingBagIcon className="h-6 w-6 text-emerald-400" />
-              <span className="font-bold text-lg bg-linear-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
-                ShopHub
-              </span>
+          <div
+            className="fixed inset-0 z-9998 bg-black/50 backdrop-blur-sm"
+            aria-hidden="true"
+          />
+
+          <DialogPanel
+            id="mobile-menu"
+            className="fixed top-0 right-0 z-9999 h-full w-80 sm:w-96 backdrop-blur-xl bg-slate-900/95 p-6 shadow-2xl border-l border-emerald-500/30 overflow-y-auto"
+          >
+            <div className="flex items-center justify-between mb-6 ">
+              <div className="flex items-center gap-2">
+                <ShoppingBagIcon className="h-6 w-6 text-emerald-400" />
+                <span className="font-bold text-lg bg-linear-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                  ShopHub
+                </span>
+              </div>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+                className="p-2 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
             </div>
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              aria-label="Close menu"
-              className="p-2 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-          </div>
 
-          <div className="mb-6">
-            <label className="relative block group">
-              <span className="sr-only">Search For books</span>
-              <input
-                className="w-full rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 py-3 pl-11 pr-4 text-sm placeholder-white/50 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:bg-white/15"
-                placeholder="Search products, categories..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setsearch(e.target.value);
-                }}
-              />
-              <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/60 group-focus-within:text-emerald-300 transition-colors" />
-            </label>
-          </div>
+            <div className="mb-6">
+              <label className="relative block group">
+                <span className="sr-only">Search For books</span>
+                <input
+                  className="w-full rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 py-3 pl-11 pr-4 text-sm placeholder-white/50 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:bg-white/15"
+                  placeholder="Search products, categories..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setsearch(e.target.value);
+                  }}
+                />
+                <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/60 group-focus-within:text-emerald-300 transition-colors" />
+              </label>
+            </div>
 
-          <nav className="space-y-3">
-            <a
-              href="/shopping"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`block font-semibold py-3 px-4 rounded-2xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
-                isActive("/shopping")
-                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                  : "bg-white/10 border-white/20 text-white"
-              }`}
-            >
-              Shop
-            </a>
-            <div className="space-y-2">
-              <h3 className="text-white/80 font-semibold px-4">Categories</h3>
-              {categories?.map((c) => (
+            <nav className="space-y-3">
+              <a
+                href="/shopping"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block font-semibold py-3 px-4 rounded-2xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
+                  isActive("/shopping")
+                    ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                    : "bg-white/10 border-white/20 text-white"
+                }`}
+              >
+                Shop
+              </a>
+              <div className="space-y-2">
+                <h3 className="text-white/80 font-semibold px-4">Categories</h3>
+                {categories?.map((c) => (
+                  <button
+                    onClick={() => {
+                      selectedCategory(c._id || c);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left py-3 px-4 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 mb-2"
+                  >
+                    <div className="h-8 w-8 flex items-center justify-center rounded-xl backdrop-blur-xl bg-emerald-400/20 border border-emerald-400/30">
+                      <span className="text-xs font-bold text-emerald-300">
+                        {(c.name || c).charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium">{c.name || c}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              <div className="pt-4 border-t border-white/20 mt-6 space-y-3">
                 <a
-                  key={c.name || c}
                   href="#"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 py-3 px-4 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:bg-white/15 text-white/90 hover:text-white transition-all duration-300"
+                  className="block py-3 px-4 font-semibold text-white rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300"
                 >
-                  <div className="h-8 w-8 flex items-center justify-center rounded-xl backdrop-blur-xl bg-emerald-400/20 border border-emerald-400/30">
-                    <span className="text-xs font-bold text-emerald-300">
-                      {(c.name || c).charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium">{c.name || c}</div>
-                  </div>
+                  Best Sellers
                 </a>
-              ))}
-            </div>
-
-            <div className="pt-4 border-t border-white/20 mt-6 space-y-3">
-              <a
-                href="#"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-3 px-4 font-semibold text-white rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300"
-              >
-                Best Sellers
-              </a>
-              <a
-                href="#"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-3 px-4 font-semibold text-white rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300"
-              >
-                Deals
-              </a>
-              <a
-                href="#"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-3 px-4 font-semibold text-white rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300"
-              >
-                About
-              </a>
-              <div className="px-4 pt-2">
-                <label
-                  className="block text-sm text-white/80 mb-1"
-                  htmlFor="mobile-filter"
+                <a
+                  href="#"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-3 px-4 font-semibold text-white rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300"
                 >
-                  Filter
-                </label>
-                <select
-                  id="mobile-filter"
-                  onChange={(e) => {
-                    setfilter?.(e.target.value);
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full rounded-xl bg-slate-700/50 text-white border border-emerald-500/40 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-emerald-400/80"
+                  Deals
+                </a>
+                <a
+                  href="#"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-3 px-4 font-semibold text-white rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300"
                 >
-                  <option value="">All</option>
-                  <option value="price-asc">Price Low to High</option>
-                  <option value="price-desc">Price High to Low</option>
-                  <option value="az">A-Z</option>
-                  <option value="za">Z-A</option>
-                </select>
+                  About
+                </a>
+                <div className="px-4 pt-2">
+                  <label
+                    className="block text-sm text-white/80 mb-1"
+                    htmlFor="mobile-filter"
+                  >
+                    Filter
+                  </label>
+                  <select
+                    id="mobile-filter"
+                    onChange={(e) => {
+                      setfilter?.(e.target.value);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full rounded-xl bg-slate-700/50 text-white border border-emerald-500/40 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-emerald-400/80"
+                  >
+                    <option value="">All</option>
+                    <option value="price-asc">Price Low to High</option>
+                    <option value="price-desc">Price High to Low</option>
+                    <option value="az">A-Z</option>
+                    <option value="za">Z-A</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <div className="pt-4 border-t border-white/20 mt-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => {
-                    navigate("/orders");
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
-                    isActive("/orders")
-                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                      : "bg-white/10 border-white/20 text-white"
-                  }`}
-                  title="My Orders"
-                >
-                  <ClipboardDocumentListIcon className="h-6 w-6" />
-                </button>
-                <button
-                  onClick={() => {
-                    navigate("/favorites");
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
-                    isActive("/favorites")
-                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                      : "bg-white/10 border-white/20 text-white"
-                  }`}
-                  title="My Favorites"
-                >
-                  <HeartIcon className="h-6 w-6" />
-                </button>
-                <button
-                  onClick={() => {
-                    navigate("/allcarts");
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
-                    isActive("/allcarts")
-                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                      : "bg-white/10 border-white/20 text-white"
-                  }`}
-                  title="Cart"
-                >
-                  <ShoppingBagIcon className="h-6 w-6" />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-xs h-4 w-4 rounded-full flex items-center justify-center">
-                      {cartCount}
-                    </span>
-                  )}
-                </button>
+              <div className="pt-4 border-t border-white/20 mt-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => {
+                      navigate("/orders");
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
+                      isActive("/orders")
+                        ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                        : "bg-white/10 border-white/20 text-white"
+                    }`}
+                    title="My Orders"
+                  >
+                    <ClipboardDocumentListIcon className="h-6 w-6" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/favorites");
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
+                      isActive("/favorites")
+                        ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                        : "bg-white/10 border-white/20 text-white"
+                    }`}
+                    title="My Favorites"
+                  >
+                    <HeartIcon className="h-6 w-6" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/allcarts");
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
+                      isActive("/allcarts")
+                        ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                        : "bg-white/10 border-white/20 text-white"
+                    }`}
+                    title="Cart"
+                  >
+                    <ShoppingBagIcon className="h-6 w-6" />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-xs h-4 w-4 rounded-full flex items-center justify-center">
+                        {cartCount}
+                      </span>
+                    )}
+                  </button>
+                </div>
+                {isLoggedIn ? (
+                  <button
+                    onClick={() => {
+                      logOut();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="px-4 py-2 font-semibold text-white rounded-2xl backdrop-blur-xl bg-red-500/20 border border-red-400/30 hover:bg-red-500/30 transition-all duration-300"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      navigate("/login");
+                      setMobileMenuOpen(false);
+                    }}
+                    className="p-2 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
+                    title="Login"
+                  >
+                    <UserIcon className="h-6 w-6" />
+                  </button>
+                )}
               </div>
-              {isLoggedIn ? (
-                <button
-                  onClick={() => {
-                    logOut();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="px-4 py-2 font-semibold text-white rounded-2xl backdrop-blur-xl bg-red-500/20 border border-red-400/30 hover:bg-red-500/30 transition-all duration-300"
-                >
-                  Logout
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    navigate("/login");
-                    setMobileMenuOpen(false);
-                  }}
-                  className="p-2 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
-                  title="Login"
-                >
-                  <UserIcon className="h-6 w-6" />
-                </button>
-              )}
-            </div>
-          </nav>
-        </DialogPanel>
-      </Dialog>
-
+            </nav>
+          </DialogPanel>
+        </Dialog>
+      ) : (
+        <div></div>
+      )}
       <Logout
         isOpen={logoutModalOpen}
         onClose={() => setLogoutModalOpen(false)}
