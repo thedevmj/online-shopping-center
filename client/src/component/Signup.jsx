@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { createUser } from "../api/bookapi";
+import { showToast } from "./Toast";
 
 export default function Signup({ onClose }) {
   
@@ -36,12 +37,12 @@ export default function Signup({ onClose }) {
        
      const response= await createUser(formData);
      if(response.status !== 201){
-      alert("Failed to create user. Please try again.");
+      showToast("Failed to create user. Please try again.", "error");
       return;
      }
-      alert("User added successfully!");
+      showToast("User added successfully!", "success");
     } catch (error) {
-     
+      showToast("Something went wrong while creating your account.", "error");
     } finally {
       setIsLoading(false);
     }

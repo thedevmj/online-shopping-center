@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
+import { buildApiUrl } from "../config";
 
 export default function Allusercarts() {
   const [carts, setCarts] = useState([]);
 
   const fetchCarts = async () => {
     try {
-      const cartsData = await fetch(`http://localhost:3000/api/book/getallcarts`,
+      const cartsData = await fetch(buildApiUrl("/api/book/getallcarts"),
         {
           method: "GET",
           headers: {
@@ -30,7 +31,7 @@ export default function Allusercarts() {
 
   const removeCartItem = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/book/deletecart/${id}`,
+      const response = await fetch(buildApiUrl(`/api/book/deletecart/${id}`),
         {
           method: "DELETE",
           headers: {

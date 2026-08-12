@@ -5,15 +5,22 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
-import { addtoFavorite, getallbooks } from "../api/bookapi";
+import {
+  addtoFavorite,
+  getallfavorite,
+  removeFromfav,
+} from "../api/bookapi";
 import { useNavigate } from "react-router-dom";
 import { Bookcontext } from "./BookContext";
 import Billboard from "./Billboard";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { buildApiUrl } from "../config";
+import { showToast } from "./Toast";
 
 export default function Shophub_cart({ category, filter, search, setsearch }) {
   const navigate = useNavigate();
   const { setSelectedBook, books, setBooks } = useContext(Bookcontext);
+  const [favoriteIds, setFavoriteIds] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -24,7 +31,7 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
       }
 
       try {
-        const response = await fetch("http://localhost:3000/api/book/getall", {
+        const response = await fetch(buildApiUrl("/api/book/getall"), {
           method: "GET",
 
           credentials: "include",
@@ -45,6 +52,22 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
     };
   }, [books.length, setBooks]);
 
+  useEffect(() => {
+    const fetchFavoriteIds = async () => {
+      try {
+        const response = await getallfavorite();
+        const favoriteBooks = response?.data?.data || [];
+        setFavoriteIds(
+          favoriteBooks.map((item) => String(item?.book?._id || item?.book || item?._id))
+        );
+      } catch (err) {
+        console.error("Error fetching favorites:", err);
+      }
+    };
+
+    fetchFavoriteIds();
+  }, []);
+
   const handleCart = useCallback(
     (book) => {
       localStorage.setItem("selectedBook", JSON.stringify(book));
@@ -55,13 +78,25 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
   );
 
   const handlefavoritebook = useCallback(async (book) => {
+    const bookId = String(book?._id);
+    const isAlreadyFavorite = favoriteIds.includes(bookId);
+
     try {
-      const response = await addtoFavorite(book._id);
-      alert("Book added to favorites!");
+      if (isAlreadyFavorite) {
+        await removeFromfav(bookId);
+        setFavoriteIds((prev) => prev.filter((id) => id !== bookId));
+        showToast("Removed from favorites.", "info");
+        return;
+      }
+
+      await addtoFavorite(bookId);
+      setFavoriteIds((prev) => [...new Set([...prev, bookId])]);
+      showToast("Book added to favorites!", "success");
     } catch (err) {
-      console.error("Error adding book to favorite:", err);
+      console.error("Error updating favorite:", err);
+      showToast("Unable to update favorites.", "error");
     }
-  }, []);
+  }, [favoriteIds]);
 
   const handleClearSearch = useCallback(() => {
     setsearch("");
@@ -311,10 +346,20 @@ export default function Shophub_cart({ category, filter, search, setsearch }) {
                     <span className="text-2xl font-bold text-emerald-300">
                       ${book.bookPrice}
                     </span>
-                    <HeartIcon
-                      className="h-6 w-6 text-white/70 hover:text-emerald-300 transition-colors cursor-pointer"
+                    <button
+                      type="button"
                       onClick={() => handlefavoritebook(book)}
-                    />
+                      className="flex items-center justify-center rounded-full p-2 transition-colors"
+                      aria-label={favoriteIds.includes(String(book._id)) ? "Remove from favorites" : "Add to favorites"}
+                    >
+                      <HeartIcon
+                        className={`h-6 w-6 transition-all duration-200 ${
+                          favoriteIds.includes(String(book._id))
+                            ? "text-rose-400 fill-rose-400"
+                            : "text-white/70 hover:text-emerald-300"
+                        }`}
+                      />
+                    </button>
                     <button
                       className="bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20"
                       onClick={() => handleCart(book)}

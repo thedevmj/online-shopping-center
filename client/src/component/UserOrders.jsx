@@ -26,10 +26,11 @@ export default function () {
         paymentId: "id239875yt4u34",
       });
       
-      alert("order purchased successfull ! ");
+      showToast("Order purchased successfully!", "success");
       
     } catch (err) {
       console.log("Sorry failed to order ", err);
+      showToast("Sorry, failed to place the order.", "error");
     } finally {
       setisloading(false);
     }

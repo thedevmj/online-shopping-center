@@ -1,7 +1,8 @@
 import axios from "axios";
+import { buildApiUrl } from "../config";
 
-const Api_url = "http://localhost:3000/api/book/";
-const AUTH_URL = "http://localhost:3000/auth/user/";
+const Api_url = buildApiUrl("/api/book/");
+const AUTH_URL = buildApiUrl("/auth/user/");
 
 axios.defaults.withCredentials = true;
 
@@ -74,7 +75,7 @@ export const removeFromfav = (id) => {
 
 export const createOrder = async (orderData) => {
   try {
-    const response = await fetch("http://localhost:3000/auth/user/userorder", {
+    const response = await fetch(buildApiUrl("/auth/user/userorder"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

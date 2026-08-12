@@ -6,6 +6,7 @@ import {
   PlusIcon,
 } from '@heroicons/react/24/outline';
 import { useNavigate } from "react-router-dom";
+import { buildApiUrl } from "../../config";
 
 const BookRow = React.memo(({ book, onEdit, onDelete }) => (
   <tr className="border-b border-slate-700/50 hover:bg-slate-800/30 transition-colors">
@@ -80,7 +81,7 @@ export default function BookManagement({ search }) {
     try {
       setLoading(true);
       const response = await fetch(
-        'http://localhost:3000/api/book/getall',
+        buildApiUrl('/api/book/getall'),
         {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },

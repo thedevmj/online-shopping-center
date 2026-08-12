@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { buildApiUrl } from "../config";
 
 export default function ViewOrder() {
   const [order, setOrder] = useState([]);
@@ -8,7 +9,7 @@ export default function ViewOrder() {
   const fetchOrder = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/auth/user/orderbyid",
+        buildApiUrl("/auth/user/orderbyid"),
         {
           method: "GET",
           credentials: "include",
@@ -28,7 +29,7 @@ export default function ViewOrder() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white px-6 py-10">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white px-6 py-10">
       <div className="max-w-5xl mx-auto">
         
         {/* Header */}

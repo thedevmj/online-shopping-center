@@ -7,6 +7,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { orderstatus } from "../../api/bookapi";
+import { buildApiUrl } from "../../config";
 
 //  FIXED STATUS BADGE
 const StatusBadge = ({ status }) => {
@@ -37,7 +38,7 @@ export default function OrderManagement() {
   // FETCH
   const fetchOrders = useCallback(async () => {
     try {
-      const res = await fetch("http://localhost:3000/auth/user/getuserorder", {
+      const res = await fetch(buildApiUrl("/auth/user/getuserorder"), {
         credentials: "include",
       });
 
@@ -82,7 +83,7 @@ export default function OrderManagement() {
   //  STATUS CHANGE (frontend only)
   const handleStatusChange = useCallback(async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:3000/auth/user/${id}`, {
+      const res = await fetch(buildApiUrl(`/auth/user/${id}`), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials:"include",
@@ -97,10 +98,11 @@ export default function OrderManagement() {
         order._id === id ? { ...order, orderStatus: status } : order
       )
     );
-      alert("Status changed !");
+      showToast("Status changed!", "success");
       
     } catch (err) {
       console.log("Error occured while changing status ", err);
+      showToast("Could not change order status.", "error");
     }
   });
 

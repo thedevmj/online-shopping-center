@@ -9,6 +9,8 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { LoginUser } from "../api/bookapi";
+import { buildApiUrl } from "../config";
+import { showToast } from "./Toast";
 
 
 
@@ -50,7 +52,7 @@ export default function LoginForm({ onClose }) {
 
   try {
     
-    const response = await fetch("http://localhost:3000/auth/user/login", {
+    const response = await fetch(buildApiUrl("/auth/user/login"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -79,14 +81,14 @@ export default function LoginForm({ onClose }) {
       localStorage.removeItem("rememberMeData");
     }
     localStorage.setItem("user", data.user.role);
-    alert("Login successful!");
+    showToast("Login successful!", "success");
     if(data.user.role === "User")
     navigate("/shopping");
    if(data.user.role === "Admin")
     navigate("/")
     if (onClose) onClose(true);
   } catch (err) {
-    alert(err.message || "Login failed. Please try again.");
+    showToast(err.message || "Login failed. Please try again.", "error");
   } finally {
     setIsLoading(false);
   }
@@ -245,18 +247,13 @@ export default function LoginForm({ onClose }) {
             )}
           </form>
 
-          <div className="my-6 flex items-center">
-            <div className="flex-1 border-t border-gray-300"></div>
-            <span className="px-3 text-sm text-gray-500">or</span>
-            <div className="flex-1 border-t border-gray-300"></div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <button className="py-2.5 px-4 rounded-lg border-2 border-gray-200 text-gray-700 font-semibold hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 text-sm">
-              Google
-            </button>
-            <button className="py-2.5 px-4 rounded-lg border-2 border-gray-200 text-gray-700 font-semibold hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 text-sm">
-              GitHub
+          <div className="mt-6 flex items-center justify-center">
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:border-emerald-400/50 hover:bg-emerald-500/10"
+            >
+              ← Back to Home
             </button>
           </div>
 

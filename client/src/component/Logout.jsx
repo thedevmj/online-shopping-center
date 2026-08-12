@@ -5,6 +5,7 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { buildApiUrl } from "../config";
 
 export default function Logout({ isOpen, onClose }) {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -13,7 +14,7 @@ export default function Logout({ isOpen, onClose }) {
   const handleConfirmLogout = async() => {
     setIsLoggingOut(true);
 
-     await fetch("http://localhost:3000/auth/user/logout", {
+     await fetch(buildApiUrl("/auth/user/logout"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -22,7 +23,7 @@ export default function Logout({ isOpen, onClose }) {
       setIsLoggingOut(false);
       onClose();
       localStorage.removeItem("user");
-      navigate("/Login");
+      navigate("/");
     }, 500);
   };
 

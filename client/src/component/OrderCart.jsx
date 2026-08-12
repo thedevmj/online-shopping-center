@@ -3,6 +3,8 @@ import { Bookcontext } from "./BookContext";
 import { useState } from "react";
 import { cartadd } from "../api/bookapi";
 import { Navigate, useNavigate } from "react-router-dom";
+import { buildApiUrl } from "../config";
+import { showToast } from "./Toast";
 
 
 export default function OrderCart() {
@@ -23,7 +25,7 @@ export default function OrderCart() {
 
   const addToCart = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/book/addtocart", {
+    const response = await fetch(buildApiUrl("/api/book/addtocart"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,10 +43,10 @@ export default function OrderCart() {
     }
 
     const data = await response.json();
-    alert("Book added to cart!");
+    showToast("Book added to cart!", "success");
   } catch (err) {
     console.error("Error adding book to cart:", err);
-    alert("Failed to add book to cart");
+    showToast("Failed to add book to cart", "error");
   }
 };
 

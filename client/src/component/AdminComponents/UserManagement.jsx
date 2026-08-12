@@ -7,6 +7,7 @@ import {
   CheckCircleIcon,
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
+import { buildApiUrl } from "../../config";
 
 const UserRow = React.memo(({ user, onDelete, onToggleRole }) => (
   <tr className="border-b border-slate-700/50 hover:bg-slate-800/30 transition-colors" key={user._id}>
@@ -82,7 +83,7 @@ export default function UserManagement() {
   const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
-    const userlist= await fetch("http://localhost:3000/auth/user/getuserdetails",{
+    const userlist= await fetch(buildApiUrl("/auth/user/getuserdetails"),{
         method:"GET",
         credentials:"include"
       })

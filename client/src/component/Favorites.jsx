@@ -3,6 +3,8 @@ import { getallfavorite, addtoFavorite, removeFromfav } from "../api/bookapi";
 import { useNavigate } from "react-router-dom";
 import { Bookcontext } from "./BookContext";
 import { HeartIcon, ShoppingCartIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { buildApiUrl } from "../config";
+import { showToast } from "./Toast";
 
 export default function Favorites() {
   const [favorites, setFavorites] = useState([]);
@@ -21,7 +23,7 @@ export default function Favorites() {
         navigate("/login");
         return;
       }
-      const response = await fetch(`http://localhost:3000/api/book/favoritebooks`, {
+      const response = await fetch(buildApiUrl("/api/book/favoritebooks"), {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +39,7 @@ export default function Favorites() {
 
   const handleRemoveFavorite = async (favoriteId, bookId) => {
     try {
-      await fetch(`http://localhost:3000/api/book/removefromfavorite/${bookId}`, {
+      await fetch(buildApiUrl(`/api/book/removefromfavorite/${bookId}`), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -45,10 +47,10 @@ export default function Favorites() {
         credentials: "include",
       });
       setFavorites(favorites.filter((fav) => fav._id !== favoriteId)); // Filter by favorite record ID
-      alert("Book removed from favorites!");
+      showToast("Book removed from favorites!", "info");
     } catch (err) {
       console.error("Error removing favorite:", err);
-      alert("Failed to remove from favorites");
+      showToast("Failed to remove from favorites", "error");
     }
   }; 
 

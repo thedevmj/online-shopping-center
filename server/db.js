@@ -1,20 +1,15 @@
-const mongoose=require("mongoose")
+const mongoose = require("mongoose");
 
-const databaseConnection= async()=>{
+const databaseConnection = async () => {
+  const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/bookStore";
 
-    
-    mongoose
-    .connect("mongodb://localhost:27017/bookStore")
-    .then(()=>{
-        console.log("database connected successfully !");
-        
-    })
-    .catch((err)=>{
-        console.log("error failed to connect !",err);
-        
-    })
+  try {
+    await mongoose.connect(mongoUri);
+    console.log("database connected successfully !");
+  } catch (err) {
+    console.log("error failed to connect !", err);
+  }
+};
 
-}
-
-module.exports= databaseConnection;
+module.exports = databaseConnection;
 
