@@ -1,6 +1,6 @@
 const cloudinary=require("cloudinary").v2;
 
-import dotenv from "dotenv";
+const dotenv =require("dotenv");
 
 dotenv.config();
 
