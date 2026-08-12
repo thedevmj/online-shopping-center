@@ -34,7 +34,11 @@ export default function Signup({ onClose }) {
 
     try {
        
-      await createUser(formData);
+     const response= await createUser(formData);
+     if(response.status !== 201){
+      alert("Failed to create user. Please try again.");
+      return;
+     }
       alert("User added successfully!");
     } catch (error) {
      
@@ -77,6 +81,7 @@ export default function Signup({ onClose }) {
                 <input
                   type="email"
                   name="email"
+                  required
                   value={formData.email}
                   onChange={handleOnChange}
                   placeholder="you@example.com"
