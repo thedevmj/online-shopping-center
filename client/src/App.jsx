@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navbar from "./component/Navbar";
 import LoginForm from "./component/LoginForm";
 import Home from "./component/AdminHome";
+import HeroLanding from "./component/HeroLanding";
 import { Route, Routes } from "react-router-dom";
 import Update_books from "./component/Update_books";
 import Shophub_cart from "./component/Shophub_cart";
@@ -33,14 +34,13 @@ const App = () => {
       
       <Routes>
         <Route path="/Logout" element={<Logout />}></Route>
+        <Route path="/" element={<HeroLanding />} />
         <Route
-          path="/"
+          path="/adminhome"
           element={
             <>
               <AdminRoute>
-                
-                  <Home />
-               
+                <Home />
               </AdminRoute>
             </>
           }
@@ -50,9 +50,7 @@ const App = () => {
           path="/Login"
           element={
             <>
-             
-                <LoginForm onClose={() => setShowLogin(false)} />
-              
+              <LoginForm onClose={() => setShowLogin(false)} />
             </>
           }
         ></Route>
