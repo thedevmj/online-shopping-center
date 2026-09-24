@@ -290,8 +290,9 @@ try{
     .populate("items.book");
 
     if(!carts || carts.length === 0){
-        return res.status(404).json({
-            message:"No carts found for this user !"
+        return res.status(200).json({
+            message:"No carts found for this user !",
+            data:[]
         })
     }
     res.status(200).json({
