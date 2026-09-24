@@ -4,6 +4,7 @@ const databaseConnection = async () => {
   const mongoUri =
     process.env.MONGODB_URI ||
     process.env.DATABASE_URL ||
+    process.env.MONGO_URI ||
     (process.env.NODE_ENV === "production"
       ? null
       : "mongodb://localhost:27017/bookStore");
