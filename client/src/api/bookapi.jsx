@@ -6,6 +6,14 @@ const AUTH_URL = buildApiUrl("/auth/user/");
 
 axios.defaults.withCredentials = true;
 
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem("authToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // ==================== AUTHENTICATION ====================
 export const createUser = (data) => {
   return axios.post(`${AUTH_URL}register`, data);
@@ -77,7 +85,10 @@ export const createOrder = async (orderData) => {
   try {
     const response = await fetch(buildApiUrl("/auth/user/userorder"), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken") || ""}`,
+      },
       credentials: "include",
       body: JSON.stringify({ orderData }),
     });

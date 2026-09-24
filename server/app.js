@@ -3,12 +3,24 @@ const bookRoutes = require("./routes/book.routes");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const path = require("path");
+const fs = require("fs");
 const authRoutes = require("./routes/auth-routes");
 const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
 
-require("dotenv").config({ path: "./config/config.env" });
+if (fs.existsSync(path.join(__dirname, "config", "config.env"))) {
+  dotenv.config({ path: path.join(__dirname, "config", "config.env") });
+} else {
+  dotenv.config();
+}
 
 const app = express();
+
+const tmpDir = path.join(__dirname, "tmp");
+if (!fs.existsSync(tmpDir)) {
+  fs.mkdirSync(tmpDir, { recursive: true });
+}
+
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
@@ -33,9 +45,13 @@ app.use(cookieParser());
 app.use(
   fileUpload({
     useTempFiles: true,
-    tempFileDir: path.join(__dirname, "tmp"),
+    tempFileDir: tmpDir,
   })
 );
+
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
 app.use("/api/book", bookRoutes);
 app.use("/auth/user", authRoutes);
 

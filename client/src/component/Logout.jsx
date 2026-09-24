@@ -16,13 +16,17 @@ export default function Logout({ isOpen, onClose }) {
 
      await fetch(buildApiUrl("/auth/user/logout"), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken") || ""}`,
+      },
       credentials: "include",
     });
     setTimeout(() => {
       setIsLoggingOut(false);
       onClose();
       localStorage.removeItem("user");
+      localStorage.removeItem("authToken");
       navigate("/");
     }, 500);
   };

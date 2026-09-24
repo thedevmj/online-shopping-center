@@ -40,6 +40,8 @@ export default function Signup({ onClose }) {
       showToast("Failed to create user. Please try again.", "error");
       return;
      }
+     localStorage.setItem("authToken", response.data?.token?.trim());
+     localStorage.setItem("user", "User");
       showToast("User added successfully!", "success");
     } catch (error) {
       showToast("Something went wrong while creating your account.", "error");

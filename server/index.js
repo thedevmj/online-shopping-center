@@ -1,6 +1,13 @@
 const app = require("./app");
 const databaseConnection = require("./db");
-require("dotenv").config({ path: "./config/config.env" });
+const dotenv = require("dotenv");
+const fs = require("fs");
+
+if (fs.existsSync("./config/config.env")) {
+  dotenv.config({ path: "./config/config.env" });
+} else {
+  dotenv.config();
+}
 
 const port = process.env.PORT || 3000;
 

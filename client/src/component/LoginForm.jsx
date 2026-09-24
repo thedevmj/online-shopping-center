@@ -67,6 +67,7 @@ export default function LoginForm({ onClose }) {
 
     const data = await response.json();
     
+    localStorage.setItem("authToken", data.token);
    
     onClose?.(() => setShowLogin(false));
 
