@@ -149,7 +149,7 @@ const save_category = async (req, res) => {
             });
         }
         const newcategory = await categories.create({
-
+            name
         });
         res.status(201).json({
             message: "category added successfully ",
