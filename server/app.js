@@ -21,16 +21,26 @@ if (!fs.existsSync(tmpDir)) {
   fs.mkdirSync(tmpDir, { recursive: true });
 }
 
+const normalizeOrigin = (o) => (o || "").replace(/\/+$/, "");
+
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   process.env.CLIENT_URL,
-].filter(Boolean);
+]
+  .filter(Boolean)
+  .map(normalizeOrigin);
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+      const normalized = normalizeOrigin(origin);
+      const isVercel = normalized.endsWith(".vercel.app");
+      if (allowedOrigins.includes(normalized) || isVercel) {
         callback(null, true);
         return;
       }
