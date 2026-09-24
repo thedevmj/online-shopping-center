@@ -51,11 +51,11 @@ export default function Allusercarts() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 p-6 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-emerald-400/10 to-emerald-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-96 h-96 bg-linear-to-r from-blue-400/10 to-blue-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-purple-400/10 to-purple-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
@@ -96,14 +96,14 @@ export default function Allusercarts() {
                             <p className="text-white/70 text-sm">
                               {item.book?.bookAuthor}
                             </p>
-                            <p className="text-emerald-300 font-medium mt-1">
+                            <p className="text-lime-300 font-medium mt-1">
                               Quantity: {item.quantity}
                             </p>
                           </div>
                         </div>
 
                         <div className="text-right space-y-3">
-                          <p className="text-2xl font-bold text-emerald-300">
+                          <p className="text-2xl font-bold text-lime-300">
                             ${item.book?.bookPrice * item.quantity}
                           </p>
                           <button

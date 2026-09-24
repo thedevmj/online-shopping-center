@@ -6,8 +6,8 @@ import {
   ClockIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
-import { orderstatus } from "../../api/bookapi";
 import { buildApiUrl } from "../../config";
+import { showToast } from "../Toast";
 
 //  FIXED STATUS BADGE
 const StatusBadge = ({ status }) => {
@@ -34,7 +34,6 @@ export default function OrderManagement() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
-  const [Orderstatus, setOrderstatus] = useState("");
   // FETCH
   const fetchOrders = useCallback(async () => {
     try {
@@ -43,7 +42,8 @@ export default function OrderManagement() {
       });
 
       const data = await res.json();
-      const normalized = Array.isArray(data.data) ? data.data : [data.data];
+      const raw = data.data || [];
+      const normalized = Array.isArray(raw) ? raw : [raw];
       setOrders(normalized);
     } catch (err) {
       console.error(err);
@@ -56,14 +56,7 @@ export default function OrderManagement() {
     fetchOrders();
   }, [fetchOrders]);
 
-  // for changing status
-  const statuschange = async (orderId) => {
-    try {
-    } catch (err) {
-      console.log("Error changing status ", err);
-    }
-  };
-  //  FILTER + SEARCH
+  // FILTER + SEARCH
   const filteredOrders = useMemo(() => {
     return orders.filter((order) => {
       const query = searchQuery.trim().toLowerCase();
@@ -90,7 +83,7 @@ export default function OrderManagement() {
         body: JSON.stringify({ status }),
       });
       if (!res.ok){ 
-        console.log("Could not change status ", err);
+        console.log("Could not change status");
         return;
       };
        setOrders((prev) =>
@@ -161,11 +154,11 @@ export default function OrderManagement() {
                 key={order._id}
                 className="border-t border-gray-700 text-center"
               >
-                <td>{order.user.email.slice(0, 4)}</td>
+                <td>{order.user?.email?.slice(0, 4) || "—"}</td>
 
                 <td>{order.user?.email || "N/A"}</td>
 
-                <td>{order.items.book || 0}</td>
+                <td>{order.items?.length || 0}</td>
 
                 <td>₹{order.totalAmount}</td>
 

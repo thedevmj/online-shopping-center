@@ -41,10 +41,10 @@ export default function Logout({ isOpen, onClose }) {
       <div className="fixed inset-0 flex items-center justify-center p-4 sm:p-6">
         <DialogPanel
           transition
-          className="w-full max-w-md transform rounded-3xl backdrop-blur-xl bg-linear-to-br from-slate-800/95 via-slate-900/95 to-slate-900/95 shadow-2xl border border-emerald-500/30 transition-all duration-300 overflow-hidden"
+          className="w-full max-w-md transform rounded-3xl backdrop-blur-xl bg-linear-to-br from-slate-800/95 via-slate-900/95 to-slate-900/95 shadow-2xl border border-lime-500/30 transition-all duration-300 overflow-hidden"
         >
           <div className="relative pt-8 px-6 text-center">
-            <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-transparent via-emerald-400 to-transparent" />
+            <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-transparent via-lime-400 to-transparent" />
 
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full backdrop-blur-xl bg-red-500/20 border border-red-500/30 animate-pulse">
               <ExclamationTriangleIcon className="h-8 w-8 text-red-400" />
@@ -62,13 +62,13 @@ export default function Logout({ isOpen, onClose }) {
           <div className="px-6 py-6">
             <div className="space-y-3 rounded-2xl backdrop-blur-xl bg-slate-700/30 border border-slate-600/50 p-4">
               <div className="flex items-start gap-3">
-                <CheckCircleIcon className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircleIcon className="h-5 w-5 text-lime-400 shrink-0 mt-0.5" />
                 <p className="text-sm text-slate-300">
                   Your cart and wishlist will be saved safely
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <CheckCircleIcon className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircleIcon className="h-5 w-5 text-lime-400 shrink-0 mt-0.5" />
                 <p className="text-sm text-slate-300">
                   You can log back in anytime with your credentials
                 </p>

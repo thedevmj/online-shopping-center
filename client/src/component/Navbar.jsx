@@ -21,11 +21,12 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logout from "./Logout";
 import { getallCategories } from "../api/bookapi";
+import { buildApiUrl } from "../config";
 
 export default function Navbar({ selectedCategory, setfilter, setsearch }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
-  const [cartCount] = useState(3);
+  const [cartCount, setCartCount] = useState(0);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -34,9 +35,9 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
 
   const isActive = (path) => location.pathname === path;
   const activeButtonClass =
-    "bg-emerald-500/30 border-emerald-400/60 text-emerald-300";
+    "bg-lime-500/30 border-lime-400/60 text-lime-300";
   const inactiveButtonClass =
-    "bg-slate-700/50 border-emerald-500/30 text-emerald-400";
+    "bg-slate-700/50 border-lime-500/30 text-lime-400";
 
   const fetchCategories = async () => {
     try {
@@ -67,10 +68,45 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    const fetchCartCount = async () => {
+      try {
+        const res = await fetch(buildApiUrl("/api/book/getallcarts"), {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await res.json();
+        const carts = data?.data || [];
+        const total = carts.reduce(
+          (sum, cart) =>
+            sum +
+            (Array.isArray(cart?.items)
+              ? cart.items.reduce((s, i) => s + (i?.quantity || 0), 0)
+              : 0),
+          0
+        );
+        if (!cancelled) setCartCount(total);
+      } catch (err) {
+        console.error("Error fetching cart count:", err);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchCartCount();
+    } else {
+      setCartCount(0);
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isLoggedIn, location.pathname]);
+
   return (
     <>
       <header className="sticky top-0 z-50 w-full">
-        <div className="absolute inset-0 z-0 backdrop-blur-xl bg-linear-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 border-b border-emerald-500/30" />
+        <div className="absolute inset-0 z-0 backdrop-blur-xl bg-linear-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 border-b border-lime-500/30" />
 
         <nav
           role="navigation"
@@ -82,8 +118,8 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               href="#"
               className="-m-1.5 p-1.5 hover:scale-105 transition-transform flex items-center gap-2"
             >
-              <ShoppingBagIcon className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-400" />
-              <span className="text-lg sm:text-2xl font-bold bg-linear-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+              <ShoppingBagIcon className="h-6 w-6 sm:h-8 sm:w-8 text-lime-400" />
+              <span className="text-lg sm:text-2xl font-bold bg-linear-to-r from-lime-400 to-blue-400 bg-clip-text text-transparent">
                 ShopHub
               </span>
             </a>
@@ -99,10 +135,10 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                       setSearchQuery(e.target.value);
                       setsearch(e.target.value);
                     }}
-                    className="w-full rounded-full backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400/80 focus:bg-slate-700/70 focus:shadow-xl focus:shadow-emerald-500/20"
+                    className="w-full rounded-full backdrop-blur-xl bg-slate-700/50 border border-lime-500/40 py-2.5 pl-11 pr-4 text-sm placeholder-slate-400 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-lime-400/80 focus:bg-slate-700/70 focus:shadow-xl focus:shadow-lime-500/20"
                     placeholder="Search products, categories, brands..."
                   />
-                  <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-emerald-400 transition-colors" />
+                  <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-lime-400 transition-colors" />
                 </label>
               </div>
             </div>
@@ -115,28 +151,28 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               aria-label="Open menu"
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
-              className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300"
+              className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-lime-500/30 text-lime-400 hover:bg-lime-600/30 hover:border-lime-500/60 transition-all duration-300"
             >
               <Bars3Icon className="h-6 w-6" />
             </button>
             <button
               aria-label="Open search"
-              className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300"
+              className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-lime-500/30 text-lime-400 hover:bg-lime-600/30 hover:border-lime-500/60 transition-all duration-300"
             >
               <MagnifyingGlassIcon className="h-6 w-6" />
             </button>
             <button
               aria-label="Cart"
-              className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+              className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-lime-600/30 hover:border-lime-500/60 ${
                 isActive("/allcarts")
-                  ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                  : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+                  ? "bg-lime-500/30 border-lime-400/60 text-lime-300"
+                  : "bg-slate-700/50 border-lime-500/30 text-lime-400"
               }`}
               onClick={() => navigate("/allcarts")}
             >
               <ShoppingBagIcon className="h-6 w-6" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-lime-400 text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
@@ -145,26 +181,26 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
           {isLoggedIn && !isadmin ? (
             <PopoverGroup className="hidden md:flex gap-x-8 items-center">
               <Popover className="relative">
-                <PopoverButton className="flex items-center gap-1 font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300">
+                <PopoverButton className="flex items-center gap-1 font-semibold text-lime-400 hover:text-lime-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-lime-500/40 hover:bg-slate-700/70 transition-all duration-300">
                   Categories
                   <ChevronDownIcon className="h-5 w-5" />
                 </PopoverButton>
                 <PopoverPanel
                   transition
-                  className="absolute left-0 z-50 mt-3 w-screen max-w-md rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
+                  className="absolute left-0 z-50 mt-3 w-screen max-w-md rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-lime-500/20 border border-lime-500/30 shadow-lime-900/50"
                 >
                   {!isadmin ? (
                     <div className="p-6">
-                      <h3 className="text-lg font-semibold text-emerald-400 mb-4">
+                      <h3 className="text-lg font-semibold text-lime-400 mb-4">
                         Select Category
                       </h3>
                       <select
-                        className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/80 transition-all duration-300"
+                        className="w-full p-3 rounded-2xl backdrop-blur-xl bg-slate-700/50 border border-lime-500/40 text-white focus:outline-none focus:ring-2 focus:ring-lime-400/80 transition-all duration-300"
                         onChange={(e) => selectedCategory(e.target.value)}
                       >
                         <option
                           value=""
-                          className="bg-slate-900 text-emerald-400"
+                          className="bg-slate-900 text-lime-400"
                         >
                           All Categories
                         </option>
@@ -172,7 +208,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                           <option
                             key={c._id || c}
                             value={c._id || c}
-                            className="bg-slate-900 text-emerald-400"
+                            className="bg-slate-900 text-lime-400"
                           >
                             {c.name || c}
                           </option>
@@ -191,13 +227,13 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
           <PopoverGroup className="hidden md:flex gap-x-8 items-center">
             {isLoggedIn && !isadmin ? (
               <Popover className="relative">
-                <PopoverButton className="flex items-center gap-1 font-semibold text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300">
+                <PopoverButton className="flex items-center gap-1 font-semibold text-lime-400 hover:text-lime-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/80 rounded-xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-lime-500/40 hover:bg-slate-700/70 transition-all duration-300">
                   Filter
                   <ChevronDownIcon className="h-5 w-5" />
                 </PopoverButton>
                 <PopoverPanel
                   transition
-                  className="absolute left-0 z-50 mt-3 w-48 rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-emerald-500/20 border border-emerald-500/30 shadow-emerald-900/50"
+                  className="absolute left-0 z-50 mt-3 w-48 rounded-3xl backdrop-blur-xl bg-slate-800/90 shadow-2xl ring-1 ring-lime-500/20 border border-lime-500/30 shadow-lime-900/50"
                 >
                   {!isadmin ? (
                     <div className="p-3 space-y-1">
@@ -229,20 +265,20 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               !isadmin ? (
                 <Popover className="relative">
                   <PopoverButton
-                    className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                    className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
                       isActive("/userdashboard")
                         ? activeButtonClass
                         : inactiveButtonClass
                     }`}
                     onClick={() => navigate("/userdashboard")}
                   >
-                    UserDashBoard
+                    DashBoard
                   </PopoverButton>
                 </Popover>
               ) : (
                 <Popover className="relative">
                   <PopoverButton
-                    className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                    className={`flex items-center gap-1 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
                       isActive("/userdashboard")
                         ? activeButtonClass
                         : inactiveButtonClass
@@ -260,9 +296,19 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               <ul className="flex items-center gap-6">
                 <li>
                   <button
-                    onClick={() => navigate("/")}
-                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-4 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 flex items-center gap-2 ${
-                      isActive("/") ? activeButtonClass : inactiveButtonClass
+                    onClick={() => navigate("/shopping")}
+                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/80 rounded-xl px-4 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 flex items-center gap-2 ${
+                      isActive("/shopping") ? activeButtonClass : inactiveButtonClass
+                    }`}
+                  >
+                    🛍️ Shop
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/adminhome")}
+                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/80 rounded-xl px-4 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 flex items-center gap-2 ${
+                      isActive("/adminhome") ? activeButtonClass : inactiveButtonClass
                     }`}
                   >
                     ➕ Add Book
@@ -271,7 +317,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 <li>
                   <button
                     onClick={() => navigate("/updateBook")}
-                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-4 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 flex items-center gap-2 ${
+                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/80 rounded-xl px-4 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 flex items-center gap-2 ${
                       isActive("/updateBook")
                         ? activeButtonClass
                         : inactiveButtonClass
@@ -286,7 +332,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 <li>
                   <button
                     onClick={() => navigate("/shopping")}
-                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
+                    className={`font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/80 rounded-xl px-3 py-2 backdrop-blur-xl border transition-all duration-300 hover:bg-slate-700/70 ${
                       isActive("/shopping")
                         ? activeButtonClass
                         : inactiveButtonClass
@@ -298,7 +344,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 <li>
                   <a
                     href="/vieworder"
-                    className="font-semibold w-2.5 text-emerald-400 hover:text-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/80 rounded-3xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-emerald-500/40 hover:bg-slate-700/70 transition-all duration-300"
+                    className="font-semibold w-2.5 text-lime-400 hover:text-lime-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/80 rounded-3xl px-3 py-2 backdrop-blur-xl bg-slate-700/50 border border-lime-500/40 hover:bg-slate-700/70 transition-all duration-300"
                   >
                     Orders
                   </a>
@@ -313,10 +359,10 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
             {!isadmin ? (
               isLoggedIn ? (
                 <button
-                  className={`relative p-2 ml-2.5 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                  className={`relative p-2 ml-2.5 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-lime-600/30 hover:border-lime-500/60 ${
                     isActive("/favorites")
-                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                      : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+                      ? "bg-lime-500/30 border-lime-400/60 text-lime-300"
+                      : "bg-slate-700/50 border-lime-500/30 text-lime-400"
                   }`}
                   onClick={() => navigate("/favorites")}
                   title="My Favorites"
@@ -330,10 +376,10 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
             {!isadmin ? (
               isLoggedIn ? (
                 <button
-                  className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                  className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-lime-600/30 hover:border-lime-500/60 ${
                     isActive("/orders")
-                      ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                      : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+                      ? "bg-lime-500/30 border-lime-400/60 text-lime-300"
+                      : "bg-slate-700/50 border-lime-500/30 text-lime-400"
                   }`}
                   onClick={() => navigate("/orders")}
                   title="My Orders"
@@ -355,23 +401,23 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
             ) : (
               <button
                 onClick={() => navigate("/Login")}
-                className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30 hover:border-emerald-500/60 transition-all duration-300"
+                className="p-2 rounded-xl backdrop-blur-xl bg-slate-700/50 border border-lime-500/30 text-lime-400 hover:bg-lime-600/30 hover:border-lime-500/60 transition-all duration-300"
               >
                 <UserIcon className="h-6 w-6" title="Login" />
               </button>
             )}
             {isLoggedIn && !isadmin ? (
               <button
-                className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-emerald-600/30 hover:border-emerald-500/60 ${
+                className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-lime-600/30 hover:border-lime-500/60 ${
                   isActive("/allcarts")
-                    ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
-                    : "bg-slate-700/50 border-emerald-500/30 text-emerald-400"
+                    ? "bg-lime-500/30 border-lime-400/60 text-lime-300"
+                    : "bg-slate-700/50 border-lime-500/30 text-lime-400"
                 }`}
                 onClick={() => navigate("/allcarts")}
               >
                 <ShoppingBagIcon className="h-6 w-6" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-xs h-5 w-5 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-lime-400 text-white text-xs h-5 w-5 rounded-full flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}
@@ -395,12 +441,12 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
 
           <DialogPanel
             id="mobile-menu"
-            className="fixed top-0 right-0 z-9999 h-full w-80 sm:w-96 backdrop-blur-xl bg-slate-900/95 p-6 shadow-2xl border-l border-emerald-500/30 overflow-y-auto"
+            className="fixed top-0 right-0 z-9999 h-full w-80 sm:w-96 backdrop-blur-xl bg-slate-900/95 p-6 shadow-2xl border-l border-lime-500/30 overflow-y-auto"
           >
             <div className="flex items-center justify-between mb-6 ">
               <div className="flex items-center gap-2">
-                <ShoppingBagIcon className="h-6 w-6 text-emerald-400" />
-                <span className="font-bold text-lg bg-linear-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                <ShoppingBagIcon className="h-6 w-6 text-lime-400" />
+                <span className="font-bold text-lg bg-linear-to-r from-lime-400 to-blue-400 bg-clip-text text-transparent">
                   ShopHub
                 </span>
               </div>
@@ -417,7 +463,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
               <label className="relative block group">
                 <span className="sr-only">Search For books</span>
                 <input
-                  className="w-full rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 py-3 pl-11 pr-4 text-sm placeholder-white/50 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:bg-white/15"
+                  className="w-full rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 py-3 pl-11 pr-4 text-sm placeholder-white/50 text-white shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-lime-400/50 focus:bg-white/15"
                   placeholder="Search products, categories..."
                   value={searchQuery}
                   onChange={(e) => {
@@ -425,7 +471,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                     setsearch(e.target.value);
                   }}
                 />
-                <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/60 group-focus-within:text-emerald-300 transition-colors" />
+                <MagnifyingGlassIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/60 group-focus-within:text-lime-300 transition-colors" />
               </label>
             </div>
 
@@ -435,7 +481,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block font-semibold py-3 px-4 rounded-2xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
                   isActive("/shopping")
-                    ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                    ? "bg-lime-500/30 border-lime-400/60 text-lime-300"
                     : "bg-white/10 border-white/20 text-white"
                 }`}
               >
@@ -449,10 +495,10 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                       selectedCategory(c._id || c);
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full text-left py-3 px-4 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 mb-2"
+                    className="w-full text-left py-3 px-4 rounded-2xl bg-lime-500/20 border border-lime-400/30 text-lime-300 mb-2"
                   >
-                    <div className="h-8 w-8 flex items-center justify-center rounded-xl backdrop-blur-xl bg-emerald-400/20 border border-emerald-400/30">
-                      <span className="text-xs font-bold text-emerald-300">
+                    <div className="h-8 w-8 flex items-center justify-center rounded-xl backdrop-blur-xl bg-lime-400/20 border border-lime-400/30">
+                      <span className="text-xs font-bold text-lime-300">
                         {(c.name || c).charAt(0).toUpperCase()}
                       </span>
                     </div>
@@ -498,7 +544,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                       setfilter?.(e.target.value);
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full rounded-xl bg-slate-700/50 text-white border border-emerald-500/40 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-emerald-400/80"
+                    className="w-full rounded-xl bg-slate-700/50 text-white border border-lime-500/40 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-lime-400/80"
                   >
                     <option value="">All</option>
                     <option value="price-asc">Price Low to High</option>
@@ -518,7 +564,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                     }}
                     className={`p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
                       isActive("/orders")
-                        ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                        ? "bg-lime-500/30 border-lime-400/60 text-lime-300"
                         : "bg-white/10 border-white/20 text-white"
                     }`}
                     title="My Orders"
@@ -532,7 +578,7 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                     }}
                     className={`p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
                       isActive("/favorites")
-                        ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                        ? "bg-lime-500/30 border-lime-400/60 text-lime-300"
                         : "bg-white/10 border-white/20 text-white"
                     }`}
                     title="My Favorites"
@@ -546,14 +592,14 @@ export default function Navbar({ selectedCategory, setfilter, setsearch }) {
                     }}
                     className={`relative p-2 rounded-xl backdrop-blur-xl border transition-all duration-300 hover:bg-white/20 ${
                       isActive("/allcarts")
-                        ? "bg-emerald-500/30 border-emerald-400/60 text-emerald-300"
+                        ? "bg-lime-500/30 border-lime-400/60 text-lime-300"
                         : "bg-white/10 border-white/20 text-white"
                     }`}
                     title="Cart"
                   >
                     <ShoppingBagIcon className="h-6 w-6" />
                     {cartCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-xs h-4 w-4 rounded-full flex items-center justify-center">
+                      <span className="absolute -top-1 -right-1 bg-lime-400 text-white text-xs h-4 w-4 rounded-full flex items-center justify-center">
                         {cartCount}
                       </span>
                     )}

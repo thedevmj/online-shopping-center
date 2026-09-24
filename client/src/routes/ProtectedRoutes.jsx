@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
  const role=localStorage.getItem("user");
 
  
-  if (role!== "User") {
+  if (role !== "User" && role !== "Admin") {
     return <Navigate to="/Login" />;
   }
 

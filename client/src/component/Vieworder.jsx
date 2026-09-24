@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { buildApiUrl } from "../config";
+import { showToast } from "./Toast";
+
+const CANCEL_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 export default function ViewOrder() {
   const [order, setOrder] = useState([]);
-  const navigate = useNavigate();
+  const [cancellingId, setCancellingId] = useState(null);
 
   const fetchOrder = async () => {
     try {
@@ -24,12 +26,49 @@ export default function ViewOrder() {
     }
   };
 
+  const handleCancelOrder = async (orderId) => {
+    const target = order.find((o) => o._id === orderId);
+    if (target?.orderStatus !== "processing") {
+      showToast("This order can no longer be cancelled.", "error");
+      return;
+    }
+    if (!window.confirm("Are you sure you want to cancel this order?")) {
+      return;
+    }
+    setCancellingId(orderId);
+    try {
+      const response = await fetch(
+        buildApiUrl(`/auth/user/cancelorder/${orderId}`),
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok || data.success !== true) {
+        throw new Error(data?.message || "Failed to cancel the order");
+      }
+      showToast(data.message || "Order cancelled successfully!", "success");
+      fetchOrder();
+    } catch (err) {
+      console.error("Error cancelling order:", err);
+      showToast(err?.message || "Failed to cancel the order.", "error");
+    } finally {
+      setCancellingId(null);
+    }
+  };
+
+  const canCancel = (o) =>
+    o.orderStatus === "processing" &&
+    Date.now() - new Date(o.createdAt).getTime() <= CANCEL_WINDOW_MS;
+
   useEffect(() => {
     fetchOrder();
   }, []);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white px-6 py-10">
+    <div className="min-h-screen bg-slate-950 text-white px-6 py-10">
       <div className="max-w-5xl mx-auto">
         
         {/* Header */}
@@ -62,12 +101,42 @@ export default function ViewOrder() {
                   </div>
 
                   <div className="text-right">
-                    <p className="text-xl font-semibold text-emerald-400">
-                      ₹{order.totalAmount}
+                    <p className="text-xl font-semibold text-lime-400">
+                      ${order.totalAmount}
                     </p>
-                    <span className="text-xs px-3 py-1 rounded-full bg-purple-700/30 text-purple-300">
-                      {order.orderStatus}
-                    </span>
+                    <div className="mt-1 flex items-center justify-end gap-2">
+                      <span
+                        className={`text-xs px-3 py-1 rounded-full ${
+                          order.orderStatus === "cancelled"
+                            ? "bg-red-500/20 text-red-300"
+                            : order.orderStatus === "processing"
+                            ? "bg-lime-700/30 text-lime-300"
+                            : "bg-blue-500/20 text-blue-300"
+                        }`}
+                      >
+                        {order.orderStatus}
+                      </span>
+                      {canCancel(order) && (
+                        <button
+                          onClick={() => handleCancelOrder(order._id)}
+                          disabled={cancellingId === order._id}
+                          className="text-xs px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-400/40 hover:bg-red-500/30 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                        >
+                          {cancellingId === order._id
+                            ? "Cancelling..."
+                            : "Cancel Order"}
+                        </button>
+                      )}
+                      {order.orderStatus === "processing" &&
+                        !canCancel(order) && (
+                          <span
+                            className="text-xs px-3 py-1 rounded-full bg-slate-700/50 text-slate-400"
+                            title="Cancellation window of 24 hours has expired"
+                          >
+                            Cancel window expired
+                          </span>
+                        )}
+                    </div>
                   </div>
                 </div>
 
@@ -83,13 +152,13 @@ export default function ViewOrder() {
                         key={index}
                         className="bg-slate-900/60 border border-slate-700 rounded-xl p-4 hover:bg-slate-900 transition"
                       >
-                        <p className="text-base font-medium text-fuchsia-400">
+                        <p className="text-base font-medium text-lime-300">
                           {item.title}
                         </p>
 
                         <div className="flex justify-between text-sm text-slate-300 mt-2">
                           <span>Qty: {item.quantity}</span>
-                          <span>₹{item.priceAtPurchase}</span>
+                          <span>${item.priceAtPurchase}</span>
                         </div>
                       </div>
                     ))}

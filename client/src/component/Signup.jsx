@@ -49,20 +49,20 @@ export default function Signup({ onClose }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-linear-to-rrom-emerald-400/20 to-emerald-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-linear-to-r from-lime-400/20 to-lime-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-72 h-72 bg-linear-to-r from-blue-400/20 to-blue-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-linear-to-r from-purple-400/20 to-purple-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-linear-to-r from-lime-400/20 to-lime-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
 
       <div className="w-full max-w-md z-10">
       
         <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl p-8 border border-white/20">
           <div className="text-center mb-8">
-            <div className="inline-block p-4 bg-linear-to-br from-emerald-400 to-emerald-500 rounded-2xl mb-6 shadow-lg">
-              <LockClosedIcon className="h-8 w-8 text-white" />
+            <div className="inline-block p-4 bg-linear-to-br from-lime-400 to-lime-500 rounded-2xl mb-6 shadow-lg">
+              <LockClosedIcon className="h-8 w-8 text-slate-950" />
             </div>
             <h2 className="text-3xl font-bold text-white mb-2">
               Create Account
@@ -86,7 +86,7 @@ export default function Signup({ onClose }) {
                   value={formData.email}
                   onChange={handleOnChange}
                   placeholder="you@example.com"
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   required
                 />
               </div>
@@ -106,7 +106,7 @@ export default function Signup({ onClose }) {
                   value={formData.password}
                   onChange={handleOnChange}
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   required
                 />
                 <button
@@ -129,7 +129,7 @@ export default function Signup({ onClose }) {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-white/30 text-emerald-400 focus:ring-emerald-400 cursor-pointer bg-white/10"
+                  className="w-4 h-4 rounded border-white/30 text-lime-400 focus:ring-lime-400 cursor-pointer bg-white/10"
                 />
                 <span className="ml-3 text-sm text-white/80">Remember me</span>
               </label>
@@ -138,7 +138,7 @@ export default function Signup({ onClose }) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-4 px-6 bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed transform hover:scale-105 backdrop-blur-sm border border-white/20"
+              className="w-full py-4 px-6 bg-linear-to-r from-lime-400 to-lime-500 hover:from-lime-500 hover:to-lime-600 text-slate-950 font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed transform hover:scale-105 backdrop-blur-sm border border-white/20"
             >
               {isLoading ? "Creating Account..." : "Create Account"}
             </button>

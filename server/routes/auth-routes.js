@@ -1,5 +1,5 @@
 const express=require("express")
-const { addUser, loginUser,logoutuser, checkAuth, getuserDetails, manageOrders, viewOrders, changeOrderStatus, getOrderByid } = require("../controller/usercontroller");
+const { addUser, loginUser,logoutuser, checkAuth, getuserDetails, manageOrders, viewOrders, changeOrderStatus, getOrderByid, cancelOrder } = require("../controller/usercontroller");
 const { verifyToken } = require("../middleware/authMiddleware");
 const router=express.Router();
 
@@ -12,5 +12,6 @@ router.get("/getuserdetails",getuserDetails);
 router.get("/orderbyid",verifyToken,getOrderByid);
 router.get("/getuserorder",viewOrders);
 router.put("/:id",changeOrderStatus);
+router.put("/cancelorder/:id",verifyToken,cancelOrder);
 
 module.exports=router;

@@ -81,9 +81,14 @@ export const createOrder = async (orderData) => {
       credentials: "include",
       body: JSON.stringify({ orderData }),
     });
+    if (!response.ok) {
+      const errBody = await response.json().catch(() => null);
+      throw new Error(errBody?.message || "Failed to place the order");
+    }
     return response.json();
   } catch (err) {
     console.log("Sorry failed to order ", err);
+    throw err;
   }
 };
 

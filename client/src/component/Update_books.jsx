@@ -99,10 +99,10 @@ export default function Update_books() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-950 py-8 px-4 sm:px-6 lg:px-8">
       {/* Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-lime-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
       </div>
 
@@ -128,20 +128,20 @@ export default function Update_books() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <BookOpenIcon className="h-8 w-8 text-emerald-400" />
-            <h1 className="text-4xl font-bold bg-linear-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+            <BookOpenIcon className="h-8 w-8 text-lime-400" />
+            <h1 className="text-4xl font-bold bg-linear-to-r from-lime-400 to-blue-400 bg-clip-text text-transparent">
               Update Books
             </h1>
           </div>
-          <p className="text-emerald-300/60">Manage and update your book inventory</p>
+          <p className="text-lime-300/60">Manage and update your book inventory</p>
         </div>
 
         {/* Edit Modal */}
         {isEditing && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm bg-black/50">
-            <div className="w-full max-w-2xl rounded-lg backdrop-blur-xl bg-linear-to-br from-slate-700/50 to-slate-800/50 border border-emerald-500/20 p-6 sm:p-8 shadow-2xl">
+            <div className="w-full max-w-2xl rounded-lg backdrop-blur-xl bg-linear-to-br from-slate-700/50 to-slate-800/50 border border-lime-500/20 p-6 sm:p-8 shadow-2xl">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-emerald-400">Edit Book</h2>
+                <h2 className="text-2xl font-bold text-lime-400">Edit Book</h2>
                 <button
                   onClick={() => {
                     setIsEditing(false);
@@ -163,7 +163,7 @@ export default function Update_books() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-emerald-300 mb-2">
+                    <label className="block text-sm font-medium text-lime-300 mb-2">
                       Book Name
                     </label>
                     <input
@@ -172,12 +172,12 @@ export default function Update_books() {
                       value={formData.bookname}
                       onChange={handleInputChange}
                       placeholder="Enter book name"
-                      className="w-full px-4 py-2 bg-slate-700/50 border border-emerald-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-400/60 focus:ring-2 focus:ring-emerald-400/20 transition-all"
+                      className="w-full px-4 py-2 bg-slate-700/50 border border-lime-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-lime-400/60 focus:ring-2 focus:ring-lime-400/20 transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-emerald-300 mb-2">
+                    <label className="block text-sm font-medium text-lime-300 mb-2">
                       Title
                     </label>
                     <input
@@ -186,12 +186,12 @@ export default function Update_books() {
                       value={formData.bookTitle}
                       onChange={handleInputChange}
                       placeholder="Enter book title"
-                      className="w-full px-4 py-2 bg-slate-700/50 border border-emerald-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-400/60 focus:ring-2 focus:ring-emerald-400/20 transition-all"
+                      className="w-full px-4 py-2 bg-slate-700/50 border border-lime-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-lime-400/60 focus:ring-2 focus:ring-lime-400/20 transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-emerald-300 mb-2">
+                    <label className="block text-sm font-medium text-lime-300 mb-2">
                       Author
                     </label>
                     <input
@@ -200,12 +200,12 @@ export default function Update_books() {
                       value={formData.bookAuthor}
                       onChange={handleInputChange}
                       placeholder="Enter author name"
-                      className="w-full px-4 py-2 bg-slate-700/50 border border-emerald-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-400/60 focus:ring-2 focus:ring-emerald-400/20 transition-all"
+                      className="w-full px-4 py-2 bg-slate-700/50 border border-lime-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-lime-400/60 focus:ring-2 focus:ring-lime-400/20 transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-emerald-300 mb-2">
+                    <label className="block text-sm font-medium text-lime-300 mb-2">
                       Price
                     </label>
                     <input
@@ -215,12 +215,12 @@ export default function Update_books() {
                       onChange={handleInputChange}
                       placeholder="Enter price"
                       step="0.01"
-                      className="w-full px-4 py-2 bg-slate-700/50 border border-emerald-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-400/60 focus:ring-2 focus:ring-emerald-400/20 transition-all"
+                      className="w-full px-4 py-2 bg-slate-700/50 border border-lime-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-lime-400/60 focus:ring-2 focus:ring-lime-400/20 transition-all"
                     />
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium text-emerald-300 mb-2">
+                    <label className="block text-sm font-medium text-lime-300 mb-2">
                       Publish Date
                     </label>
                     <input
@@ -228,7 +228,7 @@ export default function Update_books() {
                       name="publishDate"
                       value={formData.publishDate}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-slate-700/50 border border-emerald-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-400/60 focus:ring-2 focus:ring-emerald-400/20 transition-all"
+                      className="w-full px-4 py-2 bg-slate-700/50 border border-lime-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-lime-400/60 focus:ring-2 focus:ring-lime-400/20 transition-all"
                     />
                   </div>
                 </div>
@@ -236,7 +236,7 @@ export default function Update_books() {
                 <div className="flex gap-3 pt-4">
                   <button
                     type="submit"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-emerald-500/20 border border-emerald-400/60 text-emerald-300 font-medium hover:bg-emerald-500/30 transition-all duration-200"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-lime-500/20 border border-lime-400/60 text-lime-300 font-medium hover:bg-lime-500/30 transition-all duration-200"
                   >
                     <CheckIcon className="h-5 w-5" />
                     Save Changes
@@ -268,33 +268,33 @@ export default function Update_books() {
         {loading ? (
           <div className="flex items-center justify-center h-96">
             <div className="text-center">
-              <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-emerald-500/10 mb-4 animate-pulse">
-                <div className="h-8 w-8 border-t-2 border-emerald-400 rounded-full animate-spin" />
+              <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-lime-500/10 mb-4 animate-pulse">
+                <div className="h-8 w-8 border-t-2 border-lime-400 rounded-full animate-spin" />
               </div>
-              <p className="text-emerald-300">Loading books...</p>
+              <p className="text-lime-300">Loading books...</p>
             </div>
           </div>
         ) : (
-          <div className="rounded-lg backdrop-blur-xl bg-linear-to-br from-slate-700/50 to-slate-800/50 border border-emerald-500/20 overflow-x-auto shadow-2xl">
+          <div className="rounded-lg backdrop-blur-xl bg-linear-to-br from-slate-700/50 to-slate-800/50 border border-lime-500/20 overflow-x-auto shadow-2xl">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-emerald-500/20 bg-slate-800/50">
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">
+                <tr className="border-b border-lime-500/20 bg-slate-800/50">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">
                     Book Name
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">
                     Title
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">
                     Author
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">
                     Publish Date
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">
                     Price
                   </th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold text-emerald-400">
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-lime-400">
                     Actions
                   </th>
                 </tr>
@@ -307,21 +307,21 @@ export default function Update_books() {
                       className="hover:bg-slate-800/30 transition-colors"
                     >
                       <td className="px-6 py-4">
-                        <p className="font-medium text-emerald-300">{book.bookname}</p>
+                        <p className="font-medium text-lime-300">{book.bookname}</p>
                       </td>
                       <td className="px-6 py-4 text-slate-300">{book.bookTitle}</td>
                       <td className="px-6 py-4 text-slate-300">{book.bookAuthor}</td>
                       <td className="px-6 py-4 text-slate-300">
                         {new Date(book.publishDate).toLocaleDateString()}
                       </td>
-                      <td className="px-6 py-4 font-semibold text-emerald-400">
+                      <td className="px-6 py-4 font-semibold text-lime-400">
                         ${parseFloat(book.bookPrice).toFixed(2)}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center gap-2">
                           <button
                             onClick={() => handleEdit(book)}
-                            className="p-2 rounded-lg hover:bg-emerald-500/20 text-emerald-400 transition-colors"
+                            className="p-2 rounded-lg hover:bg-lime-500/20 text-lime-400 transition-colors"
                             title="Edit book"
                           >
                             <PencilIcon className="h-5 w-5" />
@@ -352,22 +352,22 @@ export default function Update_books() {
         {/* Footer Stats */}
         {!loading && books.length > 0 && (
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-4 rounded-lg backdrop-blur-xl bg-slate-700/30 border border-emerald-500/20">
+            <div className="p-4 rounded-lg backdrop-blur-xl bg-slate-700/30 border border-lime-500/20">
               <p className="text-slate-400 text-sm">Total Books</p>
-              <p className="text-3xl font-bold text-emerald-400 mt-2">{books.length}</p>
+              <p className="text-3xl font-bold text-lime-400 mt-2">{books.length}</p>
             </div>
-            <div className="p-4 rounded-lg backdrop-blur-xl bg-slate-700/30 border border-emerald-500/20">
+            <div className="p-4 rounded-lg backdrop-blur-xl bg-slate-700/30 border border-lime-500/20">
               <p className="text-slate-400 text-sm">Average Price</p>
-              <p className="text-3xl font-bold text-emerald-400 mt-2">
+              <p className="text-3xl font-bold text-lime-400 mt-2">
                 ${(
                   books.reduce((sum, b) => sum + parseFloat(b.bookPrice), 0) /
                   books.length
                 ).toFixed(2)}
               </p>
             </div>
-            <div className="p-4 rounded-lg backdrop-blur-xl bg-slate-700/30 border border-emerald-500/20">
+            <div className="p-4 rounded-lg backdrop-blur-xl bg-slate-700/30 border border-lime-500/20">
               <p className="text-slate-400 text-sm">Total Inventory Value</p>
-              <p className="text-3xl font-bold text-emerald-400 mt-2">
+              <p className="text-3xl font-bold text-lime-400 mt-2">
                 ${books
                   .reduce((sum, b) => sum + parseFloat(b.bookPrice), 0)
                   .toFixed(2)}

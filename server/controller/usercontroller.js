@@ -162,11 +162,8 @@ const viewOrders = async (req, res) => {
 
     const data = await order.find().populate("user", "email");
 
-    if (data.length === 0) {
-      return res.status(404).json({ success: false, message: " Order not fetched" })
-    }
     res.status(200).json({
-      sucess: true,
+      success: true,
       message: "Order fetch success ",
       data: data
     })
@@ -179,6 +176,10 @@ const viewOrders = async (req, res) => {
 }
 const manageOrders = async (req, res) => {
   try {
+    if (req.user?.role === "Admin") {
+      return res.status(403).json({ success: false, message: "Admins cannot place orders" });
+    }
+
     const userId = req.user?.id || req.user?._id;
 
     if (!userId) {
@@ -190,7 +191,7 @@ const manageOrders = async (req, res) => {
 
     const { items, paymentId } = req.body.orderData || req.body;
 
-    if (!items || !Array.isArray(items)) {
+    if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ message: "Invalid items" });
     }
 
@@ -198,25 +199,18 @@ const manageOrders = async (req, res) => {
       return acc + Number(item.priceAtPurchase) * item.quantity;
     }, 0);
 
-    const updatedOrder = await order.findOneAndUpdate(
-      { user: userId }, 
-      {
-        $push: { items: { $each: items } }, 
-        $set: {
-          paymentId,
-          paymentStatus: "completed"
-        },
-        $inc: { totalAmount } 
-      },
-      {
-        new: true,
-        upsert: true 
-      }
-    );
+    const newOrder = await order.create({
+      user: userId,
+      items,
+      totalAmount,
+      paymentId,
+      paymentStatus: "completed"
+    });
 
-    return res.status(200).json({
-      message: "Order updated/created successfully",
-      data: updatedOrder
+    return res.status(201).json({
+      success: true,
+      message: "Order placed successfully",
+      data: newOrder
     });
 
   } catch (err) {
@@ -245,7 +239,9 @@ const changeOrderStatus = async (req, res) => {
   }
   catch (err) {
     console.log("Error changing Order status ", err);
-
+    res.status(500).json({
+      message: "Server error"
+    });
   }
 }
 const getOrderByid = async (req, res) => {
@@ -256,7 +252,11 @@ const getOrderByid = async (req, res) => {
     const orders = await order.find({ user: id }).populate("user").populate("items.book");
 
     if (!orders || orders.length === 0) {
-      return;
+      return res.status(200).json({
+        success: true,
+        message: "No orders found for this user",
+        data: []
+      });
     }
 
     res.status(200).json({
@@ -276,4 +276,52 @@ const getOrderByid = async (req, res) => {
   }
 }
 
-module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders, viewOrders, changeOrderStatus, getOrderByid }
+const CANCEL_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+const cancelOrder = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const userId = req.user.id || req.user._id;
+
+    const existingOrder = await order.findOne({ _id: orderId, user: userId });
+
+    if (!existingOrder) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found"
+      });
+    }
+
+    if (existingOrder.orderStatus !== "processing") {
+      return res.status(400).json({
+        success: false,
+        message: "Order can no longer be cancelled once it is shipped"
+      });
+    }
+
+    const createdAt = new Date(existingOrder.createdAt).getTime();
+    if (Date.now() - createdAt > CANCEL_WINDOW_MS) {
+      return res.status(400).json({
+        success: false,
+        message: "Cancellation window of 24 hours has expired"
+      });
+    }
+
+    existingOrder.orderStatus = "cancelled";
+    await existingOrder.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Order cancelled successfully",
+      data: existingOrder
+    });
+  } catch (err) {
+    console.log("Error cancelling order ", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
+module.exports = { addUser, loginUser, logoutuser, checkAuth, getuserDetails, manageOrders, viewOrders, changeOrderStatus, getOrderByid, cancelOrder }

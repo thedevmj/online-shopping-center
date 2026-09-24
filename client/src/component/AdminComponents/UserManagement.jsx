@@ -13,11 +13,11 @@ const UserRow = React.memo(({ user, onDelete, onToggleRole }) => (
   <tr className="border-b border-slate-700/50 hover:bg-slate-800/30 transition-colors" key={user._id}>
     <td className="px-6 py-4">
       <div className="flex items-center gap-3">
-        <div className="h-10 w-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-300 font-semibold">
+        <div className="h-10 w-10 rounded-full bg-lime-500/20 flex items-center justify-center text-lime-300 font-semibold">
           {user.email.split[1]}
         </div>
         <div>
-          <p className="font-medium text-emerald-300">{user.email}</p>
+          <p className="font-medium text-lime-300">{user.email}</p>
           <p className="text-xs text-slate-400">{user.joinDate}</p>
         </div>
       </div>
@@ -45,7 +45,7 @@ const UserRow = React.memo(({ user, onDelete, onToggleRole }) => (
     <td className="px-6 py-4">
       <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-2 w-fit ${
         user.role === 'admin'
-          ? 'bg-emerald-500/20 text-emerald-300'
+          ? 'bg-lime-500/20 text-lime-300'
           : 'bg-slate-700/50 text-slate-300'
       }`}>
         <ShieldCheckIcon className="h-4 w-4" />
@@ -57,7 +57,7 @@ const UserRow = React.memo(({ user, onDelete, onToggleRole }) => (
       <div className="flex items-center gap-2">
         <button
           onClick={() => onToggleRole(user.id)}
-          className="px-3 py-1 text-xs rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 transition-colors"
+          className="px-3 py-1 text-xs rounded-lg bg-lime-500/20 text-lime-300 hover:bg-lime-500/30 transition-colors"
         >
           {user.role === 'admin' ? 'Remove Admin' : 'Make Admin'}
         </button>
@@ -146,10 +146,10 @@ export default function UserManagement() {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-emerald-500/10 mb-4 animate-pulse">
-            <div className="h-8 w-8 border-t-2 border-emerald-400 rounded-full animate-spin" />
+          <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-lime-500/10 mb-4 animate-pulse">
+            <div className="h-8 w-8 border-t-2 border-lime-400 rounded-full animate-spin" />
           </div>
-          <p className="text-emerald-300">Loading users...</p>
+          <p className="text-lime-300">Loading users...</p>
         </div>
       </div>
     );
@@ -167,7 +167,7 @@ export default function UserManagement() {
               placeholder="Search users..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-700/50 border border-emerald-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-400/60 transition-colors"
+              className="w-full pl-10 pr-4 py-2 bg-slate-700/50 border border-lime-500/30 rounded-lg text-slate-200 placeholder-slate-400 focus:outline-none focus:border-lime-400/60 transition-colors"
             />
           </div>
         </div>
@@ -179,8 +179,8 @@ export default function UserManagement() {
               onClick={() => setFilterStatus(status)}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filterStatus === status
-                  ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-400/60'
-                  : 'bg-slate-700/50 text-slate-300 border border-emerald-500/30 hover:bg-slate-600/50'
+                  ? 'bg-lime-500/30 text-lime-300 border border-lime-400/60'
+                  : 'bg-slate-700/50 text-slate-300 border border-lime-500/30 hover:bg-slate-600/50'
               }`}
             >
               { status}
@@ -190,16 +190,16 @@ export default function UserManagement() {
       </div>
 
      
-      <div className="rounded-lg backdrop-blur-xl bg-linear-to-br from-slate-700/50 to-slate-800/50 border border-emerald-500/20 overflow-x-auto">
+      <div className="rounded-lg backdrop-blur-xl bg-linear-to-br from-slate-700/50 to-slate-800/50 border border-lime-500/20 overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-emerald-500/20 bg-slate-800/50">
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">User</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Email</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Status</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Role</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Total Spent</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-400">Actions</th>
+            <tr className="border-b border-lime-500/20 bg-slate-800/50">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">User</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">Email</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">Status</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">Role</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">Total Spent</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-lime-400">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -225,25 +225,25 @@ export default function UserManagement() {
 
       {/* Stats Footer */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="p-4 rounded-lg bg-slate-700/30 border border-emerald-500/20">
+        <div className="p-4 rounded-lg bg-slate-700/30 border border-lime-500/20">
           <p className="text-slate-400 text-sm">Total Users</p>
-          <p className="text-2xl font-bold text-emerald-400 mt-2">{users.length}</p>
+          <p className="text-2xl font-bold text-lime-400 mt-2">{users.length}</p>
         </div>
-        <div className="p-4 rounded-lg bg-slate-700/30 border border-emerald-500/20">
+        <div className="p-4 rounded-lg bg-slate-700/30 border border-lime-500/20">
           <p className="text-slate-400 text-sm">Active Users</p>
           <p className="text-2xl font-bold text-green-400 mt-2">
             {users.filter(u => u.status === 'active').length}
           </p>
         </div>
-        <div className="p-4 rounded-lg bg-slate-700/30 border border-emerald-500/20">
+        <div className="p-4 rounded-lg bg-slate-700/30 border border-lime-500/20">
           <p className="text-slate-400 text-sm">Admin Users</p>
-          <p className="text-2xl font-bold text-emerald-400 mt-2">
+          <p className="text-2xl font-bold text-lime-400 mt-2">
             {users.filter(u => u.role === 'admin').length}
           </p>
         </div>
-        <div className="p-4 rounded-lg bg-slate-700/30 border border-emerald-500/20">
+        <div className="p-4 rounded-lg bg-slate-700/30 border border-lime-500/20">
           <p className="text-slate-400 text-sm">Avg Spent</p>
-          <p className="text-2xl font-bold text-emerald-400 mt-2">
+          <p className="text-2xl font-bold text-lime-400 mt-2">
             ${(users.reduce((sum, u) => sum + u.totalSpent, 0) / users.length).toFixed(2)}
           </p>
         </div>

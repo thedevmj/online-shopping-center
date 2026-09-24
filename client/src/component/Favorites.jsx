@@ -61,12 +61,12 @@ export default function Favorites() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 p-6 relative overflow-hidden">
    
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-emerald-400/10 to-emerald-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-96 h-96 bg-linear-to-r from-blue-400/10 to-blue-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-purple-400/10 to-purple-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
 
       
@@ -74,7 +74,7 @@ export default function Favorites() {
        
         <div className="mb-12">
           <h1 className="text-5xl font-bold text-white mb-3 flex items-center gap-3">
-            <HeartIcon className="w-10 h-10 text-emerald-400" />
+            <HeartIcon className="w-10 h-10 text-lime-400" />
             My Favorites
           </h1>
           <p className="text-white/70 text-lg">
@@ -92,7 +92,7 @@ export default function Favorites() {
             </p>
             <button
               onClick={() => navigate("/shopping")}
-              className="px-8 py-3 bg-linear-to-r from-emerald-400 to-emerald-500 text-slate-900 font-bold rounded-full hover:shadow-2xl hover:shadow-emerald-500/50 transition-all transform hover:scale-105"
+              className="px-8 py-3 bg-linear-to-r from-lime-400 to-lime-500 text-slate-900 font-bold rounded-full hover:shadow-2xl hover:shadow-lime-500/50 transition-all transform hover:scale-105"
             >
               Browse Books
             </button>
@@ -104,7 +104,7 @@ export default function Favorites() {
               return (
               <div
                 key={book._id}
-                className="group backdrop-blur-xl bg-white/10 rounded-2xl overflow-hidden border border-white/20 hover:border-white/40 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/20"
+                className="group backdrop-blur-xl bg-white/10 rounded-2xl overflow-hidden border border-white/20 hover:border-white/40 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-lime-500/20"
               >
                 
                 <div className="relative overflow-hidden h-64 bg-linear-to-br from-slate-800 to-slate-900">
@@ -116,8 +116,8 @@ export default function Favorites() {
                   <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                   
-                  <div className="absolute top-3 right-3 bg-emerald-400/20 backdrop-blur-md rounded-full p-2 border border-emerald-400/40">
-                    <HeartIcon className="w-5 h-5 text-emerald-400 fill-emerald-400" />
+                  <div className="absolute top-3 right-3 bg-lime-400/20 backdrop-blur-md rounded-full p-2 border border-lime-400/40">
+                    <HeartIcon className="w-5 h-5 text-lime-400 fill-lime-400" />
                   </div>
                 </div>
 
@@ -125,7 +125,7 @@ export default function Favorites() {
                 <div className="p-5">
                   
                   {book.bookCategory && book.bookCategory.length < 20 && (
-                    <span className="text-xs font-semibold text-emerald-300 bg-emerald-400/20 px-3 py-1 rounded-full">
+                    <span className="text-xs font-semibold text-lime-300 bg-lime-400/20 px-3 py-1 rounded-full">
                       {book.bookCategory}
                     </span>
                   )}
@@ -148,7 +148,7 @@ export default function Favorites() {
 
                  
                   <div className="flex items-baseline gap-2 mt-4">
-                    <span className="text-2xl font-bold text-emerald-300">
+                    <span className="text-2xl font-bold text-lime-300">
                       ${book.bookPrice}
                     </span>
                     <span className="text-white/40 line-through text-sm">
@@ -160,7 +160,7 @@ export default function Favorites() {
                   <div className="flex gap-3 mt-6">
                     <button
                       onClick={() => handleAddToCart(book)}
-                      className="flex-1 flex items-center justify-center gap-2 bg-linear-to-r from-emerald-400 to-emerald-500 text-slate-900 font-bold py-2 rounded-lg hover:shadow-lg hover:shadow-emerald-500/50 transition-all transform hover:scale-105"
+                      className="flex-1 flex items-center justify-center gap-2 bg-linear-to-r from-lime-400 to-lime-500 text-slate-900 font-bold py-2 rounded-lg hover:shadow-lg hover:shadow-lime-500/50 transition-all transform hover:scale-105"
                     >
                       <ShoppingCartIcon className="w-4 h-4" />
                       Add to Cart

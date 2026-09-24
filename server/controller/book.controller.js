@@ -188,7 +188,10 @@ const getallCategory = async (req, res) => {
 const addtoCart = async (req, res) => {
 
     try {
-       
+        if (req.user?.role === "Admin") {
+            return res.status(403).json({ message: "Admins cannot add books to cart" });
+        }
+        
         const{bookId,quantity}=req.body;
         let cart=await Cart.findOne({user:req.user.id});
         if(!cart){
@@ -307,6 +310,9 @@ catch(err){
 
 const handleFavorite = async (req, res) => {
     try {
+        if (req.user?.role === "Admin") {
+            return res.status(403).json({ message: "Admins cannot use favorites" });
+        }
         const { bookId } = req.body;
         const userId=req.user.id || req.user._id;
         const bookExists = await Book.findById(bookId);

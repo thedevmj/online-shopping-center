@@ -90,12 +90,12 @@ export default function Home() {
  
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 p-6 relative overflow-hidden">
    
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-emerald-400/10 to-emerald-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-96 h-96 bg-linear-to-r from-blue-400/10 to-blue-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-purple-400/10 to-purple-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
 
       <div className="relative z-10 w-full max-w-2xl mx-auto">
@@ -103,7 +103,7 @@ export default function Home() {
               <div
                 className={`mb-6 p-4 rounded-2xl backdrop-blur-xl border text-white text-center font-semibold ${
                   message.type === "success"
-                    ? "bg-emerald-500/20 border-emerald-400/30"
+                    ? "bg-lime-500/20 border-lime-400/30"
                     : "bg-red-500/20 border-red-400/30"
                 }`}
               >
@@ -113,8 +113,8 @@ export default function Home() {
 
         <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl p-8 border border-white/20">
           <div className="text-center mb-8">
-            <div className="inline-block p-4 bg-linear-to-br from-emerald-400 to-emerald-500 rounded-2xl mb-6 shadow-lg">
-              <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="inline-block p-4 bg-linear-to-br from-lime-400 to-lime-500 rounded-2xl mb-6 shadow-lg">
+              <svg className="h-8 w-8 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
@@ -133,7 +133,7 @@ export default function Home() {
                 <input
                   type="text"
                   placeholder="Book name"
-                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   name="bookname"
                   value={formData.bookname}
                   onChange={handleInputChange}
@@ -147,7 +147,7 @@ export default function Home() {
                 <input
                   type="text"
                   placeholder="Book title"
-                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   name="bookTitle"
                   value={formData.bookTitle}
                   onChange={handleInputChange}
@@ -163,7 +163,7 @@ export default function Home() {
                 <input
                   type="text"
                   placeholder="Book author"
-                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   name="bookAuthor"
                   value={formData.bookAuthor}
                   onChange={handleInputChange}
@@ -177,7 +177,7 @@ export default function Home() {
                 <input
                   type="number"
                   placeholder="Book price"
-                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   name="bookPrice"
                   value={formData.bookPrice}
                   onChange={handleInputChange}
@@ -195,7 +195,7 @@ export default function Home() {
                 </label>
                 <input
                   type="date"
-                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   name="publishDate"
                   value={formData.publishDate}
                   onChange={handleInputChange}
@@ -209,7 +209,7 @@ export default function Home() {
                 <input
                   type="number"
                   placeholder="Stock quantity"
-                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   name="stock"
                   value={formData.stock}
                   onChange={handleInputChange}
@@ -223,7 +223,7 @@ export default function Home() {
               </label>
               <textarea
                 placeholder="Book description"
-                className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm resize-none"
+                className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm resize-none"
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
@@ -245,7 +245,7 @@ export default function Home() {
                       bookImage: e.target.files[0],
                     }))
                   }
-                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-400/20 file:text-emerald-300 hover:file:bg-emerald-400/30 transition-all duration-300 backdrop-blur-sm"
+                  className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-lime-400/20 file:text-lime-300 hover:file:bg-lime-400/30 transition-all duration-300 backdrop-blur-sm"
                 />
               </div>
             </div>
@@ -258,7 +258,7 @@ export default function Home() {
                 name="bookCategory"
                 value={formData.bookCategory}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
               >
                 <option value="" className="bg-slate-800 text-white">Select category</option>
                 {Array.isArray(category) && category.map((cat) => (
@@ -271,7 +271,7 @@ export default function Home() {
 
             <button
               type="submit"
-              className="w-full py-4 px-6 bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20"
+              className="w-full py-4 px-6 bg-linear-to-r from-lime-400 to-lime-500 hover:from-lime-500 hover:to-lime-600 text-slate-950 font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20"
             >
               Add Book to Collection
             </button>

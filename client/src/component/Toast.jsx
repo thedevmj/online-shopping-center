@@ -35,7 +35,7 @@ export default function ToastContainer() {
   if (!toast) return null;
 
   const styles = {
-    success: "border-emerald-400/40 bg-emerald-500/15 text-emerald-200",
+    success: "border-lime-400/40 bg-lime-500/15 text-lime-200",
     error: "border-red-400/40 bg-red-500/15 text-red-200",
     info: "border-blue-400/40 bg-blue-500/15 text-blue-200",
     warning: "border-yellow-400/40 bg-yellow-500/15 text-yellow-200",
@@ -55,7 +55,7 @@ export default function ToastContainer() {
                   ? "bg-yellow-400"
                   : toast.type === "info"
                     ? "bg-blue-400"
-                    : "bg-emerald-400"
+                    : "bg-lime-400"
             }`}
           />
           <p className="text-sm font-medium leading-6">{toast.message}</p>

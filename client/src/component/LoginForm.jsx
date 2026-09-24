@@ -95,12 +95,12 @@ export default function LoginForm({ onClose }) {
 };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
      
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-linear-to-r from-emerald-400/20 to-emerald-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-linear-to-r from-lime-400/20 to-lime-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-72 h-72 bg-linear-to-r from-blue-400/20 to-blue-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-linear-to-r from-purple-400/20 to-purple-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-linear-to-r from-lime-400/20 to-lime-300/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
 
       <div className="w-full max-w-md z-10">
@@ -117,8 +117,8 @@ export default function LoginForm({ onClose }) {
           )}
 
           <div className="text-center mb-8">
-            <div className="inline-block p-4 bg-linear-to-br from-emerald-400 to-emerald-500 rounded-2xl mb-6 shadow-lg">
-              <LockClosedIcon className="h-8 w-8 text-white" />
+            <div className="inline-block p-4 bg-linear-to-br from-lime-400 to-lime-500 rounded-2xl mb-6 shadow-lg">
+              <LockClosedIcon className="h-8 w-8 text-slate-950" />
             </div>
             <h2 className="text-3xl font-bold text-white mb-2">
               Welcome Back
@@ -135,7 +135,7 @@ export default function LoginForm({ onClose }) {
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute left-0 top-0 h-full w-12 flex items-center justify-center text-white/60 group-focus-within:text-emerald-300 transition-colors duration-300">
+                <div className="absolute left-0 top-0 h-full w-12 flex items-center justify-center text-white/60 group-focus-within:text-lime-300 transition-colors duration-300">
                   <EnvelopeIcon className="h-5 w-5" />
                 </div>
                 <input
@@ -144,7 +144,7 @@ export default function LoginForm({ onClose }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   required
                 />
               </div>
@@ -158,7 +158,7 @@ export default function LoginForm({ onClose }) {
                 Password
               </label>
               <div className="relative">
-                <div className="absolute left-0 top-0 h-full w-12 flex items-center justify-center text-white/60 group-focus-within:text-emerald-300 transition-colors duration-300">
+                <div className="absolute left-0 top-0 h-full w-12 flex items-center justify-center text-white/60 group-focus-within:text-lime-300 transition-colors duration-300">
                   <LockClosedIcon className="h-5 w-5" />
                 </div>
                 <input
@@ -167,7 +167,7 @@ export default function LoginForm({ onClose }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-emerald-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
+                  className="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 transition-all duration-300 focus:bg-white/15 focus:border-lime-400/50 focus:outline-none focus:ring-0 backdrop-blur-sm"
                   required
                 />
                 <button
@@ -190,13 +190,13 @@ export default function LoginForm({ onClose }) {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-white/30 text-emerald-400 focus:ring-emerald-400 cursor-pointer bg-white/10"
+                  className="w-4 h-4 rounded border-white/30 text-lime-400 focus:ring-lime-400 cursor-pointer bg-white/10"
                 />
                 <span className="ml-3 text-sm text-white/80">Remember me</span>
               </label>
               <a
                 href="#"
-                className="text-sm font-semibold text-emerald-300 hover:text-emerald-200 transition-colors duration-300"
+                className="text-sm font-semibold text-lime-300 hover:text-lime-200 transition-colors duration-300"
               >
                 Forgot password?
               </a>
@@ -205,7 +205,7 @@ export default function LoginForm({ onClose }) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-4 px-6 bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed transform hover:scale-105 backdrop-blur-sm border border-white/20"
+              className="w-full py-4 px-6 bg-linear-to-r from-lime-400 to-lime-500 hover:from-lime-500 hover:to-lime-600 text-slate-950 font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed transform hover:scale-105 backdrop-blur-sm border border-white/20"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">
@@ -251,7 +251,7 @@ export default function LoginForm({ onClose }) {
             <button
               type="button"
               onClick={() => navigate("/")}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:border-emerald-400/50 hover:bg-emerald-500/10"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:border-lime-400/50 hover:bg-lime-500/10"
             >
               ← Back to Home
             </button>
@@ -261,7 +261,7 @@ export default function LoginForm({ onClose }) {
             Don't have an account?{" "}
             <a
               href="/signup"
-              className="font-semibold text-emerald-600 hover:text-emerald-700 transition-colors duration-200"
+              className="font-semibold text-lime-600 hover:text-lime-700 transition-colors duration-200"
             >
               Sign up
             </a>
@@ -272,7 +272,7 @@ export default function LoginForm({ onClose }) {
           By signing in, you agree to our{" "}
           <a
             href="#"
-            className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200"
+            className="text-lime-600 hover:text-lime-700 transition-colors duration-200"
           >
             Terms of Service
           </a>

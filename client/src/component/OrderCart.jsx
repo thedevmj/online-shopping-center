@@ -13,6 +13,7 @@ export default function OrderCart() {
   const {selectedBook } = React.useContext(Bookcontext|| null);
   const [Count, setcartCount] = useState(1);
   const navigate=useNavigate();
+  const isAdmin = localStorage.getItem("user") === "Admin";
   const bookData = selectedBook || book;
 
   if (!bookData) {
@@ -24,6 +25,10 @@ export default function OrderCart() {
   }
 
   const addToCart = async () => {
+  if (isAdmin) {
+    showToast("Admin preview - purchases are disabled.", "info");
+    return;
+  }
   try {
     const response = await fetch(buildApiUrl("/api/book/addtocart"), {
       method: "POST",
@@ -53,12 +58,12 @@ export default function OrderCart() {
   
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 p-8 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-emerald-400/10 to-emerald-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
         <div className="absolute top-40 right-10 w-96 h-96 bg-linear-to-r from-blue-400/10 to-blue-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-purple-400/10 to-purple-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
       </div>
 
       <div className="relative z-10">
@@ -86,26 +91,26 @@ export default function OrderCart() {
             </div>
 
             <div className="space-y-2">
-              <span className="text-4xl font-bold text-emerald-300">
+              <span className="text-4xl font-bold text-lime-300">
                 ${bookData.bookPrice}
               </span>
               <span className="ml-4 text-white/50 line-through text-xl">
                 ${(bookData.bookPrice) + 10}
               </span>
-              <span className="ml-4 text-emerald-300 font-semibold bg-emerald-400/20 px-3 py-1 rounded-full text-sm backdrop-blur-sm border border-emerald-400/30">
+              <span className="ml-4 text-lime-300 font-semibold bg-lime-400/20 px-3 py-1 rounded-full text-sm backdrop-blur-sm border border-lime-400/30">
                 20% Off
               </span>
             </div>
 
-            <div className="flex items-center text-emerald-300">
-              <div className="w-3 h-3 bg-emerald-400 rounded-full mr-3 animate-pulse"></div>
+            <div className="flex items-center text-lime-300">
+              <div className="w-3 h-3 bg-lime-400 rounded-full mr-3 animate-pulse"></div>
               <span className="font-medium">In Stock</span>
             </div>
 
             <div>
               <label className="block mb-3 font-semibold text-white/90">Quantity</label>
               <select
-                className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl px-4 py-3 text-white focus:border-emerald-400/50 focus:outline-none focus:ring-0 transition-all duration-300"
+                className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl px-4 py-3 text-white focus:border-lime-400/50 focus:outline-none focus:ring-0 transition-all duration-300"
                 value={Count}
                 onChange={(e) => setcartCount(parseInt(e.target.value))}
               >
@@ -116,16 +121,30 @@ export default function OrderCart() {
             </div>
 
             <div className="flex gap-4 pt-4">
-              <button
-                className="flex-1 bg-linear-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20"
-                onClick={addToCart}
-              >
-                Add to Cart
-              </button>
+              {isAdmin ? (
+                <p className="flex-1 text-center border border-lime-400/30 bg-lime-500/10 text-lime-300 px-8 py-4 rounded-2xl font-semibold">
+                  Read-only preview — purchases are disabled
+                </p>
+              ) : (
+                <>
+                  <button
+                    className="flex-1 bg-linear-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20"
+                    onClick={addToCart}
+                  >
+                    Add to Cart
+                  </button>
 
-              <button className="flex-1 bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20" onClick={()=>navigate("/orders")}>
-                Buy Now
-              </button>
+                  <button
+                    className="flex-1 bg-linear-to-r from-lime-400 to-lime-500 hover:from-lime-500 hover:to-lime-600 text-slate-950 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 backdrop-blur-sm border border-white/20"
+                    onClick={() => {
+                      localStorage.setItem("selectedQuantity", String(Count));
+                      navigate("/orders");
+                    }}
+                  >
+                    Buy Now
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

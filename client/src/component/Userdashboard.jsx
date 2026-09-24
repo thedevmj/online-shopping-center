@@ -25,14 +25,14 @@ export default function UserDashboard() {
       description: 'Check items in your cart',
       icon: ShoppingBagIcon,
       path: '/allcarts',
-      color: 'from-emerald-400 to-emerald-600',
+      color: 'from-lime-400 to-lime-600',
     },
     {
       title: 'Favorites',
       description: 'Your saved books and items',
       icon: HeartIcon,
       path: '/favorites', // Assuming a favorites page exists or add later
-      color: 'from-purple-400 to-purple-600',
+      color: 'from-lime-400 to-lime-600',
     },
     {
       title: 'Profile Settings',
@@ -46,24 +46,24 @@ export default function UserDashboard() {
       description: 'Explore our book collection',
       icon: ShoppingBagIcon,
       path: '/shopping',
-      color: 'from-teal-400 to-teal-600',
+      color: 'from-lime-400 to-lime-600',
     },
     {
       title: 'Account Settings',
       description: 'Manage your preferences',
       icon: CogIcon,
       path: '/settings', // Assuming a settings page exists or add later
-      color: 'from-indigo-400 to-indigo-600',
+      color: 'from-lime-400 to-lime-600',
     },
   ];
 
   return (
     <div>
-      <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
+      <div className="min-h-screen bg-slate-950 p-6 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-emerald-400/10 to-emerald-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+          <div className="absolute top-20 left-10 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
           <div className="absolute top-40 right-10 w-96 h-96 bg-linear-to-r from-blue-400/10 to-blue-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-purple-400/10 to-purple-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-linear-to-r from-lime-400/10 to-lime-300/10 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto">
@@ -92,7 +92,7 @@ export default function UserDashboard() {
             <h2 className="text-2xl font-bold text-white mb-4">Quick Stats</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-emerald-400 mb-2">0</div>
+                <div className="text-3xl font-bold text-lime-400 mb-2">0</div>
                 <p className="text-white/70">Total Orders</p>
               </div>
               <div className="text-center">
@@ -100,7 +100,7 @@ export default function UserDashboard() {
                 <p className="text-white/70">Items in Cart</p>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-400 mb-2">0</div>
+                <div className="text-3xl font-bold text-lime-400 mb-2">0</div>
                 <p className="text-white/70">Favorite Books</p>
               </div>
             </div>
